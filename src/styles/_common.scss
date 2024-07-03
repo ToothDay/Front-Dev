@@ -1,1 +1,31 @@
-// 공통 mixin 설정
+// 아이콘 설정 mixin
+@mixin icon($url, $width, $height) {
+  content: "";
+  display: inline-block;
+  width: $width;
+  height: $height;
+  background: url($url);
+  vertical-align: text-bottom;
+}
+
+// 아이콘 위치 설정 mixin
+@mixin position-icon($position) {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  @if $position == left {
+    left: 0;
+  } @else if $position == right {
+    right: 0;
+  }
+}
+
+// 말줄임 mixin
+$default-line-clamp: 1;
+@mixin ellipsis-text($line-clamp: $default-line-clamp) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: $line-clamp;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
