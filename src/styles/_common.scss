@@ -1,3 +1,5 @@
+@import "@/styles/_variables.scss";
+
 // 아이콘 설정 mixin
 @mixin icon($url, $width, $height) {
   content: "";
@@ -37,4 +39,11 @@ $default-line-clamp: 1;
     background-color: $lightblue;
     border: 1px solid $deepblue;
   }
+}
+
+//폰트사이즈 mixin
+@mixin font-style($font-map) {
+  font-size: map-get($font-map, size);
+  line-height: map-get($font-map, line-height);
+  font-weight: map-get($font-map, weight);
 }

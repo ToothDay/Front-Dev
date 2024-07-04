@@ -18,3 +18,71 @@ $black: #171717;
 $grey1: #ededed;
 $grey2: #676767;
 $grey3: #494949;
+
+// font
+
+$title: (
+  size: 32px,
+  line-height: 51px,
+  weight: 700
+);
+
+$headline: (
+  size: 24px,
+  line-height: 24px,
+  weight: 700
+);
+
+$subtitle1: (
+  size: 20px,
+  line-height: 24px,
+  weight: 700
+);
+
+$semi-subtitle1: (
+  size: 20px,
+  line-height: 24px,
+  weight: 600
+);
+
+$subtitle2: (
+  size: 18px,
+  line-height: 24px,
+  weight: 600
+);
+
+$body1: (
+  size: 16px,
+  line-height: 22px,
+  weight: 500
+);
+
+$semi-body1: (
+  size: 16px,
+  line-height: 22px,
+  weight: 600
+);
+
+$body2: (
+  size: 14px,
+  line-height: 22px,
+  weight: 400
+);
+
+$caption1: (
+  size: 12px,
+  line-height: 19px,
+  weight: 400
+);
+
+$semi-caption1: (
+  size: 12px,
+  line-height: 19px,
+  weight: 600
+);
+
+$caption2: (
+  size: 10px,
+  line-height: 16px,
+  weight: 400
+);
