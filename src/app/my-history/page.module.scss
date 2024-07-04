@@ -4,8 +4,17 @@
   background-color: $white;
   height: 100vh;
   padding: 0 24px;
+  overflow: auto;
 }
 
 .header {
   padding-top: 28px;
+  margin-bottom: 22px;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 30px;
 }
