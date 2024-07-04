@@ -35,5 +35,6 @@ $default-line-clamp: 1;
 @mixin button-hover {
   &:hover {
     background-color: $lightblue;
+    border: 1px solid $deepblue;
   }
 }
