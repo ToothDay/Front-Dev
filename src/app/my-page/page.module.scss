@@ -1,0 +1,125 @@
+@import "@/styles/variables.scss";
+@import "@/styles/common.scss";
+
+.main {
+  background-color: $white;
+  height: 100vh;
+}
+
+.profile {
+  background-color: $deepblue;
+  height: 389px;
+  border-radius: 0 0 30px 30px;
+}
+.tab {
+  padding-top: 24px;
+}
+
+.user {
+  margin-top: 29px;
+  display: flex;
+  gap: 17px;
+  padding: 0 24px;
+}
+
+.userDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+
+  .userName {
+    @include font-style($subtitle1);
+    color: $base-white;
+  }
+
+  .profileButton {
+    @include font-style($body2);
+    color: $white;
+    cursor: pointer;
+    border: 1px solid $base-white;
+    padding: 7px 16px;
+    border-radius: 8px;
+  }
+}
+
+.info {
+  margin-top: 29px;
+  padding: 0 24px;
+  display: flex;
+  gap: 24px;
+
+  .infoBox {
+    flex: 1;
+    height: 163px;
+    background-color: #9ad1ff;
+    border-radius: 20px;
+  }
+  .infoTitle {
+    display: block;
+    @include font-style($subtitle2);
+    color: $base-white;
+    padding: 28px 0 0 25px;
+  }
+}
+
+.community {
+  margin-top: 37px;
+  padding: 0 24px;
+
+  .communityTitle {
+    @include font-style($subtitle1);
+    margin-bottom: 19px;
+  }
+
+  .communityList {
+    display: flex;
+    padding: 13px 14px;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .listTitle {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+    @include font-style($subtitle2);
+    &::before {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      padding: 8px 8px 7px 7px;
+      border-radius: 50%;
+    }
+
+    &.post {
+      &::before {
+        background: url("/post-icon.svg") center no-repeat;
+        background-color: rgba(224, 244, 255, 0.6);
+      }
+    }
+
+    &.like {
+      &::before {
+        background: url("/like-icon.svg") center no-repeat;
+        background-color: rgba(255, 236, 250, 0.6);
+      }
+    }
+
+    &.comment {
+      &::before {
+        background: url("/comment-icon.svg") center no-repeat;
+        background-color: rgba(255, 252, 229, 0.6);
+      }
+    }
+  }
+
+  .moreButton {
+    width: 24px;
+    height: 24px;
+    text-indent: -999px;
+    background-image: url("/right-icon.svg");
+  }
+}
