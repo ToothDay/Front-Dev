@@ -29,3 +29,11 @@ $default-line-clamp: 1;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 }
+
+//버튼 hover mixin
+
+@mixin button-hover {
+  &:hover {
+    background-color: $lightblue;
+  }
+}
