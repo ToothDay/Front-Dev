@@ -9,12 +9,12 @@ const MyHistory = () => {
         <Header title="나의 진료 기록" />
       </div>
       <div className={styles.cardList}>
-        <HistoryCard />
-        <HistoryCard />
-        <HistoryCard />
-        <HistoryCard />
-        <HistoryCard />
-        <HistoryCard />
+        <HistoryCard cardType="myHistory" />
+        <HistoryCard cardType="myHistory" />
+        <HistoryCard cardType="myHistory" />
+        <HistoryCard cardType="myHistory" />
+        <HistoryCard cardType="myHistory" />
+        <HistoryCard cardType="myHistory" />
       </div>
     </main>
   );
