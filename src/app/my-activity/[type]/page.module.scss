@@ -10,3 +10,9 @@
 .header {
   margin-bottom: 36px;
 }
+
+.postList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

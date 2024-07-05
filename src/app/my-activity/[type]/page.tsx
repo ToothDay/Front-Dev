@@ -1,5 +1,6 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
+import PostCard from "@/components/common/PostCard";
 
 type ActivityType = "post" | "like" | "comment";
 
@@ -25,6 +26,14 @@ const MyActivity = ({ params }: PropsPage) => {
     <main className={styles.main}>
       <div className={styles.header}>
         <Header title={HEADER_TITLE[params.type]} />
+      </div>
+      <div className={styles.postList}>
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
       </div>
     </main>
   );
