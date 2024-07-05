@@ -1,11 +1,14 @@
 @import "@/styles/common.scss";
 
+.postWrapper {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+}
 .post {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 19px;
-  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 14px;
 }
 .postCard {
   width: 100%;
@@ -74,5 +77,25 @@
   color: #ff85ce;
   &::before {
     @include icon("/like-icon.svg", 24px, 24px);
+  }
+
+  &.selected {
+    &::before {
+      @include icon("/like-icon-selected.svg", 24px, 24px);
+    }
+  }
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 19px;
+  .commentTitle {
+    @include font-style($semi-caption1);
+  }
+  .commentText {
+    @include font-style($body2);
+    @include ellipsis-text(2);
   }
 }
