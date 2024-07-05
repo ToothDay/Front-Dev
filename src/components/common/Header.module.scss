@@ -1,0 +1,23 @@
+@import "@/styles/common.scss";
+
+.header {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.title {
+  @include font-style($subtitle1);
+  text-align: center;
+  margin: 0 auto;
+}
+
+.beforeButton {
+  width: 24px;
+  height: 24px;
+  background: url("/left-icon.svg") center no-repeat;
+  text-indent: -9999px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
