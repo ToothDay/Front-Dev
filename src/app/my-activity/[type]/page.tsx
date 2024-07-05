@@ -21,19 +21,20 @@ const HEADER_TITLE: HeaderTitleType = {
 };
 
 const MyActivity = ({ params }: PropsPage) => {
-  console.log("searchParams", params);
   return (
     <main className={styles.main}>
       <div className={styles.header}>
         <Header title={HEADER_TITLE[params.type]} />
       </div>
       <div className={styles.postList}>
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
+        {/* 데이터에 맞게 수정될 예정  */}
+        <PostCard type={params.type} />
+        <PostCard type={params.type} />
+        <PostCard type={params.type} />
+        <PostCard type={params.type} />
+        <PostCard type={params.type} />
+        <PostCard type={params.type} />
+        <PostCard type={params.type} />
       </div>
     </main>
   );
