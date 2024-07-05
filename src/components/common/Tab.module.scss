@@ -1,0 +1,27 @@
+@import "@/styles/variables.scss";
+@import "@/styles/common.scss";
+
+.nav {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+}
+
+.tabButton {
+  @include font-style($headline);
+  color: $grey2;
+  cursor: pointer;
+
+  &.active {
+    color: $black;
+  }
+
+  &.blue {
+    color: $blue;
+
+    &.active {
+      color: $base-white;
+    }
+  }
+}
