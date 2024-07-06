@@ -23,7 +23,10 @@ const PostCard = ({ type }: PropsPost) => {
               />
             )}
             <div className={styles.postInfo}>
-              <p className={styles.postTitle}>Post Card</p>
+              <p className={styles.postTitle}>
+                레진이랑 인레이 너무 어려워서 아무것도 모르겠어요. 저 좀
+                도와주실 분 계신가요..? 아무것도 모르겠어요...
+              </p>
               <span className={styles.time}>2024.07.03 18:00</span>
             </div>
           </div>

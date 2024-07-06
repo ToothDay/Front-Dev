@@ -7,6 +7,7 @@
 .post {
   display: flex;
   justify-content: center;
+  gap: 10px;
   align-items: center;
   margin-bottom: 14px;
 }
@@ -41,6 +42,7 @@
   flex-direction: column;
   .postTitle {
     @include font-style($semi-body1);
+    @include ellipsis-text(2);
   }
   .time {
     @include font-style($body2);
@@ -91,6 +93,8 @@
   flex-direction: column;
   gap: 2px;
   padding: 10px 19px;
+  background-color: #fafbff;
+  border-radius: 10px;
   .commentTitle {
     @include font-style($semi-caption1);
   }
