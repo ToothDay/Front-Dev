@@ -32,6 +32,9 @@ const ProfileEdit = () => {
               <img src="/pencil.svg" alt="nickname-updateBtn" />
             </div>
             <hr className={styles.nickNameHr} />
+            <span className={styles.failText}>
+              닉네임은 최대 10자까지 가능합니다!
+            </span>
           </div>
           <div className={styles.saveBtnDiv}>
             <button className={styles.saveBtn}>저장하기</button>

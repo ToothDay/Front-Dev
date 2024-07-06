@@ -127,6 +127,15 @@
   width: 100%;
   // width: 298px;
   border: 1px solid #d9d9d9;
+  margin-bottom: 3px;
+}
+
+.failText {
+  @include font-style($caption1);
+  color: #ff4848;
+  word-break: keep-all;
+  white-space: nowrap;
+  margin-top: 5px;
 }
 
 .saveBtnDiv {
