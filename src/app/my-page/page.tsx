@@ -1,15 +1,17 @@
 import styles from "@/app/my-page/page.module.scss";
 import Tab from "@/components/common/Tab";
+import Link from "next/link";
 
 type CommunityList = {
   title: string;
   icon: string;
+  link: string;
 };
 
 const COMMUNITY_LIST: CommunityList[] = [
-  { title: "내가 작성한 글", icon: "post" },
-  { title: "내가 좋아요 누른 글", icon: "like" },
-  { title: "내가 댓글 단 글", icon: "comment" }
+  { title: "내가 작성한 글", icon: "post", link: "/my-activity/post" },
+  { title: "내가 좋아요 누른 글", icon: "like", link: "/my-activity/like" },
+  { title: "내가 댓글 단 글", icon: "comment", link: "/my-activity/comment" }
 ];
 
 const MyPage = () => {
@@ -42,14 +44,16 @@ const MyPage = () => {
       <section className={styles.community}>
         <h2 className={styles.communityTitle}>커뮤니티</h2>
         {COMMUNITY_LIST.map((list: CommunityList) => (
-          <article className={styles.communityList} key={list.icon}>
-            <p className={[styles.listTitle, styles[list.icon]].join(" ")}>
-              {list.title}
-            </p>
-            <button type="button" className={styles.moreButton}>
-              더보기
-            </button>
-          </article>
+          <Link href={list.link}>
+            <article className={styles.communityList} key={list.icon}>
+              <p className={[styles.listTitle, styles[list.icon]].join(" ")}>
+                {list.title}
+              </p>
+              <button type="button" className={styles.moreButton}>
+                더보기
+              </button>
+            </article>
+          </Link>
         ))}
       </section>
     </main>
