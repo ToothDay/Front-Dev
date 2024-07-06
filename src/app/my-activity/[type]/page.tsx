@@ -1,6 +1,7 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import PostCard from "@/components/common/PostCard";
+import NoData from "@/components/common/NoData";
 
 type ActivityType = "post" | "like" | "comment";
 
@@ -35,6 +36,8 @@ const MyActivity = ({ params }: PropsPage) => {
         <PostCard type={params.type} />
         <PostCard type={params.type} />
         <PostCard type={params.type} />
+        {/* 데이터 없을때  */}
+        {/* <NoData type={params.type} /> */}
       </div>
     </main>
   );
