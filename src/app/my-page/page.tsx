@@ -31,11 +31,19 @@ const MyPage = () => {
         <article className={styles.info}>
           <div className={styles.infoBox}>
             <span className={styles.infoTitle}>진료기록</span>
-            {/* <img src="" alt="icon" /> */}
+            <img
+              className={styles.myIcon}
+              src="/record-icon.png"
+              alt="record-icon"
+            />
           </div>
           <div className={styles.infoBox}>
             <span className={styles.infoTitle}>나의 치아</span>
-            {/* <img src="" alt="icon" /> */}
+            <img
+              className={styles.myIcon}
+              src="/tooth-icon.png"
+              alt="my-tooth"
+            />
           </div>
         </article>
       </section>

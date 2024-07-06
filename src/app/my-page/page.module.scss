@@ -50,6 +50,7 @@
   gap: 24px;
 
   .infoBox {
+    position: relative;
     flex: 1;
     height: 163px;
     background-color: #9ad1ff;
@@ -122,4 +123,10 @@
     text-indent: -9999px;
     background-image: url("/right-icon.svg");
   }
+}
+
+.myIcon {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
