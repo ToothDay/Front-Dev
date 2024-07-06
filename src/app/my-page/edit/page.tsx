@@ -8,7 +8,7 @@ const ProfileEdit = () => {
         <Header />
       </div>
       <section className={styles.profile}>
-        <article>
+        <article className={styles.user}>
           <div className={styles.title}>프로필 사진</div>
           <div className={styles.imgDiv}>
             <img src="/profile.svg" alt="user-profile" />

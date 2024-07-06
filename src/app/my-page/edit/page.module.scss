@@ -18,7 +18,6 @@
   flex: 1 0 0;
   justify-content: center;
   width: 100%;
-  height: 427px;
   padding: 35px 42px;
   gap: 30px;
   border-radius: 20px;
@@ -27,7 +26,7 @@
 }
 
 .user {
-  // width: 100%;
+  width: 100%;
 }
 
 .title {
@@ -37,20 +36,21 @@
 .imgDiv {
   display: flex;
   width: 100%;
-  height: 83px;
   margin-top: 12px;
+}
+
+.imgBtnDiv {
+  margin-left: 18px;
 }
 
 .imgBtn {
   display: flex;
   padding: 7px 16px;
   width: 100%;
-  height: 33px;
   justify-content: center;
   align-items: center;
   gap: 10px;
   @include font-style($caption1);
-  margin-left: 18px;
   align-self: stretch;
   border-radius: 8px;
   border: 1px solid #d9d9d9;
@@ -60,12 +60,10 @@
   display: flex;
   padding: 7px 16px;
   width: 100%;
-  // height: 33px;
   justify-content: center;
   align-items: center;
   gap: 10px;
   @include font-style($caption1);
-  margin-left: 18px;
   margin-top: 8px;
   align-self: stretch;
   border-radius: 8px;
@@ -99,7 +97,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  // height: 62px;
 }
 
 .nickNameTitle {
@@ -129,8 +126,8 @@
 .failText {
   @include font-style($caption1);
   color: #ff4848;
-  word-break: keep-all;
-  white-space: nowrap;
+  // word-break: keep-all;
+  // white-space: nowrap;
   margin-top: 5px;
 }
 
