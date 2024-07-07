@@ -19,7 +19,7 @@ const MyPage = () => {
     <main className={styles.main}>
       <section className={styles.profile}>
         <div className={styles.tab}>
-          <Tab pageType="myPage" />
+          <Tab pageType="myPage" initialActiveTab="MY" />
         </div>
         <article className={styles.user}>
           <img src="/profile.svg" alt="user-profile" />
