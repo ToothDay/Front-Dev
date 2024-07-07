@@ -40,34 +40,67 @@
 
   .toothTop#{$i} {
     @include common-tooth-styles;
-
+    &:hover {
+      transition:
+        filter 0.3s ease,
+        opacity 0.3s ease;
+      transform: scale(1.2);
+    }
     @if $i == 1 {
       width: 37px;
       background-image: url("/tooth/top-1.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/top-1.svg");
+      }
     }
     @if $i == 2 {
       width: 34px;
       background-image: url("/tooth/top-2.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/top-2.svg");
+      }
     }
     @if $i == 3 {
       width: 40px;
       background-image: url("/tooth/top-3.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/top-3.svg");
+      }
     }
     @if $i == 4 {
       width: 56px;
       background-image: url("/tooth/top-4.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/top-4.svg");
+      }
     }
     @if $i == 5 {
       width: 56px;
       background-image: url("/tooth/top-5.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/top-5.svg");
+      }
     }
     @if $i == 6 {
       width: 64px;
       background-image: url("/tooth/top-6.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/top-6.svg");
+      }
     }
     @if $i == 7 {
       width: 64px;
       background-image: url("/tooth/top-7.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/top-7.svg");
+      }
     }
   }
 
@@ -75,34 +108,70 @@
   .toothBottom#{$i} {
     @include common-tooth-styles;
     background-position: bottom center;
+    transition: filter 0.3s ease;
+
+    &:hover {
+      transition:
+        filter 0.3s ease,
+        opacity 0.3s ease;
+      transform: scale(1.2);
+    }
 
     @if $i == 1 {
       width: 37px;
       background-image: url("/tooth/bottom-1.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/bottom-1.svg");
+      }
     }
     @if $i == 2 {
       width: 34px;
       background-image: url("/tooth/bottom-2.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/bottom-2.svg");
+      }
     }
     @if $i == 3 {
       width: 40px;
       background-image: url("/tooth/bottom-3.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/bottom-3.svg");
+      }
     }
     @if $i == 4 {
       width: 56px;
       background-image: url("/tooth/bottom-4.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/bottom-4.svg");
+      }
     }
     @if $i == 5 {
       width: 57px;
       background-image: url("/tooth/bottom-5.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/bottom-5.svg");
+      }
     }
     @if $i == 6 {
       width: 64px;
       background-image: url("/tooth/bottom-6.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/bottom-6.svg");
+      }
     }
     @if $i == 7 {
       width: 63px;
       background-image: url("/tooth/bottom-7.svg");
+
+      &.selected {
+        background-image: url("/tooth/colorTooth/bottom-7.svg");
+      }
     }
   }
 }
