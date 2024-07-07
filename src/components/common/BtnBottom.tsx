@@ -1,13 +1,19 @@
 import styles from "@/components/common/BtnBottom.module.scss";
+import MyPage from "./../../app/my-page/page";
 
-// type PropsCard = {
-//   cardType: "myPage" | "other";
-// };
+type PropsBtn = {
+  btnType: "myPage" | "canSave";
+};
 
-const BtnBottom = () => {
+const BtnBottom = ({ btnType }: PropsBtn) => {
   return (
     <div className={styles.saveBtnDiv}>
-      <button className={styles.saveBtn}>저장하기</button>
+      {btnType === "myPage" && (
+        <button className={styles.saveBtn}>저장하기</button>
+      )}
+      {btnType === "canSave" && (
+        <button className={styles.canSaveBtn}>저장하기</button>
+      )}
     </div>
   );
 };
