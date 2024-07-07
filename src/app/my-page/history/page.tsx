@@ -1,4 +1,4 @@
-import styles from "@/app/my-history/page.module.scss";
+import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
 import HistoryCard from "@/components/common/HistoryCard";
 
