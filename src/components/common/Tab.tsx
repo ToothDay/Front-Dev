@@ -1,15 +1,21 @@
 "use client";
 
 import styles from "@/components/common/Tab.module.scss";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useTabStore } from "@/stores/tab";
 
 type PropsTab = {
   pageType: "myPage" | "page";
+  initialActiveTab: string;
 };
 
-const Tab = ({ pageType }: PropsTab) => {
-  const [activeTab, setActiveTab] = useState<string>("진료기록");
+const Tab = ({ pageType, initialActiveTab }: PropsTab) => {
+  const { activeTab, setActiveTab } = useTabStore();
   const tabList: string[] = ["진료기록", "커뮤니티", "MY"];
+
+  useEffect(() => {
+    setActiveTab(initialActiveTab);
+  }, [initialActiveTab]);
 
   return (
     <nav className={styles.nav}>
