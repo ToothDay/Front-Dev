@@ -41,9 +41,7 @@
   .toothTop#{$i} {
     @include common-tooth-styles;
     &:hover {
-      transition:
-        filter 0.3s ease,
-        opacity 0.3s ease;
+      transition: opacity 0.3s ease;
       transform: scale(1.2);
     }
     @if $i == 1 {
@@ -108,12 +106,9 @@
   .toothBottom#{$i} {
     @include common-tooth-styles;
     background-position: bottom center;
-    transition: filter 0.3s ease;
 
     &:hover {
-      transition:
-        filter 0.3s ease,
-        opacity 0.3s ease;
+      transition: opacity 0.4s ease;
       transform: scale(1.2);
     }
 
