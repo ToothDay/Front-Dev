@@ -1,4 +1,5 @@
 import styles from "@/app/my-page/edit/page.module.scss";
+import BtnBottom from "@/components/common/BtnBottom";
 import Header from "@/components/common/Header";
 
 const ProfileEdit = () => {
@@ -27,16 +28,13 @@ const ProfileEdit = () => {
             <div className={styles.nickNameTitle}>닉네임</div>
             <div className={styles.nickNameTextDiv}>
               <input className={styles.nickNameText} value={"현재 닉네임"} />
-              {/* <img src="/pencil.svg" alt="nickname-updateBtn" /> */}
             </div>
             <hr className={styles.nickNameHr} />
             <span className={styles.failText}>
               닉네임은 최대 10자까지 가능합니다!
             </span>
           </div>
-          <div className={styles.saveBtnDiv}>
-            <button className={styles.saveBtn}>저장하기</button>
-          </div>
+          <BtnBottom />
         </article>
       </section>
     </main>
