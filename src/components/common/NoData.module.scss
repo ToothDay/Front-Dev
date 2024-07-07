@@ -1,0 +1,31 @@
+@import "@/styles/common.scss";
+
+.noDataWrapper {
+  margin-top: 139px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.title {
+  @include font-style($headline);
+  color: $black;
+  margin-bottom: 9px;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 28px;
+    height: 28px;
+    background: url("/no-icon.svg") center no-repeat;
+    margin: 0 auto 19px;
+  }
+}
+
+.content {
+  @include font-style($body1);
+  color: $grey3;
+  text-align: center;
+}

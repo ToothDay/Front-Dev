@@ -1,0 +1,106 @@
+@import "@/styles/common.scss";
+
+.postWrapper {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e0e0e0;
+}
+.post {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.postCard {
+  width: 100%;
+}
+
+.tagList {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  .tag {
+    @include font-style($body2);
+    color: $deepblue;
+  }
+}
+
+.postHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 18px;
+  .profile {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+.postInfo {
+  display: flex;
+  flex-direction: column;
+  .postTitle {
+    @include font-style($semi-body1);
+    @include ellipsis-text(2);
+  }
+  .time {
+    @include font-style($body2);
+  }
+}
+
+.postContent {
+  @include font-style($body2);
+  @include ellipsis-text(3);
+  margin-bottom: 4px;
+}
+
+.postFooter {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  @include font-style($semi-caption1);
+}
+
+.commentNumber {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #fadd79;
+  &::before {
+    @include icon("/comment-icon.svg", 24px, 24px);
+  }
+}
+
+.likeNumber {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #ff85ce;
+  &::before {
+    @include icon("/like-icon.svg", 24px, 24px);
+  }
+
+  &.selected {
+    &::before {
+      @include icon("/like-icon-selected.svg", 24px, 24px);
+    }
+  }
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 19px;
+  background-color: #fafbff;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  .commentTitle {
+    @include font-style($semi-caption1);
+  }
+  .commentText {
+    @include font-style($body2);
+    @include ellipsis-text(2);
+  }
+}
