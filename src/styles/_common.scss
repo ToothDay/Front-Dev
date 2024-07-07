@@ -47,3 +47,12 @@ $default-line-clamp: 1;
   line-height: map-get($font-map, line-height);
   font-weight: map-get($font-map, weight);
 }
+
+//공통 치아 스타일 mixin
+
+@mixin common-tooth-styles {
+  text-indent: -9999px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
