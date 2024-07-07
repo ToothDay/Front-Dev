@@ -29,7 +29,7 @@ const TreatmentModal = () => {
           </div>
         </div>
       </div>
-      {/* 데이터 없을경우 */}
+      {/* 데이터 없을경우 케이스 */}
       {/* <div className={styles.noData}>
         <p>오른쪽 7번 어금니는</p>
         <p>치료 받은 기록이 없습니다.</p>
