@@ -1,0 +1,149 @@
+@import "@/styles/variables.scss";
+@import "@/styles/common.scss";
+
+.main {
+  background-color: #eef6fb;
+  height: 100vh;
+  padding: 0 24px;
+  overflow: auto;
+}
+
+.header {
+  padding-top: 28px;
+  margin-bottom: 73px;
+}
+
+.profile {
+  display: flex;
+  flex: 1 0 0;
+  justify-content: center;
+  width: 100%;
+  height: 427px;
+  padding: 35px 42px;
+  gap: 30px;
+  border-radius: 20px;
+  background-color: $base-white;
+  border: 1px solid $deepblue;
+}
+
+.title {
+  @include font-style($semi-body1);
+}
+
+.imgDiv {
+  display: flex;
+  width: 100%;
+  height: 83px;
+  margin-top: 12px;
+}
+
+.imgBtn {
+  display: flex;
+  padding: 7px 16px;
+  width: 100%;
+  height: 33px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  @include font-style($caption2);
+  margin-left: 18px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+}
+
+.imgBtnDefault {
+  display: flex;
+  padding: 7px 16px;
+  width: 100%;
+  height: 33px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  @include font-style($caption2);
+  margin-left: 18px;
+  margin-top: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+.imgText {
+  display: block;
+  white-space: normal;
+}
+
+.email {
+  display: flex;
+  width: 100%;
+  margin: 36px 0 36px 0;
+  gap: 10px;
+}
+
+.emailTitle {
+  @include font-style($semi-body1);
+}
+
+.emailText {
+  @include font-style($body2);
+}
+
+.nickName {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 62px;
+}
+
+.nickNameTitle {
+  @include font-style($semi-body1);
+  margin-bottom: 6px;
+}
+
+.nickNameTextDiv {
+  display: flex;
+}
+
+.nickNameText {
+  width: 100%;
+  @include font-style($body2);
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
+
+.nickNameHr {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  margin-bottom: 3px;
+}
+
+.failText {
+  @include font-style($caption1);
+  color: #ff4848;
+  word-break: keep-all;
+  white-space: nowrap;
+  margin-top: 5px;
+}
+
+.saveBtnDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.saveBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include font-style($body3);
+  width: 120px;
+  height: 52px;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+}
