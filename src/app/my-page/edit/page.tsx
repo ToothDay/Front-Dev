@@ -15,8 +15,6 @@ const ProfileEdit = () => {
             <div className={styles.imgBtnDiv}>
               <button className={styles.imgBtn}>사진 변경하기</button>
               <button className={styles.imgBtnDefault}>
-                {/* <span>기본으로</span>
-                <span>설정하기</span> */}
                 <span className={styles.imgText}>기본으로 설정하기</span>
               </button>
             </div>
@@ -29,7 +27,7 @@ const ProfileEdit = () => {
             <div className={styles.nickNameTitle}>닉네임</div>
             <div className={styles.nickNameTextDiv}>
               <input className={styles.nickNameText} value={"현재 닉네임"} />
-              <img src="/pencil.svg" alt="nickname-updateBtn" />
+              {/* <img src="/pencil.svg" alt="nickname-updateBtn" /> */}
             </div>
             <hr className={styles.nickNameHr} />
             <span className={styles.failText}>

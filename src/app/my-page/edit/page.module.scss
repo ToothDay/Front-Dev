@@ -111,6 +111,11 @@
 
 .nickNameTextDiv {
   display: flex;
+  &::after {
+    @include icon("/pencil.svg", 20px, 20px);
+    background-size: contain; // 이미지 크기를 요소 크기에 맞춤
+    background-repeat: no-repeat; // 이미지 반복 방지
+  }
 }
 
 .nickNameText {
@@ -131,8 +136,6 @@
 .failText {
   @include font-style($caption1);
   color: #ff4848;
-  // word-break: keep-all;
-  // white-space: nowrap;
   margin-top: 5px;
 }
 
