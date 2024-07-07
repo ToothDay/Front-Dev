@@ -42,15 +42,18 @@
   flex-direction: column;
   .postTitle {
     @include font-style($semi-body1);
+    color: $black;
     @include ellipsis-text(2);
   }
   .time {
     @include font-style($body2);
+    color: $black;
   }
 }
 
 .postContent {
   @include font-style($body2);
+  color: $black;
   @include ellipsis-text(3);
   margin-bottom: 4px;
 }
@@ -98,9 +101,11 @@
   margin-bottom: 14px;
   .commentTitle {
     @include font-style($semi-caption1);
+    color: $black;
   }
   .commentText {
     @include font-style($body2);
+    color: $black;
     @include ellipsis-text(2);
   }
 }
