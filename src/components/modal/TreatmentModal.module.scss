@@ -13,6 +13,7 @@
   @include font-style($semi-body1);
   color: $black;
   margin: 8px 0 17px;
+  text-align: center;
 }
 
 .teethInfo {
@@ -32,9 +33,11 @@
 .info {
   display: flex;
   flex-direction: column;
-  gap: -3px;
+  width: 94px;
 
   .infoTitle {
+    display: flex;
+    flex-wrap: wrap;
     @include font-style($semi-caption1);
     color: $black;
   }
