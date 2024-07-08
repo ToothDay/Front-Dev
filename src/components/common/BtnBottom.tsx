@@ -2,7 +2,7 @@ import styles from "@/components/common/BtnBottom.module.scss";
 import MyPage from "./../../app/my-page/page";
 
 type PropsBtn = {
-  btnType: false | true;
+  btnType: boolean;
   title: string;
 };
 
