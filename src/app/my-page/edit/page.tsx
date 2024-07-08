@@ -34,8 +34,7 @@ const ProfileEdit = () => {
               닉네임은 최대 10자까지 가능합니다!
             </span>
           </div>
-          {/* <BtnBottom btnType="myPage" /> */}
-          <BtnBottom btnType="canSave" />
+          <BtnBottom btnType={false} title="저장하기" />
         </article>
       </section>
     </main>
