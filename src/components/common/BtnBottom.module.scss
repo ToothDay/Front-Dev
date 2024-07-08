@@ -18,16 +18,9 @@
   height: 52px;
   border: 1px solid #d9d9d9;
   border-radius: 16px;
-}
 
-.canSaveBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  @include font-style($body3);
-  width: 120px;
-  height: 52px;
-  background-color: $deepblue;
-  color: $base-white;
-  border-radius: 16px;
+  &.active {
+    background-color: $deepblue;
+    color: $base-white;
+  }
 }

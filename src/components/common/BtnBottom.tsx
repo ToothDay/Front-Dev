@@ -8,7 +8,8 @@ type PropsBtn = {
 const BtnBottom = ({ btnType, title }: PropsBtn) => {
   return (
     <div className={styles.saveBtnDiv}>
-      <button className={btnType ? styles.canSaveBtn : styles.saveBtn}>
+      {/* <button className={btnType ? styles.active : styles.saveBtn}> */}
+      <button className={`${styles.saveBtn} ${btnType ? styles.actvie : ""}`}>
         {title}
       </button>
     </div>
