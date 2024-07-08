@@ -9,11 +9,12 @@ const TreatmentModal = () => {
         <p className={styles.teethName}>왼쪽 7번 어금니</p>
         <div className={styles.teethInfo}>
           <div className={styles.info}>
-            <span className={styles.infoTitle}>인레이222222</span>
+            <span className={styles.infoTitle}>임플란트, 스케일링, 인레이</span>
             <span className={styles.infoTotal}>300,000원</span>
             <span className={styles.infoDate}>2023.07.01 수요일</span>
           </div>
         </div>
+        {/* 데이터 맵핑 후 삭제예정 */}
         <div className={styles.teethInfo}>
           <div className={styles.info}>
             <span className={styles.infoTitle}>인레이222222</span>
