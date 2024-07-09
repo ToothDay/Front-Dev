@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "@/components/modal/TreatmentAddModal.module.scss";
 import { useState } from "react";
 
