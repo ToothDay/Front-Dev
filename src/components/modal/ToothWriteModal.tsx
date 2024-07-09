@@ -1,4 +1,5 @@
 import styles from "@/components/modal/ToothWriteModal.module.scss";
+import BtnBottom from "../common/BtnBottom";
 
 const ToothWriteModal = () => {
   return (
@@ -26,8 +27,25 @@ const ToothWriteModal = () => {
             <span className={styles.infoTitle}>임플란트</span>
             <span className={styles.infoTotal}>300,000</span>
           </div>
+          <div className={styles.info}>
+            <span className={styles.infoTitle}>임플란트</span>
+            <span className={styles.infoTotal}>300,000</span>
+          </div>
+          <div className={styles.info}>
+            <span className={styles.infoTitle}>임플란트</span>
+            <span className={styles.infoTotal}>300,000</span>
+          </div>
+          <div className={styles.info}>
+            <span className={styles.infoTitle}>임플란트</span>
+            <span className={styles.infoTotal}>300,000</span>
+          </div>
+          <div className={styles.info}>
+            <span className={styles.infoTitle}>임플란트</span>
+            <span className={styles.infoTotal}>300,000</span>
+          </div>
         </div>
       </div>
+      <BtnBottom btnType={false} title="기록 완료" />
     </div>
   );
 };

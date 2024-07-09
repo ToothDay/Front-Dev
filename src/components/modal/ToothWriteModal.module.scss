@@ -55,4 +55,5 @@
   &.selected {
     @include button-select;
   }
+  cursor: pointer;
 }
