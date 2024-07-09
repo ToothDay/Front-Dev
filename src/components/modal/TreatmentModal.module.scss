@@ -40,6 +40,7 @@
     flex-wrap: wrap;
     @include font-style($semi-caption1);
     color: $black;
+    width: 84px;
   }
 
   .infoTotal {
