@@ -1,0 +1,83 @@
+@import "@/styles/common.scss";
+
+.add {
+  margin: 60px 31px;
+  width: 212px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.title {
+  @include font-style($subtitle2);
+}
+
+.addBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.addBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 41px;
+}
+.addTitle {
+  @include font-style($semi-body1);
+  color: $black;
+  text-align: center;
+  display: inline-block;
+}
+
+.addNum {
+  @include font-style($semi-body1);
+  color: $black;
+  width: 26px;
+  height: 26px;
+  text-align: center;
+  background-color: $lightblue;
+  border-radius: 8px;
+}
+
+.minus {
+  @include font-style($semi-body1);
+  color: $black;
+  width: 8px;
+}
+.plus {
+  @include font-style($semi-body1);
+  color: $black;
+  width: 11px;
+}
+
+.addButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.refreshButton {
+  width: 40px;
+  height: 36px;
+  background-color: $grey1;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.saveButton {
+  width: 58px;
+  height: 36px;
+  background-color: $deepblue;
+  border-radius: 8px;
+  color: $base-white;
+  text-align: center;
+  @include font-style($body2);
+}
