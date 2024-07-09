@@ -2,9 +2,12 @@
 
 import styles from "@/components/common/Modal.module.scss";
 import { useModalStore } from "@/stores/modal";
-import DeleteModal from "../modal/DeleteModal";
 
-const Modal = () => {
+type PropsModal = {
+  children: React.ReactNode;
+};
+
+const Modal = ({ children }: PropsModal) => {
   const { closeModal, isOpen } = useModalStore();
 
   const handleModal = (event: React.MouseEvent<HTMLDivElement>): void => {
@@ -20,7 +23,7 @@ const Modal = () => {
     >
       {isOpen && (
         <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-          <DeleteModal deleteType="write" />
+          {children}
         </div>
       )}
     </div>
