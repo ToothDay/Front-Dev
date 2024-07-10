@@ -8,7 +8,7 @@
 
 .tabButton {
   @include font-style($headline);
-  color: $grey2;
+  color: $grey4;
   cursor: pointer;
 
   &.active {
