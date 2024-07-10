@@ -1,0 +1,71 @@
+@import "@/styles/common.scss";
+
+.main {
+  height: 100vh;
+  background-color: $white;
+  padding: 28px 24px;
+  overflow: auto;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 19px;
+}
+
+.notice {
+  width: 24px;
+  height: 24px;
+  background: url("/notice.svg") center no-repeat;
+  text-indent: -9999px;
+}
+
+.newNotice {
+  width: 24px;
+  height: 24px;
+  background: url("/new-notice.svg") center no-repeat;
+  text-indent: -9999px;
+}
+
+.searchWrapper {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 24px;
+  height: 24px;
+  background: url("/search-icon.svg") center no-repeat;
+}
+
+.search {
+  width: 100%;
+  height: 48px;
+  padding: 12px 40px 12px 51px;
+  border: 1px solid $blue;
+  border-radius: 10px;
+
+  &::placeholder {
+    @include font-style($body2);
+    color: $grey2;
+  }
+}
+
+.deleteButton {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  text-indent: -9999px;
+  background: url("/delete-icon.svg") center no-repeat;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+.treatmentWrapper {
+  margin-bottom: 18px;
+}
