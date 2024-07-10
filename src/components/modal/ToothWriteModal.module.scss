@@ -1,0 +1,59 @@
+@import "@/styles/common.scss";
+
+.write {
+  margin: 60px 31px;
+  width: 210px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.writeTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 170px;
+}
+
+.teethName {
+  @include font-style($subtitle2);
+  color: $black;
+  margin: 10px 0 5px;
+  text-align: center;
+}
+
+.subText {
+  @include font-style($body2);
+  color: $grey3;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.teethInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-height: 184px;
+  overflow-y: auto;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include font-style($body2);
+  color: $black;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  width: 96px;
+  padding: 7px 16px;
+  &.selected {
+    @include button-select;
+  }
+  cursor: pointer;
+}

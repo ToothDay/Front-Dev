@@ -1,0 +1,67 @@
+@import "@/styles/common.scss";
+
+.treatment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 37px 51px;
+  width: 170px;
+}
+
+.teethName {
+  @include font-style($semi-body1);
+  color: $black;
+  margin: 8px 0 17px;
+  text-align: center;
+}
+
+.teethInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  &::before {
+    margin-top: 3px;
+    @include icon("/check-small.svg", 16px, 16px);
+  }
+  & + & {
+    margin-top: 14px;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  width: 94px;
+
+  .infoTitle {
+    display: flex;
+    flex-wrap: wrap;
+    @include font-style($semi-caption1);
+    color: $black;
+    width: 84px;
+  }
+
+  .infoTotal {
+    @include font-style($caption2);
+    color: $black;
+  }
+
+  .infoDate {
+    @include font-style($caption2);
+    color: $black;
+  }
+}
+
+.noData {
+  @include font-style($semi-body1);
+  color: $black;
+  text-align: center;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 7px;
+}
