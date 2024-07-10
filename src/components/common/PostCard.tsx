@@ -23,7 +23,9 @@ const PostCard = ({ type }: PropsPost) => {
               />
             )}
             <div className={styles.postInfo}>
-              <p className={styles.postTitle}>레진이랑 인레이 너무 어</p>
+              <p className={styles.postTitle}>
+                레진이랑 인레이 너무 어려워요요요요요요요
+              </p>
               <span className={styles.time}>2024.07.03 18:00</span>
             </div>
           </div>
@@ -45,7 +47,7 @@ const PostCard = ({ type }: PropsPost) => {
           )}
         </div>
         <div className={styles.postImage}>
-          <img src="/post-default.svg" alt="post-image" />
+          <img src="/image-default.png" alt="post-image" />
         </div>
       </div>
       {type === "comment" && (
