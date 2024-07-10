@@ -91,10 +91,12 @@
 }
 
 .emailTitle {
+  white-space: nowrap;
   @include font-style($semi-body1);
 }
 
 .emailText {
+  word-break: break-all;
   @include font-style($body2);
 }
 
