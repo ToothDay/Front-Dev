@@ -1,4 +1,4 @@
-type Treatment = {
+export type Treatment = {
   id: number;
   name: string;
 };
