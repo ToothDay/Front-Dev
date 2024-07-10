@@ -2,6 +2,7 @@ import TreatmentSwiper from "@/components/common/TreatmentSwiper";
 import styles from "./page.module.scss";
 import Tab from "@/components/common/Tab";
 import PostCard from "@/components/common/PostCard";
+import NoSearchData from "@/components/community/NoSearchData";
 
 const Community = () => {
   const hasNotice = false; //임시데이터값
@@ -42,6 +43,10 @@ const Community = () => {
       <PostCard type="community" />
       <PostCard type="community" />
       <PostCard type="community" />
+
+      {/* 검색종류 따라  */}
+      {/* <NoSearchData searchType="post" /> */}
+      {/* <NoSearchData searchType="word" /> */}
     </main>
   );
 };
