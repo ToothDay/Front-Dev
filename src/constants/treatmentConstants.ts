@@ -3,7 +3,7 @@ type Treatment = {
   name: string;
 };
 
-export const treatmentList: Treatment[] = [
+export const TREATMENT_LIST: Treatment[] = [
   { id: 1, name: "잇몸" },
   { id: 2, name: "스케일링" },
   { id: 3, name: "레진" },
