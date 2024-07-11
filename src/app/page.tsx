@@ -1,4 +1,6 @@
 import styles from "@/app/page.module.scss";
+import Link from "next/link";
+import Loading from "./loading";
 
 const Home = () => {
   return (
@@ -17,13 +19,17 @@ const Home = () => {
         className={styles.backTop}
       />
       <div className={styles.backBottom}></div>
-      <div className={styles.mainButton}>
-        <button type="button" className={styles.button}>
-          서비스 둘러보기
-        </button>
-        <button type="button" className={styles.button}>
-          바로 로그인 하기
-        </button>
+      <div className={styles.mainButtonList}>
+        <Link href="/welcome">
+          <button type="button" className={styles.mainButton}>
+            서비스 둘러보기
+          </button>
+        </Link>
+        <Link href="/login">
+          <button type="button" className={styles.mainButton}>
+            바로 로그인 하기
+          </button>
+        </Link>
       </div>
     </main>
   );
