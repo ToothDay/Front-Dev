@@ -1,0 +1,98 @@
+@import "@/styles/common.scss";
+
+.main {
+  height: 100vh;
+  background-color: $lightblue;
+  overflow: auto;
+  padding: 28px 0;
+  position: relative;
+}
+.header {
+  padding: 0 24px;
+}
+
+.contentSection {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 73px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.logoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logo {
+  width: 109px;
+  height: 106px;
+  margin-bottom: 41px;
+  display: inline-block;
+}
+
+.logoTitle {
+  width: 211px;
+  margin-bottom: 23px;
+}
+
+.text {
+  @include font-style($body2);
+  font-weight: 500;
+  color: $grey3;
+  text-align: center;
+}
+
+.loginWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 147px;
+  gap: 11px;
+}
+
+.loginBtn {
+  width: 100%;
+  height: 52px;
+  background-color: $base-white;
+  border-radius: 15px;
+  @include font-style($body2);
+  color: $black;
+  border: 1px solid $blue;
+
+  &.google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &::before {
+      @include icon("/main/google.png", 24px, 24px);
+      margin-right: 8px;
+    }
+  }
+
+  &.noLogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &::before {
+      display: inline-block;
+      content: "";
+      @include icon("/main/logo-img.png", 24px, 24px);
+      background-size: 14px 14px;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-radius: 50%;
+      background-color: $lightblue;
+      margin-right: 8px;
+    }
+  }
+}
