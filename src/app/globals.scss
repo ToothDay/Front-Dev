@@ -6,3 +6,24 @@
 body {
   font-family: "Noto Sans", sans-serif;
 }
+
+#firstSwiper {
+  .swiper-wrapper {
+    margin-bottom: 45px;
+  }
+  .swiper-pagination-bullet {
+    width: 10px;
+    height: 11px;
+    border-radius: 4px;
+    transition:
+      width 0.3s ease,
+      height 0.3s ease,
+      background-color 0.3s ease;
+
+    &.swiper-pagination-bullet-active {
+      width: 17px;
+      height: 11px;
+      background-color: $blue;
+    }
+  }
+}
