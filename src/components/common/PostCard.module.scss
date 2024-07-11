@@ -1,15 +1,21 @@
 @import "@/styles/common.scss";
 
 .postWrapper {
-  padding-bottom: 5px;
   border-bottom: 1px solid #e0e0e0;
 }
 .post {
   display: flex;
   justify-content: center;
   gap: 10px;
-  align-items: flex-end;
-  margin-bottom: 14px;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.postImage {
+  img {
+    width: 70px;
+    height: 70px;
+  }
 }
 .postCard {
   width: 100%;
@@ -63,6 +69,7 @@
   align-items: center;
   gap: 13px;
   @include font-style($semi-caption1);
+  margin-bottom: 19px;
 }
 
 .commentNumber {
@@ -98,7 +105,8 @@
   padding: 10px 19px;
   background-color: #fafbff;
   border-radius: 10px;
-  margin-bottom: 14px;
+  margin-top: 10px;
+  margin-bottom: 19px;
   .commentTitle {
     @include font-style($semi-caption1);
     color: $black;
@@ -107,5 +115,39 @@
     @include font-style($body2);
     color: $black;
     @include ellipsis-text(2);
+  }
+}
+
+.postSubInfo {
+  display: flex;
+  align-items: center;
+  @include font-style($body2);
+  color: $black;
+}
+
+.nickName {
+  position: relative;
+
+  &::after {
+    content: "|";
+    margin: 0 3px;
+  }
+}
+
+.postWrapper {
+  &.communityType {
+    margin-top: 12px;
+    .post {
+      padding-left: 42px;
+    }
+    .postContentWrapper {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .postFooter {
+      padding-left: 42px;
+    }
   }
 }
