@@ -25,7 +25,7 @@ const Home = () => {
             서비스 둘러보기
           </button>
         </Link>
-        <Link href="/login">
+        <Link href="/welcome/login">
           <button type="button" className={styles.mainButton}>
             바로 로그인 하기
           </button>
