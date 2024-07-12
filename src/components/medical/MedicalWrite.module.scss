@@ -33,6 +33,7 @@
     @include font-style($body2);
     color: $grey2;
   }
+  cursor: default;
 }
 
 .clinicInput {
@@ -170,4 +171,14 @@
   @include font-style($caption2);
   color: $grey3;
   line-height: 19px;
+}
+
+.writeWrapper {
+  position: relative;
+}
+
+.calendar {
+  z-index: 100;
+  position: absolute;
+  margin-top: 8px;
 }

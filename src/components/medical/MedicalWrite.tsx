@@ -5,6 +5,7 @@ import styles from "./MedicalWrite.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import Tooth from "../tooth/Tooth";
 import BtnBottom from "../common/BtnBottom";
+import CustomCalendar from "../common/CustomCalendar";
 
 type ToothSide = {
   value: "left" | "right";
@@ -27,6 +28,7 @@ const MedicalWrite = () => {
   const [toothSelect, setToothSelect] = useState<"left" | "right">("left");
   const [isShare, setIsShare] = useState<boolean>(true);
   const [isClinic, setIsClinic] = useState<boolean>(false);
+  const [isCalendar, setIsCalendar] = useState<boolean>(false);
   const toothSide: ToothSide[] = [
     {
       value: "left",
@@ -119,11 +121,17 @@ const MedicalWrite = () => {
         <label className={styles.writeLabel}>
           진료를 진행한 날짜를 <br /> 선택해 주세요.
         </label>
-        <div className={styles.inputField}>
+        <div
+          className={styles.inputField}
+          onClick={() => {
+            setIsCalendar(!isCalendar);
+          }}
+        >
           <input
             type="text"
             className={styles.formInput}
             placeholder="날짜를 선택해 주세요."
+            readOnly
           />
           <img
             src="/date-icon.svg"
@@ -132,6 +140,19 @@ const MedicalWrite = () => {
             className={styles.inputIcon}
           />
         </div>
+        <AnimatePresence>
+          {isCalendar && (
+            <motion.div
+              className={styles.calendar}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              <CustomCalendar />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
       <motion.div
         className={styles.writeWrapper}
