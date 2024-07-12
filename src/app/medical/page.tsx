@@ -3,6 +3,7 @@ import styles from "./page.module.scss";
 import Tab from "@/components/common/Tab";
 import HistoryCard from "@/components/common/HistoryCard";
 import TreatmentSwiper from "@/components/common/TreatmentSwiper";
+import Link from "next/link";
 
 const MedicalPage = () => {
   return (
@@ -17,9 +18,11 @@ const MedicalPage = () => {
               <span className={styles.text}>아직 없습니다.</span>
             </div>
           </div>
-          <button type="button" className={styles.recordButton}>
-            진료 기록하러 가기
-          </button>
+          <Link href="/medical/write">
+            <button type="button" className={styles.recordButton}>
+              진료 기록하러 가기
+            </button>
+          </Link>
         </div>
       </section>
       <section className={styles.medicalRecentlySection}>
