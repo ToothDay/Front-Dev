@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./MedicalWrite.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
@@ -25,6 +25,7 @@ const MedicalWrite = () => {
   const [selectedTreatments, setSelectedTreatments] = useState<number[]>([]);
   const [toothSelect, setToothSelect] = useState<"left" | "right">("left");
   const [isShare, setIsShare] = useState<boolean>(true);
+  const [isClinic, setIsClinic] = useState<boolean>(false);
   const toothSide: ToothSide[] = [
     {
       value: "left",
@@ -70,11 +71,40 @@ const MedicalWrite = () => {
           진료를 진행한 치과를 <br /> 설정해 주세요.
         </label>
         <div className={styles.inputField}>
-          <input
-            type="text"
-            className={styles.formInput}
-            placeholder="치과명으로 찾아주세요."
-          />
+          <div
+            className={[
+              styles.clinicInput,
+              isClinic ? styles.openList : ""
+            ].join(" ")}
+          >
+            <input
+              type="text"
+              className={styles.searchClinic}
+              placeholder="치과명으로 찾아주세요."
+            />
+          </div>
+          {isClinic && (
+            <ul className={styles.dentalClinicList}>
+              <li className={styles.clinicItem}>
+                <div className={styles.clinicInfo}>
+                  <span className={styles.clinicName}>치과1</span>
+                  <span className={styles.clinicLocation}>서울시 강남구</span>
+                </div>
+              </li>
+              <li className={styles.clinicItem}>
+                <div className={styles.clinicInfo}>
+                  <span className={styles.clinicName}>치과1</span>
+                  <span className={styles.clinicLocation}>서울시 강남구</span>
+                </div>
+              </li>
+              <li className={styles.clinicItem}>
+                <div className={styles.clinicInfo}>
+                  <span className={styles.clinicName}>치과1</span>
+                  <span className={styles.clinicLocation}>서울시 강남구</span>
+                </div>
+              </li>
+            </ul>
+          )}
           <img
             src="/search-icon.svg"
             alt="search"
