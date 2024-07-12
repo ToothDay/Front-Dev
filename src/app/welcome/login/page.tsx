@@ -1,6 +1,7 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ScaleButton from "@/components/motion/ScaleButton";
+import Link from "next/link";
 
 type PropsPage = {
   searchParams: {
@@ -37,9 +38,11 @@ const LoginPage = ({ searchParams }: PropsPage) => {
             </p>
           </ScaleButton>
           <ScaleButton>
-            <p className={[styles.loginBtn, styles.noLogin].join(" ")}>
-              로그인 없이 시작하기
-            </p>
+            <Link href="/community">
+              <p className={[styles.loginBtn, styles.noLogin].join(" ")}>
+                로그인 없이 시작하기
+              </p>
+            </Link>
           </ScaleButton>
         </div>
       </section>
