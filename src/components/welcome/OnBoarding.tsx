@@ -77,7 +77,21 @@ const OnBoarding = () => {
           </SwiperSlide>
           <SwiperSlide>
             <div className={styles.thirdImage}>
-              <img src="/welcome/third.png" alt="third-page" />
+              <img
+                src="/welcome/third.png"
+                alt="third-page"
+                className={styles.thirdBack}
+              />
+              <img
+                src="/welcome/click.png"
+                alt="click"
+                className={styles.click}
+              ></img>
+              <img
+                src="/welcome/cursor.png"
+                alt="cursor"
+                className={styles.cursor}
+              />
             </div>
           </SwiperSlide>
         </Swiper>

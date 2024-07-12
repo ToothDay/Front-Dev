@@ -112,6 +112,62 @@
 
 .thirdImage {
   padding-top: 50px;
+  position: relative;
+
+  .thirdBack {
+    width: 292px;
+    height: 308px;
+  }
+
+  .click {
+    position: absolute;
+    top: calc(30% + 2px);
+    right: 70px;
+    width: 50px;
+    opacity: 0;
+    animation: clickBlink 6s infinite;
+  }
+
+  .cursor {
+    position: absolute;
+    top: 100%;
+    right: 58px;
+    width: 42px;
+    animation: cursorMove 6s infinite;
+  }
+
+  @keyframes cursorMove {
+    0% {
+      top: 100%;
+    }
+    33% {
+      top: calc(50% - 52px);
+    }
+    66% {
+      top: calc(50% - 52px);
+    }
+    100% {
+      top: 100%;
+    }
+  }
+
+  @keyframes clickBlink {
+    0%,
+    33%,
+    100% {
+      opacity: 0;
+    }
+    40%,
+    50%,
+    60% {
+      opacity: 1;
+    }
+    43%,
+    53%,
+    63% {
+      opacity: 0;
+    }
+  }
 }
 
 .swiperText {
