@@ -153,3 +153,11 @@ button {
   cursor: pointer;
   outline: inherit;
 }
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none;
+  border-color: none;
+  box-shadow: none;
+}
