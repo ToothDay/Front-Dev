@@ -17,8 +17,9 @@ type ShareButton = {
 };
 
 const slideInVariants = {
-  hidden: { opacity: 0, x: "100%" },
-  visible: { opacity: 1, x: 0 }
+  hidden: { opacity: 0, x: 100 },
+  visible: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: -100 }
 };
 
 const MedicalWrite = () => {
@@ -83,28 +84,24 @@ const MedicalWrite = () => {
               placeholder="치과명으로 찾아주세요."
             />
           </div>
-          {isClinic && (
-            <ul className={styles.dentalClinicList}>
-              <li className={styles.clinicItem}>
-                <div className={styles.clinicInfo}>
-                  <span className={styles.clinicName}>치과1</span>
-                  <span className={styles.clinicLocation}>서울시 강남구</span>
-                </div>
-              </li>
-              <li className={styles.clinicItem}>
-                <div className={styles.clinicInfo}>
-                  <span className={styles.clinicName}>치과1</span>
-                  <span className={styles.clinicLocation}>서울시 강남구</span>
-                </div>
-              </li>
-              <li className={styles.clinicItem}>
-                <div className={styles.clinicInfo}>
-                  <span className={styles.clinicName}>치과1</span>
-                  <span className={styles.clinicLocation}>서울시 강남구</span>
-                </div>
-              </li>
-            </ul>
-          )}
+          <AnimatePresence>
+            {isClinic && (
+              <motion.ul
+                className={styles.dentalClinicList}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.1, ease: "easeInOut" }}
+              >
+                <li className={styles.clinicItem}>
+                  <div className={styles.clinicInfo}>
+                    <span className={styles.clinicName}>치과1</span>
+                    <span className={styles.clinicLocation}>서울시 강남구</span>
+                  </div>
+                </li>
+              </motion.ul>
+            )}
+          </AnimatePresence>
           <img
             src="/search-icon.svg"
             alt="search"
