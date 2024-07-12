@@ -1,0 +1,9 @@
+@import "@/styles/common.scss";
+
+.main {
+  height: 100vh;
+  background-color: $base-white;
+  overflow: auto;
+  padding: 28px 24px;
+  position: relative;
+}
