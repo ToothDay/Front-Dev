@@ -7,12 +7,26 @@ import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/scss/pagination";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const OnBoarding = () => {
   const [firstSwiper, setFirstSwiper] = useState<SwiperCore | null>(null);
   const [secondSwiper, setSecondSwiper] = useState<SwiperCore | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const router = useRouter();
 
-  const handleMainButton = () => {};
+  const handleMainButton = () => {
+    if (currentIndex === 2) {
+      router.push("/welcome/login");
+    }
+    if (firstSwiper && secondSwiper) {
+      firstSwiper.slideNext();
+    }
+  };
+
+  const handleSlideChange = () => {
+    setCurrentIndex(firstSwiper?.activeIndex || 0);
+  };
 
   return (
     <div className={styles.onBoarding}>
@@ -31,6 +45,7 @@ const OnBoarding = () => {
             disableOnInteraction: false,
             stopOnLastSlide: true
           }}
+          onSlideChange={handleSlideChange}
         >
           <SwiperSlide>
             <div className={styles.firstImage}>
