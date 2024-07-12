@@ -142,7 +142,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: rgba($blue, 0.1);
+    background-color: $blue2;
   }
 
   &::before {
@@ -159,15 +159,17 @@
   margin-left: 13px;
   display: flex;
   flex-direction: column;
+  gap: 3px;
 }
 
 .clinicName {
   @include font-style($body3);
   color: $black;
+  line-height: 15px;
 }
 
 .clinicLocation {
   @include font-style($caption2);
   color: $grey3;
-  line-height: 19px;
+  line-height: 10px;
 }

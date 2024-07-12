@@ -26,7 +26,7 @@ const MedicalWrite = () => {
   const [selectedTreatments, setSelectedTreatments] = useState<number[]>([]);
   const [toothSelect, setToothSelect] = useState<"left" | "right">("left");
   const [isShare, setIsShare] = useState<boolean>(true);
-  const [isClinic, setIsClinic] = useState<boolean>(false);
+  const [isClinic, setIsClinic] = useState<boolean>(true);
   const toothSide: ToothSide[] = [
     {
       value: "left",
