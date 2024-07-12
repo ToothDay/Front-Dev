@@ -1,15 +1,21 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
-import { motion } from "framer-motion";
 import ScaleButton from "@/components/motion/ScaleButton";
 
-const LoginPage = () => {
+type PropsPage = {
+  searchParams: {
+    type?: "guest";
+  };
+};
+
+const LoginPage = ({ searchParams }: PropsPage) => {
   return (
     <main className={styles.main}>
-      {/* 조건따라 분기처리 예정 */}
-      <div className={styles.header}>
-        <Header />
-      </div>
+      {searchParams.type === "guest" && (
+        <div className={styles.header}>
+          <Header />
+        </div>
+      )}
       <section className={styles.contentSection}>
         <div className={styles.logoWrapper}>
           <img src="/main/logo-img.png" alt="logo" className={styles.logo} />
