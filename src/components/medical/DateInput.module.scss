@@ -1,0 +1,48 @@
+@import "@/styles/common.scss";
+
+.writeWrapper {
+  position: relative;
+}
+
+.calendar {
+  z-index: 100;
+  position: absolute;
+  margin-top: 8px;
+}
+
+.writeLabel {
+  word-break: auto-phrase;
+  @include font-style($semi-subtitle1);
+}
+
+.inputField {
+  margin-top: 10px;
+  position: relative;
+}
+
+.formInput {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid $grey1;
+  height: 48px;
+  padding: 12px 42px 12px 18px;
+  position: relative;
+  @include font-style($body2);
+  color: $grey2;
+  &:focus {
+    border: 1px solid $deepblue;
+  }
+  &::placeholder {
+    @include font-style($body2);
+    color: $grey2;
+  }
+  cursor: default;
+}
+
+.inputIcon {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  width: 24px;
+  height: 24px;
+}

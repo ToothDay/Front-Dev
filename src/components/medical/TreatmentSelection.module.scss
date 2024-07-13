@@ -1,0 +1,32 @@
+@import "@/styles/common.scss";
+
+.writeLabel {
+  word-break: auto-phrase;
+  @include font-style($semi-subtitle1);
+}
+
+.helperText {
+  display: block;
+  @include font-style($body2);
+  color: $grey3;
+  margin-top: 5px;
+}
+
+.treatmentList {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.treatmentButton {
+  border: 1px solid $grey1;
+  border-radius: 8px;
+  padding: 7px 16px;
+  @include font-style($body2);
+  color: $black;
+  cursor: pointer;
+}
+.selected {
+  @include button-select;
+}
