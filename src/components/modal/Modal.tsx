@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/components/common/Modal.module.scss";
+import styles from "./Modal.module.scss";
 import { useModalStore } from "@/stores/modal";
 
 type PropsModal = {

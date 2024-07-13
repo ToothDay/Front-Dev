@@ -16,7 +16,9 @@ const MedicalWrite = () => {
   const [isClinic, setIsClinic] = useState<boolean>(false);
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
 
-  const clickTreatment = selectedTreatments.length > 0;
+  // const clickTreatment = selectedTreatments.length > 0;
+
+  const clickTreatment = false;
 
   return (
     <form className={styles.writeForm}>

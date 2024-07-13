@@ -7,7 +7,7 @@ type ModalState = {
 };
 
 export const useModalStore = create<ModalState>((set) => ({
-  isOpen: true,
+  isOpen: false,
   openModal: () => {
     set({ isOpen: true });
   },
