@@ -5,6 +5,7 @@ import styles from "./MedicalWrite.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import Tooth from "../tooth/Tooth";
 import BtnBottom from "../common/BtnBottom";
+import ClinicInput from "@/components/medical/ClinicInput";
 
 type ToothSide = {
   value: "left" | "right";
@@ -61,54 +62,7 @@ const MedicalWrite = () => {
 
   return (
     <form className={styles.writeForm}>
-      <motion.div
-        className={styles.writeWrapper}
-        initial="hidden"
-        animate="visible"
-        variants={slideInVariants}
-        transition={{ duration: 1.0, ease: "easeInOut" }}
-      >
-        <label className={styles.writeLabel}>
-          진료를 진행한 치과를 <br /> 설정해 주세요.
-        </label>
-        <div className={styles.inputField}>
-          <div
-            className={[
-              styles.clinicInput,
-              isClinic ? styles.openList : ""
-            ].join(" ")}
-          >
-            <input
-              type="text"
-              className={styles.searchClinic}
-              placeholder="치과명으로 찾아주세요."
-            />
-          </div>
-          <AnimatePresence>
-            {isClinic && (
-              <motion.ul
-                className={styles.dentalClinicList}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.1, ease: "easeInOut" }}
-              >
-                <li className={styles.clinicItem}>
-                  <div className={styles.clinicInfo}>
-                    <span className={styles.clinicName}>치과1</span>
-                    <span className={styles.clinicLocation}>서울시 강남구</span>
-                  </div>
-                </li>
-              </motion.ul>
-            )}
-          </AnimatePresence>
-          <img
-            src="/search-icon.svg"
-            alt="search"
-            className={styles.inputIcon}
-          />
-        </div>
-      </motion.div>
+      <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic} />
       <motion.div
         className={styles.writeWrapper}
         initial="hidden"
