@@ -1,6 +1,7 @@
 import styles from "@/app/page.module.scss";
 import Link from "next/link";
 import Loading from "./loading";
+import Login from "@/components/Login";
 
 const Home = () => {
   return (

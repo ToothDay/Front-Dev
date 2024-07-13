@@ -2,6 +2,7 @@ import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ScaleButton from "@/components/motion/ScaleButton";
 import Link from "next/link";
+import Login from "@/components/Login";
 
 type PropsPage = {
   searchParams: {
@@ -44,6 +45,7 @@ const LoginPage = ({ searchParams }: PropsPage) => {
               </p>
             </Link>
           </ScaleButton>
+          <Login />
         </div>
       </section>
     </main>
