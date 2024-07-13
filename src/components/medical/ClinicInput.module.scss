@@ -1,0 +1,104 @@
+@import "@/styles/common.scss";
+
+.writeLabel {
+  word-break: auto-phrase;
+  @include font-style($semi-subtitle1);
+}
+
+.inputField {
+  margin-top: 10px;
+  position: relative;
+}
+
+.clinicInput {
+  padding: 12px 42px 12px 18px;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid $grey1;
+  @include font-style($body2);
+  color: $grey2;
+
+  &:focus-within {
+    border-color: $deepblue;
+  }
+
+  &.openList {
+    border-radius: 10px 10px 0 0;
+    border-left: 1px solid $deepblue;
+    border-right: 1px solid $deepblue;
+    border-top: 1px solid $deepblue;
+    border-bottom: 1px solid $grey1;
+  }
+}
+
+.searchClinic {
+  width: 100%;
+}
+
+.dentalClinicList {
+  position: absolute;
+  width: 100%;
+  top: 100%;
+  left: 0;
+  z-index: 300;
+  list-style: none;
+  max-height: 315px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid $deepblue;
+  border-right: 1px solid $deepblue;
+  border-left: 1px solid $deepblue;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow: auto;
+  background-color: #fff;
+}
+
+.clinicItem {
+  z-index: 100;
+  height: 63px;
+  display: flex;
+  align-items: center;
+  padding: 13px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $blue2;
+  }
+
+  &::before {
+    border-radius: 50%;
+    @include icon("/location_on.svg", 26px, 26px);
+    background-size: 16px 16px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba($lightblue, 0.6);
+  }
+}
+
+.clinicInfo {
+  margin-left: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.clinicName {
+  @include font-style($body3);
+  color: $black;
+  line-height: 15px;
+}
+
+.clinicLocation {
+  @include font-style($caption2);
+  color: $grey3;
+  line-height: 10px;
+}
+
+.inputIcon {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  width: 24px;
+  height: 24px;
+}

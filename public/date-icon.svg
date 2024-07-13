@@ -1,0 +1,14 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon/date">
+<path id="date" fill-rule="evenodd" clip-rule="evenodd" d="M7 3C7 2.44772 7.44772 2 8 2C8.55228 2 9 2.44772 9 3V4H15V3C15 2.44772 15.4477 2 16 2C16.5523 2 17 2.44772 17 3V4H20C20.5523 4 21 4.44772 21 5V21C21 21.5523 20.5523 22 20 22H4C3.44772 22 3 21.5523 3 21V5C3 4.44772 3.44772 4 4 4H7V3ZM5 6V20H19V6H5Z" fill="#292C34"/>
+<g id="Rectangle 3362">
+<mask id="path-2-inside-1_415_2340" fill="white">
+<path d="M3 5C3 4.44772 3.44772 4 4 4H20C20.5523 4 21 4.44772 21 5V9H3V5Z"/>
+</mask>
+<path d="M3 5C3 4.44772 3.44772 4 4 4H20C20.5523 4 21 4.44772 21 5V9H3V5Z" fill="#292C34" stroke="#292C34" stroke-width="4" mask="url(#path-2-inside-1_415_2340)"/>
+</g>
+<circle id="Ellipse 14" cx="8" cy="12" r="1" fill="#39A7FF"/>
+<circle id="Ellipse 15" cx="12" cy="12" r="1" fill="#39A7FF"/>
+<circle id="Ellipse 16" cx="16" cy="12" r="1" fill="#39A7FF"/>
+</g>
+</svg>

@@ -1,0 +1,17 @@
+@import "@/styles/common.scss";
+
+.writeWrapper {
+  position: relative;
+}
+
+.writeLabel {
+  word-break: auto-phrase;
+  @include font-style($semi-subtitle1);
+}
+
+.helperText {
+  display: block;
+  @include font-style($body2);
+  color: $grey3;
+  margin-top: 5px;
+}

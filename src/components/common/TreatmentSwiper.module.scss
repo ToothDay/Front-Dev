@@ -24,7 +24,6 @@
   @include font-style($body2);
 
   &.selected {
-    background-color: $lightblue;
-    border: 1px solid $deepblue;
+    @include button-select;
   }
 }
