@@ -6,6 +6,7 @@ import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import Tooth from "../tooth/Tooth";
 import BtnBottom from "../common/BtnBottom";
 import ClinicInput from "@/components/medical/ClinicInput";
+import DateInput from "@/components/medical/DateInput";
 
 type ToothSide = {
   value: "left" | "right";
@@ -27,7 +28,7 @@ const MedicalWrite = () => {
   const [selectedTreatments, setSelectedTreatments] = useState<number[]>([]);
   const [toothSelect, setToothSelect] = useState<"left" | "right">("left");
   const [isShare, setIsShare] = useState<boolean>(true);
-  const [isClinic, setIsClinic] = useState<boolean>(true);
+  const [isClinic, setIsClinic] = useState<boolean>(false);
   const toothSide: ToothSide[] = [
     {
       value: "left",
@@ -63,30 +64,7 @@ const MedicalWrite = () => {
   return (
     <form className={styles.writeForm}>
       <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic} />
-      <motion.div
-        className={styles.writeWrapper}
-        initial="hidden"
-        animate="visible"
-        variants={slideInVariants}
-        transition={{ duration: 1.0, ease: "easeInOut" }}
-      >
-        <label className={styles.writeLabel}>
-          진료를 진행한 날짜를 <br /> 선택해 주세요.
-        </label>
-        <div className={styles.inputField}>
-          <input
-            type="text"
-            className={styles.formInput}
-            placeholder="날짜를 선택해 주세요."
-          />
-          <img
-            src="/date-icon.svg"
-            alt="date"
-            aria-hidden="true"
-            className={styles.inputIcon}
-          />
-        </div>
-      </motion.div>
+      <DateInput />
       <motion.div
         className={styles.writeWrapper}
         initial="hidden"
