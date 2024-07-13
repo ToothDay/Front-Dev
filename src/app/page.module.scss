@@ -1,8 +1,60 @@
+@import "@/styles/common.scss";
 .main {
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  background-color: $lightblue;
+  height: 100%;
   position: relative;
+  overflow: hidden;
+}
+
+.title {
+  width: 211px;
+  .logo {
+    width: 73px;
+    height: 73px;
+    margin-top: 77px;
+    margin-left: 24px;
+  }
+  .text {
+    width: 100%;
+    margin-top: 48px;
+    margin-left: 24px;
+  }
+}
+
+.backTop {
+  position: absolute;
+  right: 0;
+  top: 131px;
+}
+
+.backBottom {
+  width: 307px;
+  height: 100%;
+  margin-top: 162px;
+  background: url("/main/main-bottom.svg") no-repeat;
+  background-position: top 0 left 0;
+  background-size: contain;
+}
+
+.mainButtonList {
+  position: absolute;
+  top: 266px;
+  left: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.mainButton {
+  width: 199px;
+  height: 54px;
+  background-color: $blue;
+  color: $base-white;
+  border-radius: 73px;
+  @include font-style($subtitle2);
+
+  &:hover {
+    background-color: $deepblue;
+  }
 }
