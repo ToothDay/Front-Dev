@@ -7,6 +7,7 @@ import Tooth from "../tooth/Tooth";
 import BtnBottom from "../common/BtnBottom";
 import ClinicInput from "@/components/medical/ClinicInput";
 import DateInput from "@/components/medical/DateInput";
+import TreatmentSelection from "./TreatmentSelection";
 
 type ToothSide = {
   value: "left" | "right";
@@ -44,52 +45,16 @@ const MedicalWrite = () => {
     { label: "아니요", value: false }
   ];
 
-  const handleTreatmentClick = (id: number) => {
-    return () => {
-      setSelectedTreatments((prev) => {
-        if (prev.includes(id)) {
-          const newTreatments = prev.filter((selectedId) => selectedId !== id);
-          return newTreatments;
-        }
-        if (prev.length < 3) {
-          return [...prev, id];
-        }
-        return prev;
-      });
-    };
-  };
-
   const clickTreatment = selectedTreatments.length > 0;
 
   return (
     <form className={styles.writeForm}>
       <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic} />
       <DateInput />
-      <motion.div
-        className={styles.writeWrapper}
-        initial="hidden"
-        animate="visible"
-        variants={slideInVariants}
-        transition={{ duration: 1.0, ease: "easeInOut" }}
-      >
-        <label className={styles.writeLabel}>어떤 치료를 받으셨나요?</label>
-        <span className={styles.helperText}>중복 선택이 가능해요.</span>
-        <div className={styles.treatmentList}>
-          {TREATMENT_LIST.map((treatment) => (
-            <button
-              type="button"
-              key={treatment.id}
-              className={[
-                styles.treatmentButton,
-                selectedTreatments.includes(treatment.id) ? styles.selected : ""
-              ].join(" ")}
-              onClick={handleTreatmentClick(treatment.id)}
-            >
-              {treatment.name}
-            </button>
-          ))}
-        </div>
-      </motion.div>
+      <TreatmentSelection
+        selectedTreatments={selectedTreatments}
+        setSelectedTreatments={setSelectedTreatments}
+      />
       <AnimatePresence>
         {clickTreatment && (
           <>
