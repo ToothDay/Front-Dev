@@ -1,9 +1,7 @@
 "use client";
 import styles from "@/components/common/imageSwiper.module.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { TREATMENT_LIST, Treatment } from "@/constants/treatmentConstants";
 import "swiper/css";
-import { useEffect, useState } from "react";
 
 type PropsImage = {
   listType?: "all";

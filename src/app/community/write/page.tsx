@@ -1,10 +1,25 @@
+"use client";
 import BtnBottom from "@/components/common/BtnBottom";
 import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
 import ImageSwiper from "@/components/common/ImageSwiper";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
+import { SetStateAction, useState } from "react";
 
 const CommunityWritePage = () => {
+  const [title, setTitle] = useState("");
+  const [mainText, setMainText] = useState("");
+  const handleTitleChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setTitle(e.target.value);
+  };
+  const handleMainTextChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setMainText(e.target.value);
+  };
+
   const imageList = [
     { id: 1, src: "/profile.svg" },
     { id: 2, src: "/profile.svg" },
@@ -24,7 +39,8 @@ const CommunityWritePage = () => {
             className={styles.titleMain}
             maxLength={70}
             placeholder={"최대 70자 이내로 제목을 적어주세요."}
-          ></input>
+            onChange={handleTitleChange}
+          />
         </article>
         <article className={styles.textDiv}>
           <div className={styles.title}>본문 내용</div>
@@ -33,6 +49,7 @@ const CommunityWritePage = () => {
             placeholder={
               "치아, 치과, 구강 건강 등 다양한 내용을 자유롭게 작성해주세요."
             }
+            onChange={handleMainTextChange}
           ></textarea>
           <ImageSwiper listType="all" imageList={imageList} />
           <div className={styles.imageDiv}>
@@ -51,7 +68,10 @@ const CommunityWritePage = () => {
           </div>
         </article>
         <div className={styles.endBtnDiv}>
-          <BtnBottom btnType={false} title="작성 완료" />
+          <BtnBottom
+            btnType={title.length > 0 && mainText.length > 0 ? true : false}
+            title="작성 완료"
+          />
         </div>
       </section>
     </main>
