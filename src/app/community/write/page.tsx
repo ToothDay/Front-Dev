@@ -9,6 +9,7 @@ import { SetStateAction, useState } from "react";
 const CommunityWritePage = () => {
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
+  const [selected, setSelected] = useState<number[]>([]);
   const handleTitleChange = (e: {
     target: { value: SetStateAction<string> };
   }) => {
@@ -18,6 +19,13 @@ const CommunityWritePage = () => {
     target: { value: SetStateAction<string> };
   }) => {
     setMainText(e.target.value);
+  };
+  const handleKeywordClick = (id: number) => {
+    setSelected((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((selectedId) => selectedId !== id)
+        : [...prevSelected, id]
+    );
   };
 
   const imageList = [
@@ -61,7 +69,16 @@ const CommunityWritePage = () => {
           <div className={styles.title}>키워드</div>
           <div className={styles.keywordMain}>
             {TREATMENT_LIST.map((treatment) => (
-              <span className={styles.keyword} key={treatment.id}>
+              <span
+                className={[
+                  styles.keyword,
+                  selected.indexOf(treatment.id) >= 0 ? styles.selected : ""
+                ].join(" ")}
+                key={treatment.id}
+                onClick={() => {
+                  handleKeywordClick(treatment.id);
+                }}
+              >
                 {`# ${treatment.name}`}
               </span>
             ))}
