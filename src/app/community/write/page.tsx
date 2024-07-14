@@ -1,16 +1,16 @@
 import BtnBottom from "@/components/common/BtnBottom";
 import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
+import ImageSwiper from "@/components/common/ImageSwiper";
+import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 
 const CommunityWritePage = () => {
-  const arr = [
-    "# 잇몸",
-    "# 스케일링",
-    "# 레진",
-    "# 인레이",
-    "# 크라운",
-    "# 신경",
-    "# 임플란트"
+  const imageList = [
+    { id: 1, src: "/profile.svg" },
+    { id: 2, src: "/profile.svg" },
+    { id: 3, src: "/profile.svg" },
+    { id: 4, src: "/profile.svg" },
+    { id: 5, src: "/image-add.svg" }
   ];
   return (
     <main className={styles.main}>
@@ -34,16 +34,19 @@ const CommunityWritePage = () => {
               "치아, 치과, 구강 건강 등 다양한 내용을 자유롭게 작성해주세요."
             }
           ></textarea>
+          <ImageSwiper listType="all" imageList={imageList} />
           <div className={styles.imageDiv}>
-            <button className={styles.image}></button>
-            <div className={styles.imageNumber}>1/10</div>
+            <button className={styles.image} />
+            <div className={styles.imageNumber}>{`${imageList.length}/10`}</div>
           </div>
         </article>
         <article className={styles.keywordDiv}>
           <div className={styles.title}>키워드</div>
           <div className={styles.keywordMain}>
-            {arr.map((v) => (
-              <span className={styles.keyword}>{v}</span>
+            {TREATMENT_LIST.map((treatment) => (
+              <span className={styles.keyword} key={treatment.id}>
+                {`# ${treatment.name}`}
+              </span>
             ))}
           </div>
         </article>
