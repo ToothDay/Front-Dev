@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import styles from "./TreatmentSelection.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
-import Modal from "@/components/modal/Modal";
-import { useState } from "react";
 import { useModalStore } from "@/stores/modal";
 import TreatmentAddModal from "../modal/TreatmentAddModal";
 import { useTreatmentType } from "@/stores/medicalWrite";
