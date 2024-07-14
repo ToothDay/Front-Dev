@@ -65,15 +65,34 @@ export const useTreatmentType = create<TreatmentTypeList>((set) => ({
         (treatment) => treatment.name === name
       );
       if (treatmentType) {
-        return {
-          treatmentType: state.treatmentType.map((treatment) =>
-            treatment.name === name ? { id, name, number, isClick } : treatment
-          )
-        };
+        if (number === 0) {
+          return {
+            treatmentType: state.treatmentType.filter(
+              (treatment) => treatment.name !== name
+            )
+          };
+        } else {
+          return {
+            treatmentType: state.treatmentType.map((treatment) =>
+              treatment.name === name
+                ? { id, name, number, isClick }
+                : treatment
+            )
+          };
+        }
       } else {
-        return {
-          treatmentType: [...state.treatmentType, { id, name, number, isClick }]
-        };
+        if (number > 0) {
+          return {
+            treatmentType: [
+              ...state.treatmentType,
+              { id, name, number, isClick }
+            ]
+          };
+        } else {
+          return {
+            treatmentType: state.treatmentType
+          };
+        }
       }
     });
   }
