@@ -6,6 +6,8 @@ import {
   RIGHT_TOP,
   RIGHT_BOTTOM
 } from "@/constants/toothConstants";
+import { useCostList } from "@/stores/medicalWrite";
+import { useEffect, useState } from "react";
 
 type PropsTooth = {
   location: "left" | "right";
@@ -36,14 +38,26 @@ const Tooth = ({
     setSelectedTooth && setSelectedTooth({ toothId, name, number, icon });
   };
 
+  const { selectedCost } = useCostList();
+  const [saveSelectedTooth, setSaveSelectedTooth] = useState<number[]>([]);
+
+  useEffect(() => {
+    const updateSelectedTooth = selectedCost.map((cost) => cost.toothId);
+    setSaveSelectedTooth(updateSelectedTooth);
+  }, [selectedCost]);
+
+  const findToothIcon = (toothId: number) => {
+    return saveSelectedTooth.includes(toothId);
+  };
+
   return (
     <div className={styles.toothWrap}>
       <div className={[styles.topTooth, styles[location]].join(" ")}>
         {topTooth.map((tooth) => (
           <div
             className={[
-              styles[`toothTop${tooth.number}`]
-              // selectedTooth === tooth.number ? styles.selected : ""
+              styles[`toothTop${tooth.number}`],
+              findToothIcon(tooth.toothId) ? styles.selected : ""
             ].join(" ")}
             key={tooth.number}
             onClick={() =>
@@ -58,8 +72,8 @@ const Tooth = ({
         {bottomTooth.map((tooth) => (
           <div
             className={[
-              styles[`toothBottom${tooth.number}`]
-              // selectedTooth === tooth.number ? styles.selected : ""
+              styles[`toothBottom${tooth.number}`],
+              findToothIcon(tooth.toothId) ? styles.selected : ""
             ].join(" ")}
             key={tooth.number}
             onClick={() =>
