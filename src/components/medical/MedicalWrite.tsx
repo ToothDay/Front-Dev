@@ -9,22 +9,22 @@ import TreatmentSelection from "./TreatmentSelection";
 import CostInput from "./CostInput";
 import ToothSelection from "./ToothSelection";
 import ShareOption from "./ShareOption";
-import { useTreatmentNumber } from "@/stores/medicalWrite";
+import { useTreatmentType } from "@/stores/medicalWrite";
 
 const MedicalWrite = () => {
   const [isShare, setIsShare] = useState<boolean>(true);
   const [isClinic, setIsClinic] = useState<boolean>(false);
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
-  const { treatmentNumber } = useTreatmentNumber();
+  const { treatmentType } = useTreatmentType();
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
 
   useEffect(() => {
-    treatmentNumber.filter((treatment) => {
+    treatmentType.filter((treatment) => {
       return treatment.isClick;
     }).length > 0
       ? setClickTreatment(true)
       : setClickTreatment(false);
-  }, [treatmentNumber]);
+  }, [treatmentType]);
 
   return (
     <form className={styles.writeForm}>

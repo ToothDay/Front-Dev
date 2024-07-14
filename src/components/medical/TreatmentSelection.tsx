@@ -5,14 +5,14 @@ import Modal from "@/components/modal/Modal";
 import { useState } from "react";
 import { useModalStore } from "@/stores/modal";
 import TreatmentAddModal from "../modal/TreatmentAddModal";
-import { useTreatmentNumber } from "@/stores/medicalWrite";
+import { useTreatmentType } from "@/stores/medicalWrite";
 
 const TreatmentSelection = () => {
   const { openModal } = useModalStore();
 
   const [treatmentName, setTreatmentName] = useState<string>("");
   const [treatmentId, setTreatmentId] = useState<number>(0);
-  const { treatmentNumber, updateOrAddTreatmentNumber } = useTreatmentNumber();
+  const { treatmentType, updateOrAddTreatmentType } = useTreatmentType();
 
   const handleTreatmentClick = (id: number, name: string) => {
     setTreatmentName(name);
@@ -22,18 +22,17 @@ const TreatmentSelection = () => {
       openModal();
     } else {
       if (
-        treatmentNumber.find((treatment) => treatment.name === name)?.number ===
-        1
+        treatmentType.find((treatment) => treatment.name === name)?.number === 1
       ) {
-        updateOrAddTreatmentNumber(id, name, 0, false);
+        updateOrAddTreatmentType(id, name, 0, false);
       } else {
-        updateOrAddTreatmentNumber(id, name, 1, true);
+        updateOrAddTreatmentType(id, name, 1, true);
       }
     }
   };
 
   const checkTreatment = (name: string) => {
-    const treatment = treatmentNumber.find(
+    const treatment = treatmentType.find(
       (treatment) => treatment.name === name
     );
 

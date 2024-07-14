@@ -2,7 +2,7 @@
 
 import styles from "@/components/modal/TreatmentAddModal.module.scss";
 import { useEffect, useState } from "react";
-import { useTreatmentNumber } from "@/stores/medicalWrite";
+import { useTreatmentType } from "@/stores/medicalWrite";
 import { useModalStore } from "@/stores/modal";
 
 type PropsTreatmentAddModal = {
@@ -14,18 +14,18 @@ const TreatmentAddModal = ({
   treatmentName,
   treatmentId
 }: PropsTreatmentAddModal) => {
-  const { treatmentNumber, updateOrAddTreatmentNumber } = useTreatmentNumber();
+  const { treatmentType, updateOrAddTreatmentType } = useTreatmentType();
   const [addNum, setAddNum] = useState<number>(0);
   const { closeModal } = useModalStore();
 
   useEffect(() => {
-    const existingTreatment = treatmentNumber.find(
+    const existingTreatment = treatmentType.find(
       (treatment) => treatment.name === treatmentName
     );
     if (existingTreatment) {
       setAddNum(existingTreatment.number);
     }
-  }, [treatmentName, treatmentNumber]);
+  }, [treatmentName, treatmentType]);
 
   const handleMinus = () => {
     if (addNum > 0) {
@@ -66,7 +66,7 @@ const TreatmentAddModal = ({
   };
 
   const handleAddTreatment = () => {
-    updateOrAddTreatmentNumber(treatmentId, treatmentName, addNum, addNum > 0);
+    updateOrAddTreatmentType(treatmentId, treatmentName, addNum, addNum > 0);
     closeModal();
   };
 
