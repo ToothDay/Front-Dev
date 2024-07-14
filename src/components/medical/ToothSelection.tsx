@@ -5,16 +5,11 @@ import styles from "./ToothSelection.module.scss";
 import { useTreatmentType } from "../../stores/medicalWrite";
 import { useModalStore } from "@/stores/modal";
 import ToothWriteModal from "../modal/ToothWriteModal";
+import { ToothType } from "@/constants/toothConstants";
 
 type ToothSide = {
   value: "left" | "right";
   name: "왼쪽" | "오른쪽";
-};
-
-type SelectedTooth = {
-  name: string;
-  number: number;
-  icon: string;
 };
 
 const ToothSelection = () => {
@@ -22,11 +17,13 @@ const ToothSelection = () => {
   const [toothSelect, setToothSelect] = useState<"left" | "right">("left");
   const [isDisplay, setIsDisplay] = useState<boolean>(false);
   const [isDisplayModal, setIsDisplayModal] = useState<boolean>(false);
-  const [selectedTooth, setSelectedTooth] = useState<SelectedTooth>({
+  const [selectedTooth, setSelectedTooth] = useState<ToothType>({
+    toothId: 0,
     name: "",
     number: 0,
     icon: ""
   });
+
   const { openModal } = useModalStore();
   const toothSide: ToothSide[] = [
     {
@@ -51,6 +48,7 @@ const ToothSelection = () => {
         <ToothWriteModal
           teethName={selectedTooth.name}
           icon={selectedTooth.icon}
+          toothId={selectedTooth.toothId}
         />
       );
       setIsDisplayModal(false);

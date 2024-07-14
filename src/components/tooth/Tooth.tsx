@@ -11,6 +11,7 @@ type PropsTooth = {
   location: "left" | "right";
   setIsDisplayModal?: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedTooth?: (value: {
+    toothId: number;
     name: string;
     number: number;
     icon: string;
@@ -25,9 +26,14 @@ const Tooth = ({
   const topTooth = location === "left" ? LEFT_TOP : RIGHT_TOP;
   const bottomTooth = location === "left" ? LEFT_BOTTOM : RIGHT_BOTTOM;
 
-  const handleTooth = (name: string, number: number, icon: string) => {
+  const handleTooth = (
+    name: string,
+    number: number,
+    icon: string,
+    toothId: number
+  ) => {
     setIsDisplayModal && setIsDisplayModal((prev) => !prev);
-    setSelectedTooth && setSelectedTooth({ name, number, icon });
+    setSelectedTooth && setSelectedTooth({ toothId, name, number, icon });
   };
 
   return (
@@ -40,7 +46,9 @@ const Tooth = ({
               // selectedTooth === tooth.number ? styles.selected : ""
             ].join(" ")}
             key={tooth.number}
-            onClick={() => handleTooth(tooth.name, tooth.number, tooth.icon)}
+            onClick={() =>
+              handleTooth(tooth.name, tooth.number, tooth.icon, tooth.toothId)
+            }
           >
             {tooth.name}
           </div>
@@ -54,7 +62,9 @@ const Tooth = ({
               // selectedTooth === tooth.number ? styles.selected : ""
             ].join(" ")}
             key={tooth.number}
-            onClick={() => handleTooth(tooth.name, tooth.number, tooth.icon)}
+            onClick={() =>
+              handleTooth(tooth.name, tooth.number, tooth.icon, tooth.toothId)
+            }
           >
             {tooth.name}
           </div>
