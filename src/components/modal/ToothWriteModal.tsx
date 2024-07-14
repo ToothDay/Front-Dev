@@ -1,53 +1,111 @@
+"use client";
 import styles from "@/components/modal/ToothWriteModal.module.scss";
 import BtnBottom from "../common/BtnBottom";
+import { useTreatmentCost } from "@/stores/medicalWrite";
+import { useEffect, useState } from "react";
+import { CostList } from "@/stores/medicalWrite";
 
 type ToothWriteModalProps = {
+  toothId: number;
   teethName: string;
   icon: string;
 };
 
-const ToothWriteModal = ({ teethName, icon }: ToothWriteModalProps) => {
+type SelectedTreatment = {
+  id: number;
+  category: string;
+  amount: string;
+  toothId: number;
+  isCheck: boolean;
+};
+
+const ToothWriteModal = ({
+  teethName,
+  icon,
+  toothId
+}: ToothWriteModalProps) => {
+  const { treatmentCostList } = useTreatmentCost();
+  const [selected, setSelected] = useState<boolean>(false);
+  const [filterTreatment, setFilterTreatment] = useState<CostList[]>([]);
+  const [selectedTreatment, setSelectedTreatment] = useState<
+    SelectedTreatment[]
+  >([]);
+
+  useEffect(() => {
+    const filterTreatment = treatmentCostList.filter(
+      (treatment) => treatment.name !== "스케일링" && treatment.name !== "잇몸"
+    );
+    setFilterTreatment(filterTreatment);
+  }, [treatmentCostList]);
+
+  const handleSelectedTreatment = (
+    treatment: string,
+    cost: string,
+    id: number
+  ) => {
+    const clickTreatment = {
+      id: id,
+      category: treatment,
+      amount: cost,
+      toothId: toothId,
+      isCheck: !selected
+    };
+
+    const isCheck = selectedTreatment.find((item) => item.id === id);
+
+    if (isCheck) {
+      setSelectedTreatment((prevSelected) =>
+        prevSelected.map((item) =>
+          item.id === id ? { ...item, isCheck: !item.isCheck } : item
+        )
+      );
+    } else {
+      setSelectedTreatment((prevSelected) => [
+        ...prevSelected,
+        { ...clickTreatment, isCheck: true }
+      ]);
+    }
+  };
+
+  const getSelectedItem = (id: number) => {
+    return selectedTreatment.find((item) => item.id === id)?.isCheck;
+  };
+
   return (
     <div className={styles.write}>
       <div className={styles.writeTitle}>
         <img src={icon} alt="tooth" className={styles.teethImage} />
-        <p className={styles.teethName}>{teethName}</p>
+        <p className={styles.teethName}>
+          {teethName} {toothId}
+        </p>
         <p className={styles.subText}>
           해당되는 치료를 선택해 주세요 <br /> 최대 3개까지 중복 가능합니다.
         </p>
       </div>
       <div className={styles.teethBox}>
         <div className={styles.teethInfo}>
-          {/* 선택된 값 selected 조건 붙을 시 class 설정해주세요! */}
-          <div className={[styles.info, styles.selected].join(" ")}>
-            <span className={styles.infoTitle}>임플란트</span>
-            <span className={styles.infoTotal}>300,000</span>
-          </div>
-          {/* 데이터 맵핑후 삭제 예정 */}
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>임플란트</span>
-            <span className={styles.infoTotal}>300,000</span>
-          </div>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>임플란트</span>
-            <span className={styles.infoTotal}>300,000</span>
-          </div>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>임플란트</span>
-            <span className={styles.infoTotal}>300,000</span>
-          </div>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>임플란트</span>
-            <span className={styles.infoTotal}>300,000</span>
-          </div>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>임플란트</span>
-            <span className={styles.infoTotal}>300,000</span>
-          </div>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>임플란트</span>
-            <span className={styles.infoTotal}>300,000</span>
-          </div>
+          {filterTreatment.map((treatment, index) => (
+            <div
+              className={[
+                styles.info,
+                getSelectedItem(treatment.id) && styles.selected
+              ].join(" ")}
+              onClick={() =>
+                handleSelectedTreatment(
+                  treatment.name,
+                  treatment.value,
+                  treatment.id
+                )
+              }
+            >
+              <span className={styles.infoTitle}>{treatment.name}</span>
+              <span className={styles.infoTotal}>
+                {treatment.value
+                  ? Number(treatment.value).toLocaleString()
+                  : "0"}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
       <BtnBottom btnType={false} title="기록 완료" />
