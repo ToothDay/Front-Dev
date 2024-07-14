@@ -23,6 +23,7 @@ const Tooth = ({ location }: PropsTooth) => {
               styles[`toothTop${tooth.number}`]
               // selectedTooth === tooth.number ? styles.selected : ""
             ].join(" ")}
+            key={tooth.number}
           >
             {tooth.name}
           </div>
@@ -35,6 +36,7 @@ const Tooth = ({ location }: PropsTooth) => {
               styles[`toothBottom${tooth.number}`]
               // selectedTooth === tooth.number ? styles.selected : ""
             ].join(" ")}
+            key={tooth.number}
           >
             {tooth.name}
           </div>
