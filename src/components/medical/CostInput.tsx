@@ -78,7 +78,9 @@ const CostInput = () => {
               <div className={styles.costInputBox}>
                 <input
                   type="text"
-                  className={styles.costBox}
+                  className={[styles.costBox, item.value && styles.fill].join(
+                    " "
+                  )}
                   placeholder="숫자만 입력하세요."
                   value={item.value}
                   onChange={(e) => handleChangeCost(index, e.target.value)}

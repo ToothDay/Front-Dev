@@ -60,6 +60,10 @@
   padding-right: 28px;
   @include font-style($caption1);
   color: $grey2;
+
+  &.fill {
+    border: 1px solid $blue;
+  }
 }
 
 .deleteCost {
