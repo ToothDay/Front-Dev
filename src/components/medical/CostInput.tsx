@@ -24,6 +24,10 @@ const CostInput = () => {
     setCostList(newCostList);
   };
 
+  useEffect(() => {
+    checkTreatmentCost();
+  }, [treatmentType]);
+
   const handleChangeCost = (index: number, value: string) => {
     const newCostList = [...costList];
     if (isNaN(Number(value))) {
