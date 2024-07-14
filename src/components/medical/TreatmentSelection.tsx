@@ -18,7 +18,7 @@ const TreatmentSelection = () => {
     setTreatmentName(name);
     setTreatmentId(id);
 
-    if (id !== 2 && id !== 7) {
+    if (id !== 1 && id !== 2) {
       openModal();
     } else {
       if (
@@ -37,6 +37,22 @@ const TreatmentSelection = () => {
     );
 
     return treatment && treatment.isClick;
+  };
+
+  const checkTreatmentNumber = (name: string) => {
+    const treatment = treatmentType.find(
+      (treatment) => treatment.name === name
+    );
+
+    return treatment ? treatment.number : 0;
+  };
+
+  const isDisplayNumber = (name: string, number: number) => {
+    if (name === "스케일링" || name === "잇몸") {
+      return false;
+    }
+
+    return number > 0;
   };
 
   return (
@@ -68,6 +84,12 @@ const TreatmentSelection = () => {
               }}
             >
               {treatment.name}
+              {isDisplayNumber(
+                treatment.name,
+                checkTreatmentNumber(treatment.name)
+              )
+                ? ` ${checkTreatmentNumber(treatment.name)}개 `
+                : ""}
             </button>
           ))}
         </div>

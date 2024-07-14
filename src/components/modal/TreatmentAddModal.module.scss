@@ -10,8 +10,24 @@
   gap: 24px;
 }
 
+.Text {
+  display: flex;
+  @include font-style($subtitle1);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: $black;
+}
+
 .title {
   @include font-style($subtitle2);
+  color: $black;
+}
+.helperText {
+  display: block;
+  @include font-style($body2);
+  color: $grey3;
+  margin-top: 4px;
 }
 
 .addBtn {

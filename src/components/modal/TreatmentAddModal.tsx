@@ -72,7 +72,10 @@ const TreatmentAddModal = ({
 
   return (
     <div className={styles.add}>
-      <p className={styles.title}>개수를 선택해 주세요.</p>
+      <div className={styles.Text}>
+        <p className={styles.title}>개수를 선택해 주세요.</p>
+        <span className={styles.helperText}>개수는 최대 3개까지 가능해요.</span>
+      </div>
       <div className={styles.addBox}>
         <span className={styles.addTitle}>{treatmentName}</span>
         <div className={styles.addBtn}>
