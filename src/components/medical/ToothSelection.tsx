@@ -11,11 +11,22 @@ type ToothSide = {
   name: "왼쪽" | "오른쪽";
 };
 
+type SelectedTooth = {
+  name: string;
+  number: number;
+  icon: string;
+};
+
 const ToothSelection = () => {
   const { treatmentType } = useTreatmentType();
   const [toothSelect, setToothSelect] = useState<"left" | "right">("left");
   const [isDisplay, setIsDisplay] = useState<boolean>(false);
   const [isDisplayModal, setIsDisplayModal] = useState<boolean>(false);
+  const [selectedTooth, setSelectedTooth] = useState<SelectedTooth>({
+    name: "",
+    number: 0,
+    icon: ""
+  });
   const { openModal } = useModalStore();
   const toothSide: ToothSide[] = [
     {
@@ -36,7 +47,12 @@ const ToothSelection = () => {
 
   useEffect(() => {
     if (isDisplayModal) {
-      openModal(<ToothWriteModal />);
+      openModal(
+        <ToothWriteModal
+          teethName={selectedTooth.name}
+          icon={selectedTooth.icon}
+        />
+      );
       setIsDisplayModal(false);
     }
   }, [isDisplayModal, openModal]);
@@ -86,6 +102,7 @@ const ToothSelection = () => {
                     <Tooth
                       location={toothSelect}
                       setIsDisplayModal={setIsDisplayModal}
+                      setSelectedTooth={setSelectedTooth}
                     />
                   </motion.div>
                 </AnimatePresence>

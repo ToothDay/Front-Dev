@@ -1,14 +1,19 @@
 import styles from "@/components/modal/ToothWriteModal.module.scss";
 import BtnBottom from "../common/BtnBottom";
 
-const ToothWriteModal = () => {
+type ToothWriteModalProps = {
+  teethName: string;
+  icon: string;
+};
+
+const ToothWriteModal = ({ teethName, icon }: ToothWriteModalProps) => {
   return (
     <div className={styles.write}>
       <div className={styles.writeTitle}>
-        <img src="/default.svg" alt="tooth" className={styles.teethImage} />
-        <p className={styles.teethName}>왼쪽 7번 어금니</p>
+        <img src={icon} alt="tooth" className={styles.teethImage} />
+        <p className={styles.teethName}>{teethName}</p>
         <p className={styles.subText}>
-          해당되는 치료를 선택해 주세요 <br /> 최대 3개까지 중복 가능합니다.{" "}
+          해당되는 치료를 선택해 주세요 <br /> 최대 3개까지 중복 가능합니다.
         </p>
       </div>
       <div className={styles.teethBox}>

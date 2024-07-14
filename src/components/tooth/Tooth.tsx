@@ -1,3 +1,4 @@
+"use client";
 import styles from "@/components/tooth/Tooth.module.scss";
 import {
   LEFT_TOP,
@@ -9,14 +10,24 @@ import {
 type PropsTooth = {
   location: "left" | "right";
   setIsDisplayModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedTooth?: (value: {
+    name: string;
+    number: number;
+    icon: string;
+  }) => void;
 };
 
-const Tooth = ({ location, setIsDisplayModal }: PropsTooth) => {
+const Tooth = ({
+  location,
+  setIsDisplayModal,
+  setSelectedTooth
+}: PropsTooth) => {
   const topTooth = location === "left" ? LEFT_TOP : RIGHT_TOP;
   const bottomTooth = location === "left" ? LEFT_BOTTOM : RIGHT_BOTTOM;
 
-  const handleTooth = () => {
+  const handleTooth = (name: string, number: number, icon: string) => {
     setIsDisplayModal && setIsDisplayModal((prev) => !prev);
+    setSelectedTooth && setSelectedTooth({ name, number, icon });
   };
 
   return (
@@ -29,7 +40,7 @@ const Tooth = ({ location, setIsDisplayModal }: PropsTooth) => {
               // selectedTooth === tooth.number ? styles.selected : ""
             ].join(" ")}
             key={tooth.number}
-            onClick={() => handleTooth()}
+            onClick={() => handleTooth(tooth.name, tooth.number, tooth.icon)}
           >
             {tooth.name}
           </div>
@@ -43,7 +54,7 @@ const Tooth = ({ location, setIsDisplayModal }: PropsTooth) => {
               // selectedTooth === tooth.number ? styles.selected : ""
             ].join(" ")}
             key={tooth.number}
-            onClick={() => handleTooth()}
+            onClick={() => handleTooth(tooth.name, tooth.number, tooth.icon)}
           >
             {tooth.name}
           </div>
