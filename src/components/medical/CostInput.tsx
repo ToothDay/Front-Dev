@@ -24,10 +24,6 @@ const CostInput = () => {
     setCostList(newCostList);
   };
 
-  useEffect(() => {
-    checkTreatmentCost();
-  }, [treatmentType]);
-
   const handleChangeCost = (index: number, value: string) => {
     const newCostList = [...costList];
     if (isNaN(Number(value))) {
@@ -90,7 +86,7 @@ const CostInput = () => {
               </div>
               <span className={styles.costUnit}> 원</span>
             </motion.div>
-          ))}{" "}
+          ))}
         </AnimatePresence>
       </div>
     </motion.div>
