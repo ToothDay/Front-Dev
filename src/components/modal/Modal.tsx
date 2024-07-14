@@ -14,11 +14,11 @@ const Modal = () => {
 
   return (
     <AnimatePresence>
-      <div
-        className={[styles.wrapper, isOpen ? styles.open : ""].join(" ")}
-        onClick={handleModal}
-      >
-        {isOpen && (
+      {isOpen && (
+        <div
+          className={[styles.wrapper, styles.open].join(" ")}
+          onClick={handleModal}
+        >
           <motion.div
             className={styles.modal}
             onClick={(e) => e.stopPropagation()}
@@ -29,8 +29,8 @@ const Modal = () => {
           >
             {content}
           </motion.div>
-        )}
-      </div>
+        </div>
+      )}
     </AnimatePresence>
   );
 };
