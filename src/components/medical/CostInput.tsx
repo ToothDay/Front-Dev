@@ -13,10 +13,13 @@ const CostInput = () => {
     treatmentType.forEach((item, index) => {
       if (item.number > 0) {
         for (let i = 0; i < item.number; i++) {
+          const isExist = treatmentCostList.find(
+            (cost) => cost.name === item.name && cost.id === newCostList.length
+          );
           newCostList.push({
             id: newCostList.length,
             name: item.name,
-            value: ""
+            value: isExist ? isExist.value : ""
           });
           updateTreatmentCost(newCostList);
         }
