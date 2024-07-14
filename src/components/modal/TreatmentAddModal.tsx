@@ -1,10 +1,31 @@
 "use client";
 
 import styles from "@/components/modal/TreatmentAddModal.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTreatmentNumber } from "@/stores/medicalWrite";
+import { useModalStore } from "@/stores/modal";
 
-const TreatmentAddModal = () => {
+type PropsTreatmentAddModal = {
+  treatmentName: string;
+  treatmentId: number;
+};
+
+const TreatmentAddModal = ({
+  treatmentName,
+  treatmentId
+}: PropsTreatmentAddModal) => {
+  const { treatmentNumber, updateOrAddTreatmentNumber } = useTreatmentNumber();
   const [addNum, setAddNum] = useState<number>(0);
+  const { closeModal } = useModalStore();
+
+  useEffect(() => {
+    const existingTreatment = treatmentNumber.find(
+      (treatment) => treatment.name === treatmentName
+    );
+    if (existingTreatment) {
+      setAddNum(existingTreatment.number);
+    }
+  }, [treatmentName, treatmentNumber]);
 
   const handleMinus = () => {
     if (addNum > 0) {
@@ -13,7 +34,9 @@ const TreatmentAddModal = () => {
   };
 
   const handlePlus = () => {
-    setAddNum(addNum + 1);
+    if (addNum < 3) {
+      setAddNum(addNum + 1);
+    }
   };
 
   const handleRefresh = () => {
@@ -22,6 +45,10 @@ const TreatmentAddModal = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    if (Number(value) > 3) {
+      setAddNum(3);
+      return;
+    }
     if (value === "") {
       setAddNum(0);
       return;
@@ -38,11 +65,16 @@ const TreatmentAddModal = () => {
     setAddNum(Number(value));
   };
 
+  const handleAddTreatment = () => {
+    updateOrAddTreatmentNumber(treatmentName, addNum);
+    closeModal();
+  };
+
   return (
     <div className={styles.add}>
       <p className={styles.title}>개수를 선택해 주세요.</p>
       <div className={styles.addBox}>
-        <span className={styles.addTitle}>인레이</span>
+        <span className={styles.addTitle}>{treatmentName}</span>
         <div className={styles.addBtn}>
           <button type="button" className={styles.minus} onClick={handleMinus}>
             -
@@ -66,7 +98,11 @@ const TreatmentAddModal = () => {
         >
           <img src="/refresh.svg" alt="refresh" />
         </button>
-        <button type="button" className={styles.saveButton}>
+        <button
+          type="button"
+          className={styles.saveButton}
+          onClick={handleAddTreatment}
+        >
           완료
         </button>
       </div>

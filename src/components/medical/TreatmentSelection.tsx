@@ -3,9 +3,10 @@ import styles from "./TreatmentSelection.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import Modal from "@/components/modal/Modal";
 import TreatmentModal from "../modal/TreatmentModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useModalStore } from "@/stores/modal";
 import TreatmentAddModal from "../modal/TreatmentAddModal";
+import { useTreatmentNumber } from "@/stores/medicalWrite";
 
 type PropsTreatmentSelection = {
   selectedTreatments: number[];
@@ -20,19 +21,29 @@ const TreatmentSelection = ({
 }: PropsTreatmentSelection) => {
   const { openModal } = useModalStore();
 
-  const handleTreatmentClick = (id: number) => {
+  const [treatmentName, setTreatmentName] = useState<string>("");
+  const [treatmentId, setTreatmentId] = useState<number>(0);
+  const { treatmentNumber } = useTreatmentNumber();
+
+  const handleTreatmentClick = (id: number, name: string) => {
+    setTreatmentName(name);
+    setTreatmentId(id);
+
     setSelectedTreatments((prev) => {
       if (prev.includes(id)) {
         return prev.filter((selectedId) => selectedId !== id);
-      }
-      if (prev.length < 3) {
+      } else {
         return [...prev, id];
       }
-      return prev;
     });
+
     if (id !== 2 && id !== 7) {
       openModal();
     }
+  };
+
+  const checkTreatment = (name: string) => {
+    return treatmentNumber.find((treatment) => treatment.name === name);
   };
 
   return (
@@ -57,10 +68,10 @@ const TreatmentSelection = ({
               key={treatment.id}
               className={[
                 styles.treatmentButton,
-                selectedTreatments.includes(treatment.id) ? styles.selected : ""
+                checkTreatment(treatment.name) ? styles.selected : ""
               ].join(" ")}
               onClick={() => {
-                handleTreatmentClick(treatment.id);
+                handleTreatmentClick(treatment.id, treatment.name);
               }}
             >
               {treatment.name}
@@ -69,7 +80,10 @@ const TreatmentSelection = ({
         </div>
       </motion.div>
       <Modal>
-        <TreatmentAddModal />
+        <TreatmentAddModal
+          treatmentName={treatmentName}
+          treatmentId={treatmentId}
+        />
       </Modal>
     </>
   );
