@@ -5,6 +5,7 @@ import { useCostList, useTreatmentCost } from "@/stores/medicalWrite";
 import { useEffect, useState } from "react";
 import { CostList } from "@/stores/medicalWrite";
 import { CostType } from "@/stores/medicalWrite";
+import { useModalStore } from "@/stores/modal";
 
 type ToothWriteModalProps = {
   toothId: number;
@@ -33,6 +34,7 @@ const ToothWriteModal = ({
 
   const { selectedCost, updateSelectedCost } = useCostList();
   const [isActiveBtn, setIsActiveBtn] = useState<boolean>(false);
+  const { closeModal } = useModalStore();
 
   useEffect(() => {
     const filterTreatment = treatmentCostList.filter(
@@ -108,6 +110,7 @@ const ToothWriteModal = ({
 
   const saveCostList = () => {
     updateToothCost();
+    closeModal();
   };
 
   return (
