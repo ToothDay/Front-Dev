@@ -6,8 +6,10 @@ type TreatmentList = {
 };
 
 type TreatmentNumber = {
+  id: number;
   number: number;
   name: string;
+  isClick: boolean;
 };
 
 type MedicalWriteState = {
@@ -23,7 +25,12 @@ type MedicalWriteState = {
 
 type TreatmentNumberList = {
   treatmentNumber: TreatmentNumber[];
-  updateOrAddTreatmentNumber: (name: string, number: number) => void;
+  updateOrAddTreatmentNumber: (
+    id: number,
+    name: string,
+    number: number,
+    isClick: boolean
+  ) => void;
 };
 
 export const useMedicalWriteStore = create<MedicalWriteState>((set) => ({
@@ -47,8 +54,12 @@ export const useMedicalWriteStore = create<MedicalWriteState>((set) => ({
 
 export const useTreatmentNumber = create<TreatmentNumberList>((set) => ({
   treatmentNumber: [],
-  updateOrAddTreatmentNumber: (name: string, number: number) => {
-    if (number === 0) return;
+  updateOrAddTreatmentNumber: (
+    id: number,
+    name: string,
+    number: number,
+    isClick: boolean
+  ) => {
     set((state) => {
       const treatmentNumber = state.treatmentNumber.find(
         (treatment) => treatment.name === name
@@ -56,12 +67,15 @@ export const useTreatmentNumber = create<TreatmentNumberList>((set) => ({
       if (treatmentNumber) {
         return {
           treatmentNumber: state.treatmentNumber.map((treatment) =>
-            treatment.name === name ? { name, number } : treatment
+            treatment.name === name ? { id, name, number, isClick } : treatment
           )
         };
       } else {
         return {
-          treatmentNumber: [...state.treatmentNumber, { name, number }]
+          treatmentNumber: [
+            ...state.treatmentNumber,
+            { id, name, number, isClick }
+          ]
         };
       }
     });

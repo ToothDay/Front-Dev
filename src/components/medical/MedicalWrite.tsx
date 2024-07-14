@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./MedicalWrite.module.scss";
 import BtnBottom from "../common/BtnBottom";
@@ -9,25 +9,34 @@ import TreatmentSelection from "./TreatmentSelection";
 import CostInput from "./CostInput";
 import ToothSelection from "./ToothSelection";
 import ShareOption from "./ShareOption";
+import { useTreatmentNumber } from "@/stores/medicalWrite";
 
 const MedicalWrite = () => {
   const [selectedTreatments, setSelectedTreatments] = useState<number[]>([]);
   const [isShare, setIsShare] = useState<boolean>(true);
   const [isClinic, setIsClinic] = useState<boolean>(false);
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
+  const { treatmentNumber } = useTreatmentNumber();
+  const [clickTreatment, setClickTreatment] = useState<boolean>(false);
 
-  // const clickTreatment = selectedTreatments.length > 0;
-
-  const clickTreatment = false;
+  useEffect(() => {
+    console.log(treatmentNumber);
+    if (treatmentNumber.length > 0) {
+      treatmentNumber.forEach((treatment) => {
+        if (treatment.number > 0) {
+          setClickTreatment(true);
+        } else {
+          setClickTreatment(false);
+        }
+      });
+    }
+  }, [treatmentNumber]);
 
   return (
     <form className={styles.writeForm}>
       <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic} />
       <DateInput isCalendar={isCalendar} setIsCalendar={setIsCalendar} />
-      <TreatmentSelection
-        selectedTreatments={selectedTreatments}
-        setSelectedTreatments={setSelectedTreatments}
-      />
+      <TreatmentSelection />
       <AnimatePresence>
         {clickTreatment && (
           <>

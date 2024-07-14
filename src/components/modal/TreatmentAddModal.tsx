@@ -66,7 +66,7 @@ const TreatmentAddModal = ({
   };
 
   const handleAddTreatment = () => {
-    updateOrAddTreatmentNumber(treatmentName, addNum);
+    updateOrAddTreatmentNumber(treatmentId, treatmentName, addNum, addNum > 0);
     closeModal();
   };
 

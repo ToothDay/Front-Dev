@@ -2,48 +2,42 @@ import { motion } from "framer-motion";
 import styles from "./TreatmentSelection.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import Modal from "@/components/modal/Modal";
-import TreatmentModal from "../modal/TreatmentModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useModalStore } from "@/stores/modal";
 import TreatmentAddModal from "../modal/TreatmentAddModal";
 import { useTreatmentNumber } from "@/stores/medicalWrite";
 
-type PropsTreatmentSelection = {
-  selectedTreatments: number[];
-  setSelectedTreatments: (
-    value: number[] | ((prev: number[]) => number[])
-  ) => void;
-};
-
-const TreatmentSelection = ({
-  selectedTreatments,
-  setSelectedTreatments
-}: PropsTreatmentSelection) => {
+const TreatmentSelection = () => {
   const { openModal } = useModalStore();
 
   const [treatmentName, setTreatmentName] = useState<string>("");
   const [treatmentId, setTreatmentId] = useState<number>(0);
-  const { treatmentNumber } = useTreatmentNumber();
+  const { treatmentNumber, updateOrAddTreatmentNumber } = useTreatmentNumber();
 
   const handleTreatmentClick = (id: number, name: string) => {
     setTreatmentName(name);
     setTreatmentId(id);
 
-    setSelectedTreatments((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter((selectedId) => selectedId !== id);
-      } else {
-        return [...prev, id];
-      }
-    });
-
     if (id !== 2 && id !== 7) {
       openModal();
+    } else {
+      if (
+        treatmentNumber.find((treatment) => treatment.name === name)?.number ===
+        1
+      ) {
+        updateOrAddTreatmentNumber(id, name, 0, false);
+      } else {
+        updateOrAddTreatmentNumber(id, name, 1, true);
+      }
     }
   };
 
   const checkTreatment = (name: string) => {
-    return treatmentNumber.find((treatment) => treatment.name === name);
+    const treatment = treatmentNumber.find(
+      (treatment) => treatment.name === name
+    );
+
+    return treatment && treatment.isClick;
   };
 
   return (
