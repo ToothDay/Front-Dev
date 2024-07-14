@@ -1,0 +1,12 @@
+@import "@/styles/common.scss";
+
+.main {
+  background-color: $white;
+  height: 100vh;
+  padding: 28px 24px 0;
+  overflow: auto;
+}
+
+.header {
+  margin-bottom: 22px;
+}
