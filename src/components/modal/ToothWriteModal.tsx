@@ -25,7 +25,6 @@ const ToothWriteModal = ({
   toothId
 }: ToothWriteModalProps) => {
   const { treatmentCostList } = useTreatmentCost();
-  const [selected, setSelected] = useState<boolean>(false);
   const [filterTreatment, setFilterTreatment] = useState<CostList[]>([]);
   const [selectedTreatment, setSelectedTreatment] = useState<
     SelectedTreatment[]
@@ -60,6 +59,12 @@ const ToothWriteModal = ({
         )
       );
     } else {
+      const sameTreatment = selectedTreatment.find(
+        (item) => item.category === treatment
+      );
+      if (sameTreatment) {
+        return;
+      }
       setSelectedTreatment((prevSelected) => [
         ...prevSelected,
         { ...clickTreatment, isCheck: true }
