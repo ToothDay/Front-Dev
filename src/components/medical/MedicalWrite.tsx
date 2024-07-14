@@ -10,6 +10,7 @@ import CostInput from "./CostInput";
 import ToothSelection from "./ToothSelection";
 import ShareOption from "./ShareOption";
 import { useTreatmentType } from "@/stores/medicalWrite";
+import Modal from "../modal/Modal";
 
 const MedicalWrite = () => {
   const [isShare, setIsShare] = useState<boolean>(true);
@@ -27,21 +28,24 @@ const MedicalWrite = () => {
   }, [treatmentType]);
 
   return (
-    <form className={styles.writeForm}>
-      <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic} />
-      <DateInput isCalendar={isCalendar} setIsCalendar={setIsCalendar} />
-      <TreatmentSelection />
-      <AnimatePresence>
-        {clickTreatment && (
-          <>
-            <CostInput />
-            <ToothSelection />
-            <ShareOption isShare={isShare} setIsShare={setIsShare} />
-            <BtnBottom btnType={false} title="기록 완료" />
-          </>
-        )}
-      </AnimatePresence>
-    </form>
+    <>
+      <form className={styles.writeForm}>
+        <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic} />
+        <DateInput isCalendar={isCalendar} setIsCalendar={setIsCalendar} />
+        <TreatmentSelection />
+        <AnimatePresence>
+          {clickTreatment && (
+            <>
+              <CostInput />
+              <ToothSelection />
+              <ShareOption isShare={isShare} setIsShare={setIsShare} />
+              <BtnBottom btnType={false} title="기록 완료" />
+            </>
+          )}
+        </AnimatePresence>
+      </form>
+      <Modal />
+    </>
   );
 };
 
