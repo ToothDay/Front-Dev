@@ -22,6 +22,7 @@ const CommunityWritePage = () => {
           <div className={styles.title}>제목</div>
           <input
             className={styles.titleMain}
+            maxLength={70}
             placeholder={"최대 70자 이내로 제목을 적어주세요."}
           ></input>
         </article>
