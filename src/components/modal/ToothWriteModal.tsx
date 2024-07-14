@@ -48,7 +48,7 @@ const ToothWriteModal = ({
       category: treatment,
       amount: cost,
       toothId: toothId,
-      isCheck: !selected
+      isCheck: false
     };
 
     const isCheck = selectedTreatment.find((item) => item.id === id);
