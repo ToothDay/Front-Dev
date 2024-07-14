@@ -1,9 +1,10 @@
 "use client";
 import styles from "@/components/modal/ToothWriteModal.module.scss";
 import BtnBottom from "../common/BtnBottom";
-import { useTreatmentCost } from "@/stores/medicalWrite";
+import { useCostList, useTreatmentCost } from "@/stores/medicalWrite";
 import { useEffect, useState } from "react";
 import { CostList } from "@/stores/medicalWrite";
+import { CostType } from "@/stores/medicalWrite";
 
 type ToothWriteModalProps = {
   toothId: number;
@@ -29,6 +30,9 @@ const ToothWriteModal = ({
   const [selectedTreatment, setSelectedTreatment] = useState<
     SelectedTreatment[]
   >([]);
+
+  const { selectedCost, updateSelectedCost } = useCostList();
+  const [isActiveBtn, setIsActiveBtn] = useState<boolean>(false);
 
   useEffect(() => {
     const filterTreatment = treatmentCostList.filter(
@@ -72,8 +76,38 @@ const ToothWriteModal = ({
     }
   };
 
+  const updateToothCost = () => {
+    const selectList = selectedTreatment.filter((item) => item.isCheck);
+    const totalCategoryCost = selectList.map((item) => {
+      return {
+        id: item.id,
+        category: item.category,
+        amount: Number(item.amount) ?? 0,
+        toothId: item.toothId
+      };
+    });
+    updateSelectedCost([...selectedCost, ...totalCategoryCost]);
+  };
+
+  const activeSelections = () => {
+    const select = selectedTreatment.filter((item) => item.isCheck);
+    if (select.length > 0) {
+      setIsActiveBtn(true);
+    } else {
+      setIsActiveBtn(false);
+    }
+  };
+
+  useEffect(() => {
+    activeSelections();
+  }, [selectedTreatment]);
+
   const getSelectedItem = (id: number) => {
     return selectedTreatment.find((item) => item.id === id)?.isCheck;
+  };
+
+  const saveCostList = () => {
+    updateToothCost();
   };
 
   return (
@@ -113,7 +147,9 @@ const ToothWriteModal = ({
           ))}
         </div>
       </div>
-      <BtnBottom btnType={false} title="기록 완료" />
+      <div onClick={saveCostList}>
+        <BtnBottom btnType={isActiveBtn} title="기록 완료" />
+      </div>
     </div>
   );
 };
