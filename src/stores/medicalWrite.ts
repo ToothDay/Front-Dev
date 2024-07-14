@@ -12,6 +12,12 @@ type TreatmentType = {
   isClick: boolean;
 };
 
+export type CostList = {
+  id: number;
+  name: string;
+  value: string;
+};
+
 type MedicalWriteState = {
   dentistId: number;
   visitDate: string;
@@ -31,6 +37,11 @@ type TreatmentTypeList = {
     number: number,
     isClick: boolean
   ) => void;
+};
+
+type TreatmentCost = {
+  treatmentCostList: CostList[];
+  updateTreatmentCost: (treatmentCostList: CostList[]) => void;
 };
 
 export const useMedicalWriteStore = create<MedicalWriteState>((set) => ({
@@ -89,6 +100,17 @@ export const useTreatmentType = create<TreatmentTypeList>((set) => ({
   }
 }));
 
+export const useTreatmentCost = create<TreatmentCost>((set) => ({
+  treatmentCostList: [],
+  updateTreatmentCost: (treatmentCostList: CostList[]) => {
+    set({ treatmentCostList });
+  }
+}));
+
 useTreatmentType.subscribe((state) => {
+  console.log("State changed:", state);
+});
+
+useTreatmentCost.subscribe((state) => {
   console.log("State changed:", state);
 });

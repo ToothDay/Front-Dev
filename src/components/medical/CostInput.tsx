@@ -1,47 +1,52 @@
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./CostInput.module.scss";
-import { useTreatmentType } from "../../stores/medicalWrite";
-import { useEffect, useState } from "react";
-
-type CostList = {
-  name: string;
-  value: string;
-};
+import { useTreatmentCost, useTreatmentType } from "../../stores/medicalWrite";
+import { useEffect } from "react";
+import { CostList } from "../../stores/medicalWrite";
 
 const CostInput = () => {
   const { treatmentType } = useTreatmentType();
-  const [costList, setCostList] = useState<CostList[]>([]);
+  const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
 
   const checkTreatmentCost = () => {
     const newCostList: CostList[] = [];
-    treatmentType.forEach((item) => {
+    treatmentType.forEach((item, index) => {
       if (item.number > 0) {
         for (let i = 0; i < item.number; i++) {
-          newCostList.push({ name: item.name, value: "" });
+          newCostList.push({
+            id: newCostList.length,
+            name: item.name,
+            value: ""
+          });
+          updateTreatmentCost(newCostList);
         }
       }
     });
-    setCostList(newCostList);
+    updateTreatmentCost(newCostList);
   };
 
   useEffect(() => {
     checkTreatmentCost();
   }, [treatmentType]);
 
+  useEffect(() => {
+    console.log(treatmentCostList);
+  }, [treatmentCostList]);
+
   const handleChangeCost = (index: number, value: string) => {
-    const newCostList = [...costList];
+    const newCostList = [...treatmentCostList];
     if (isNaN(Number(value))) {
       newCostList[index].value = "";
       return;
     }
     newCostList[index].value = value;
-    setCostList(newCostList);
+    updateTreatmentCost(newCostList);
   };
 
   const handleDeleteCost = (index: number) => {
-    const newCostList = [...costList];
+    const newCostList = [...treatmentCostList];
     newCostList[index].value = "";
-    setCostList(newCostList);
+    updateTreatmentCost(newCostList);
   };
 
   return (
@@ -60,7 +65,7 @@ const CostInput = () => {
       </span>
       <div className={styles.cost}>
         <AnimatePresence>
-          {costList.map((item, index) => (
+          {treatmentCostList.map((item, index) => (
             <motion.div
               className={styles.costInput}
               key={index}
