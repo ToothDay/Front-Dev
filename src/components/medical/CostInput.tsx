@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./CostInput.module.scss";
-import { useTreatmentCost, useTreatmentType } from "../../stores/medicalWrite";
+import { useTreatmentCost, useTreatmentType } from "@/stores/medicalWrite";
 import { useEffect } from "react";
-import { CostList } from "../../stores/medicalWrite";
+import { CostList } from "@/stores/medicalWrite";
 
 const CostInput = () => {
   const { treatmentType } = useTreatmentType();
