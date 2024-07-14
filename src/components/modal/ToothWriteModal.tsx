@@ -36,6 +36,7 @@ const ToothWriteModal = ({
   const [isActiveBtn, setIsActiveBtn] = useState<boolean>(false);
   const { closeModal } = useModalStore();
 
+  // 스케일링 잇몸 제외한 치료항목 필터링
   useEffect(() => {
     const filterTreatment = treatmentCostList.filter(
       (treatment) => treatment.name !== "스케일링" && treatment.name !== "잇몸"
@@ -43,6 +44,7 @@ const ToothWriteModal = ({
     setFilterTreatment(filterTreatment);
   }, [treatmentCostList]);
 
+  // 선택한 치료항목 추가, 중복 선택 방지
   const handleSelectedTreatment = (
     treatment: string,
     cost: string,
@@ -78,6 +80,7 @@ const ToothWriteModal = ({
     }
   };
 
+  //선택된 치료항목의 치료비용을 전역 상태에 저장
   const updateToothCost = () => {
     const selectList = selectedTreatment.filter((item) => item.isCheck);
     const totalCategoryCost = selectList.map((item) => {
@@ -91,23 +94,20 @@ const ToothWriteModal = ({
     updateSelectedCost([...selectedCost, ...totalCategoryCost]);
   };
 
-  const activeSelections = () => {
-    const select = selectedTreatment.filter((item) => item.isCheck);
-    if (select.length > 0) {
-      setIsActiveBtn(true);
-    } else {
-      setIsActiveBtn(false);
-    }
-  };
-
+  //선택된 치료항목에 따른 버튼 활성화
   useEffect(() => {
-    activeSelections();
+    const hasActiveTreatment = selectedTreatment.some(
+      (treatment) => treatment.isCheck
+    );
+    setIsActiveBtn(hasActiveTreatment);
   }, [selectedTreatment]);
 
+  //선택항복 체크 여부
   const getSelectedItem = (id: number) => {
     return selectedTreatment.find((item) => item.id === id)?.isCheck;
   };
 
+  //모달 닫기 및 치료비용 저장
   const saveCostList = () => {
     updateToothCost();
     closeModal();
