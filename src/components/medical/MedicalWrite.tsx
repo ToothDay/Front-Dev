@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import styles from "./MedicalWrite.module.scss";
 import BtnBottom from "../common/BtnBottom";
 import ClinicInput from "@/components/medical/ClinicInput";
@@ -12,7 +12,6 @@ import ShareOption from "./ShareOption";
 import { useTreatmentNumber } from "@/stores/medicalWrite";
 
 const MedicalWrite = () => {
-  const [selectedTreatments, setSelectedTreatments] = useState<number[]>([]);
   const [isShare, setIsShare] = useState<boolean>(true);
   const [isClinic, setIsClinic] = useState<boolean>(false);
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
