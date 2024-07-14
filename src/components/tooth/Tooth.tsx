@@ -8,11 +8,16 @@ import {
 
 type PropsTooth = {
   location: "left" | "right";
+  setIsDisplayModal?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Tooth = ({ location }: PropsTooth) => {
+const Tooth = ({ location, setIsDisplayModal }: PropsTooth) => {
   const topTooth = location === "left" ? LEFT_TOP : RIGHT_TOP;
   const bottomTooth = location === "left" ? LEFT_BOTTOM : RIGHT_BOTTOM;
+
+  const handleTooth = () => {
+    setIsDisplayModal && setIsDisplayModal((prev) => !prev);
+  };
 
   return (
     <div className={styles.toothWrap}>
@@ -24,6 +29,7 @@ const Tooth = ({ location }: PropsTooth) => {
               // selectedTooth === tooth.number ? styles.selected : ""
             ].join(" ")}
             key={tooth.number}
+            onClick={() => handleTooth()}
           >
             {tooth.name}
           </div>
@@ -37,6 +43,7 @@ const Tooth = ({ location }: PropsTooth) => {
               // selectedTooth === tooth.number ? styles.selected : ""
             ].join(" ")}
             key={tooth.number}
+            onClick={() => handleTooth()}
           >
             {tooth.name}
           </div>
