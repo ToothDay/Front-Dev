@@ -3,16 +3,21 @@ import styles from "./CostInput.module.scss";
 import { useTreatmentType } from "../../stores/medicalWrite";
 import { useEffect, useState } from "react";
 
+type CostList = {
+  name: string;
+  value: string;
+};
+
 const CostInput = () => {
   const { treatmentType } = useTreatmentType();
-  const [costList, setCostList] = useState<string[]>([]);
+  const [costList, setCostList] = useState<CostList[]>([]);
 
   const checkTreatmentCost = () => {
-    const newCostList: string[] = [];
+    const newCostList: CostList[] = [];
     treatmentType.forEach((item) => {
       if (item.number > 0) {
         for (let i = 0; i < item.number; i++) {
-          newCostList.push(item.name);
+          newCostList.push({ name: item.name, value: "" });
         }
       }
     });
@@ -22,6 +27,22 @@ const CostInput = () => {
   useEffect(() => {
     checkTreatmentCost();
   }, [treatmentType]);
+
+  const handleChangeCost = (index: number, value: string) => {
+    const newCostList = [...costList];
+    if (isNaN(Number(value))) {
+      newCostList[index].value = "";
+      return;
+    }
+    newCostList[index].value = value;
+    setCostList(newCostList);
+  };
+
+  const handleDeleteCost = (index: number) => {
+    const newCostList = [...costList];
+    newCostList[index].value = "";
+    setCostList(newCostList);
+  };
 
   return (
     <motion.div
@@ -48,16 +69,24 @@ const CostInput = () => {
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <label className={styles.costLabel}>{item}</label>
+              <label className={styles.costLabel}>{item.name}</label>
               <div className={styles.costInputBox}>
                 <input
                   type="text"
                   className={styles.costBox}
                   placeholder="숫자만 입력하세요."
+                  value={item.value}
+                  onChange={(e) => handleChangeCost(index, e.target.value)}
                 />
-                <button type="button" className={styles.deleteCost}>
-                  삭제
-                </button>
+                {item.value && (
+                  <button
+                    type="button"
+                    className={styles.deleteCost}
+                    onClick={() => handleDeleteCost(index)}
+                  >
+                    삭제
+                  </button>
+                )}
               </div>
               <span className={styles.costUnit}> 원</span>
             </motion.div>
