@@ -19,16 +19,11 @@ const MedicalWrite = () => {
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(treatmentNumber);
-    if (treatmentNumber.length > 0) {
-      treatmentNumber.forEach((treatment) => {
-        if (treatment.number > 0) {
-          setClickTreatment(true);
-        } else {
-          setClickTreatment(false);
-        }
-      });
-    }
+    treatmentNumber.filter((treatment) => {
+      return treatment.isClick;
+    }).length > 0
+      ? setClickTreatment(true)
+      : setClickTreatment(false);
   }, [treatmentNumber]);
 
   return (
