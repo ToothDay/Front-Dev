@@ -170,12 +170,17 @@ const ToothWriteModal = ({
     <div className={styles.write}>
       <div className={styles.writeTitle}>
         <img src={icon} alt="tooth" className={styles.teethImage} />
-        <p className={styles.teethName}>
-          {teethName} {toothId}
-        </p>
-        <p className={styles.subText}>
-          해당되는 치료를 선택해 주세요 <br /> 최대 3개까지 중복 가능합니다.
-        </p>
+        <p className={styles.teethName}>{teethName}</p>
+        {filterTreatment.length === 0 ? (
+          <p className={[styles.subText, styles.noText].join(" ")}>
+            모든 치료가 선택되어 <br /> 해당 치아에서 선택될 목록이 <br />
+            없습니다.
+          </p>
+        ) : (
+          <p className={styles.subText}>
+            해당되는 치료를 선택해 주세요 <br /> 최대 3개까지 중복 가능합니다.
+          </p>
+        )}
       </div>
       <div className={styles.teethBox}>
         <div className={styles.teethInfo}>
@@ -205,9 +210,15 @@ const ToothWriteModal = ({
           })}
         </div>
       </div>
-      <div onClick={saveCostList}>
-        <BtnBottom btnType={isActiveBtn} title="기록 완료" />
-      </div>
+      {filterTreatment.length === 0 ? (
+        <div onClick={closeModal}>
+          <button className={styles.confirm}>확인</button>
+        </div>
+      ) : (
+        <div onClick={saveCostList}>
+          <BtnBottom btnType={isActiveBtn} title="기록 완료" />
+        </div>
+      )}
     </div>
   );
 };
