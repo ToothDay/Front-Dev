@@ -26,9 +26,11 @@ const MyPage = () => {
           <img src="/profile.svg" alt="user-profile" />
           <div className={styles.userDetail}>
             <span className={styles.userName}>유저 닉네임</span>
-            <button type="button" className={styles.profileButton}>
-              프로필 편집
-            </button>
+            <Link href="/my-page/edit">
+              <button type="button" className={styles.profileButton}>
+                프로필 편집
+              </button>
+            </Link>
           </div>
         </article>
         <article className={styles.info}>
