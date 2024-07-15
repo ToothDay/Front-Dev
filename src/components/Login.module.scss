@@ -1,0 +1,18 @@
+@import "@/styles/common.scss";
+
+.googleButton {
+  width: 100%;
+  height: 52px;
+  background-color: $base-white;
+  border-radius: 15px;
+  @include font-style($body2);
+  color: $black;
+  border: 1px solid $blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &::before {
+    @include icon("/main/google.png", 24px, 24px);
+    margin-right: 8px;
+  }
+}
