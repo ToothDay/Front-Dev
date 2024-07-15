@@ -1,30 +1,42 @@
 "use client";
 
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import { useState } from "react";
+import { useMutation } from "react-query";
+import { fetchUserInfo, postUserInfo, UserInfo } from "@/api/authService";
+import { setToken } from "@/api/auth";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const router = useRouter();
+
+  const { mutate: fetchUser } = useMutation(fetchUserInfo, {
+    onSuccess: (data) => {
+      setUserInfo(data);
+      sendUserInfo(data);
+    },
+    onError: (error) => {
+      console.error("Failed to fetch user info", error);
+    }
+  });
+
+  const { mutate: sendUserInfo } = useMutation(postUserInfo, {
+    onSuccess: (data) => {
+      setToken(data);
+      setIsAuthenticated(true);
+      router.push("/medical");
+    },
+    onError: (error) => {
+      console.error("Failed to send user info", error);
+    }
+  });
 
   const googleSocialLogin = useGoogleLogin({
     scope: "email profile",
     onSuccess: async (tokenRes) => {
-      console.log("success", tokenRes);
-      try {
-        const response = await axios.get(
-          "https://www.googleapis.com/oauth2/v1/userinfo",
-          {
-            headers: {
-              Authorization: `Bearer ${tokenRes.access_token}`
-            }
-          }
-        );
-        setUserInfo(response.data);
-        console.log("User Info:", response.data);
-      } catch (error) {
-        console.error("Failed to fetch user info", error);
-      }
+      fetchUser(tokenRes.access_token);
     },
     onError: (errorResponse) => {
       console.error(errorResponse);
@@ -35,7 +47,7 @@ const Login = () => {
     googleSocialLogin();
   };
 
-  return <button onClick={handleLoginClick}>로그인</button>;
+  return <button onClick={handleLoginClick}>구글로 로그인하기</button>;
 };
 
 export default Login;

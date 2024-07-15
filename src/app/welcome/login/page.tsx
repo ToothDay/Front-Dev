@@ -34,9 +34,9 @@ const LoginPage = ({ searchParams }: PropsPage) => {
         </div>
         <div className={styles.loginWrapper}>
           <ScaleButton>
-            <p className={[styles.loginBtn, styles.google].join(" ")}>
-              구글로 로그인하기
-            </p>
+            <div className={[styles.loginBtn, styles.google].join(" ")}>
+              <Login />
+            </div>
           </ScaleButton>
           <ScaleButton>
             <Link href="/community">
@@ -45,7 +45,6 @@ const LoginPage = ({ searchParams }: PropsPage) => {
               </p>
             </Link>
           </ScaleButton>
-          <Login />
         </div>
       </section>
     </main>
