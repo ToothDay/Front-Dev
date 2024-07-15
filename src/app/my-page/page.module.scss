@@ -130,3 +130,33 @@
   right: 20px;
   bottom: 20px;
 }
+
+.serviceUse {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 38px;
+  padding: 0 32px 0;
+
+  .serviceBox {
+    padding-top: 13px;
+    padding-left: 6px;
+    border-top: 1px solid $grey1;
+  }
+
+  .serviceTitle {
+    @include font-style($body2);
+    color: $black;
+    margin-bottom: 12px;
+  }
+
+  .serviceText {
+    @include font-style($caption1);
+    color: $grey3;
+    margin-top: 13px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
