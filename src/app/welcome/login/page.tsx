@@ -34,9 +34,7 @@ const LoginPage = ({ searchParams }: PropsPage) => {
         </div>
         <div className={styles.loginWrapper}>
           <ScaleButton>
-            <div className={[styles.loginBtn, styles.google].join(" ")}>
-              <Login />
-            </div>
+            <Login />
           </ScaleButton>
           <ScaleButton>
             <Link href="/community">
