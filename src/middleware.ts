@@ -6,7 +6,6 @@ export function middleware(request: NextRequest) {
   if (!token) {
     return NextResponse.redirect(new URL("/welcome/login", request.url));
   }
-  console.log("Middleware: Token found, allowing access");
   return NextResponse.next();
 }
 
