@@ -37,6 +37,7 @@ const ToothWriteModal = ({
   const [filterTreatment, setFilterTreatment] = useState<SelectedTreatment[]>(
     []
   );
+  const [totalSaveNumber, setTotalSaveNumber] = useState<number>(0);
 
   // 선택된 치료항목에 따른 버튼 활성화
   useEffect(() => {
@@ -85,6 +86,14 @@ const ToothWriteModal = ({
       isCheck: !isCheck,
       isSaved
     };
+
+    const selectedTreatment = filterTreatment.filter(
+      (item) => item.isCheck
+    ).length;
+
+    if (selectedTreatment + totalSaveNumber > 2) {
+      return;
+    }
 
     setFilterTreatment((prev) => {
       const updateTreatment = prev.map((item) =>
@@ -165,6 +174,13 @@ const ToothWriteModal = ({
     updateToothCost();
     closeModal();
   };
+
+  useEffect(() => {
+    const selectedNumber = filterTreatment.filter(
+      (item) => item.isSaved
+    ).length;
+    setTotalSaveNumber(selectedNumber);
+  }, [filterTreatment]);
 
   return (
     <div className={styles.write}>
