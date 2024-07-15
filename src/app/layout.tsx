@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/globals.scss";
 import styles from "@/app/layout.module.scss";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "투스데이",
@@ -16,11 +16,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={styles.root}>
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
-        >
-          {children}
-        </GoogleOAuthProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
