@@ -222,7 +222,6 @@ const ToothWriteModal = ({
     });
 
     if (hasDuplicate) {
-      console.log(hasDuplicate);
       setIsDuplicateCategory(true);
       setIsActiveBtn(false);
       return;
