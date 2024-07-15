@@ -4,21 +4,29 @@ import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
 import ImageSwiper from "@/components/common/ImageSwiper";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
-import { SetStateAction, useState } from "react";
+import { useCallback, useState } from "react";
+import { debounce } from "lodash";
 
 const CommunityWritePage = () => {
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
   const [selected, setSelected] = useState<number[]>([]);
-  const handleTitleChange = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setTitle(e.target.value);
+
+  const debouncedSetTitle = useCallback(
+    debounce((value: string) => setTitle(value), 300),
+    []
+  );
+
+  const debouncedSetMainText = useCallback(
+    debounce((value: string) => setMainText(value), 300),
+    []
+  );
+
+  const handleTitleChange = (e: { target: { value: string } }) => {
+    debouncedSetTitle(e.target.value);
   };
-  const handleMainTextChange = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setMainText(e.target.value);
+  const handleMainTextChange = (e: { target: { value: string } }) => {
+    debouncedSetMainText(e.target.value);
   };
   const handleKeywordClick = (id: number) => {
     setSelected((prevSelected) =>
