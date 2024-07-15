@@ -87,11 +87,11 @@ const ToothWriteModal = ({
       isSaved
     };
 
-    const selectedTreatment = filterTreatment.filter(
+    const selectingTreatment = filterTreatment.filter(
       (item) => item.isCheck
     ).length;
 
-    if (selectedTreatment + totalSaveNumber > 2) {
+    if (selectingTreatment + totalSaveNumber > 2) {
       return;
     }
 
