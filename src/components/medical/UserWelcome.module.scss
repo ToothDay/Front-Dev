@@ -1,0 +1,39 @@
+@import "@/styles/common.scss";
+.myMedical {
+  margin-top: 24px;
+  width: 100%;
+  height: 100%;
+  background-color: $blue;
+  border-radius: 20px;
+  padding: 20px 91px;
+}
+
+.medicalText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 9px;
+  @include font-style($headline);
+  color: $white;
+  text-align: center;
+}
+
+.noDataText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.recordButton {
+  margin-top: 18px;
+  width: 100%;
+  height: 46px;
+  border-radius: 10px;
+  border: 2px solid $base-white;
+  text-align: center;
+  @include font-style($body3);
+  color: $base-white;
+}
