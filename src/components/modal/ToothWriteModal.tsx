@@ -91,7 +91,8 @@ const ToothWriteModal = ({
       (item) => item.isCheck
     ).length;
 
-    if (selectingTreatment + totalSaveNumber > 2) {
+    const totalSelected = selectingTreatment + totalSaveNumber;
+    if (!isCheck && totalSelected >= 3 && !isSaved) {
       return;
     }
 
@@ -181,6 +182,10 @@ const ToothWriteModal = ({
     ).length;
     setTotalSaveNumber(selectedNumber);
   }, [filterTreatment]);
+
+  useEffect(() => {
+    console.log("selectedTreatment", selectedTreatment);
+  }, [selectedTreatment]);
 
   return (
     <div className={styles.write}>
