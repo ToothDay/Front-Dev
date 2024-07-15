@@ -3,15 +3,25 @@
 import styles from "@/components/common/Tab.module.scss";
 import { useEffect } from "react";
 import { useTabStore } from "@/stores/tab";
+import Link from "next/link";
 
 type PropsTab = {
   pageType: "myPage" | "page";
   initialActiveTab: string;
 };
 
+type TabList = {
+  name: string;
+  route: string;
+};
+
 const Tab = ({ pageType, initialActiveTab }: PropsTab) => {
   const { activeTab, setActiveTab } = useTabStore();
-  const tabList: string[] = ["진료기록", "커뮤니티", "MY"];
+  const tabList: TabList[] = [
+    { name: "진료기록", route: "/medical" },
+    { name: "커뮤니티", route: "/community" },
+    { name: "MY", route: "/my-page" }
+  ];
 
   useEffect(() => {
     setActiveTab(initialActiveTab);
@@ -19,18 +29,18 @@ const Tab = ({ pageType, initialActiveTab }: PropsTab) => {
 
   return (
     <nav className={styles.nav}>
-      {tabList.map((tab: string, index: number) => (
+      {tabList.map((tab, index) => (
         <button
           type="button"
           key={index}
           className={[
             styles.tabButton,
             pageType === "myPage" ? styles.blue : "",
-            tab === activeTab ? styles.active : ""
+            tab.name === activeTab ? styles.active : ""
           ].join(" ")}
-          onClick={() => setActiveTab(tab)}
+          onClick={() => setActiveTab(tab.name)}
         >
-          {tab}
+          <Link href={tab.route}>{tab.name}</Link>
         </button>
       ))}
     </nav>
