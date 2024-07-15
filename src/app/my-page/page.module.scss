@@ -153,10 +153,11 @@
   }
 
   .serviceText {
+    display: block;
     @include font-style($caption1);
     color: $grey3;
-    margin-top: 13px;
     text-decoration: underline;
     cursor: pointer;
+    margin-bottom: 13px;
   }
 }

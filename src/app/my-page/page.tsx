@@ -71,8 +71,8 @@ const MyPage = () => {
       <section className={styles.serviceUse}>
         <div className={styles.serviceBox}>
           <h3 className={styles.serviceTitle}>서비스 이용 </h3>
-          <p className={styles.serviceText}>로그아웃</p>
-          {/* <p>회원탈퇴</p> */}
+          <button className={styles.serviceText}>로그아웃</button>
+          {/* <button className={styles.serviceText}>회원탈퇴</button> */}
         </div>
       </section>
     </main>
