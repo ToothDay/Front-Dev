@@ -1,5 +1,6 @@
 import styles from "@/app/my-page/page.module.scss";
 import Tab from "@/components/common/Tab";
+import Service from "@/components/mypage/Service";
 import Link from "next/link";
 
 type CommunityList = {
@@ -69,11 +70,7 @@ const MyPage = () => {
         ))}
       </section>
       <section className={styles.serviceUse}>
-        <div className={styles.serviceBox}>
-          <h3 className={styles.serviceTitle}>서비스 이용 </h3>
-          <button className={styles.serviceText}>로그아웃</button>
-          {/* <button className={styles.serviceText}>회원탈퇴</button> */}
-        </div>
+        <Service />
       </section>
     </main>
   );
