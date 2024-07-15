@@ -25,6 +25,12 @@ type CheckedTreatment = {
   checked: boolean;
 };
 
+type CategoryType = {
+  id: number;
+  category: string;
+  isSaved?: boolean;
+};
+
 const ToothWriteModal = ({
   teethName,
   icon,
@@ -44,6 +50,8 @@ const ToothWriteModal = ({
   const [totalSaveNumber, setTotalSaveNumber] = useState<CheckedTreatment[]>(
     []
   );
+  const [isDuplicateCategory, setIsDuplicateCategory] =
+    useState<boolean>(false);
 
   // 선택된 치료항목에 따른 버튼 활성화
   useEffect(() => {
@@ -175,6 +183,51 @@ const ToothWriteModal = ({
 
   // 모달 닫기 및 치료비용 저장
   const saveCostList = () => {
+    const selectedCategory: CategoryType[] = [];
+
+    selectedTreatment.forEach((item) => {
+      if (item.isCheck) {
+        selectedCategory.push({
+          id: item.id,
+          category: item.category,
+          isSaved: !item.isSaved
+        });
+      }
+    });
+
+    selectedCost.forEach((costItem) => {
+      if (!filterTreatment.find((item) => item.id === costItem.id)) {
+        return;
+      }
+      const exists = selectedCategory.some(
+        (catItem) => catItem.id === costItem.id
+      );
+      if (!exists) {
+        selectedCategory.push({
+          id: costItem.id,
+          category: costItem.category,
+          isSaved: true
+        });
+      }
+    });
+
+    const conflict = selectedCategory.filter((item) => item.isSaved);
+    const categorySet = new Set();
+    const hasDuplicate = conflict.some((item) => {
+      if (categorySet.has(item.category)) {
+        return true;
+      }
+      categorySet.add(item.category);
+      return false;
+    });
+
+    if (hasDuplicate) {
+      console.log(hasDuplicate);
+      setIsDuplicateCategory(true);
+      setIsActiveBtn(false);
+      return;
+    }
+
     updateToothCost();
     closeModal();
   };
@@ -202,6 +255,11 @@ const ToothWriteModal = ({
         ) : (
           <p className={styles.subText}>
             해당되는 치료를 선택해 주세요 <br /> 최대 3개까지 중복 가능합니다.
+          </p>
+        )}
+        {isDuplicateCategory && (
+          <p className={[styles.subText, styles.red].join(" ")}>
+            같은 종류의 치료는 <br /> 중복 선택이 불가능합니다!
           </p>
         )}
       </div>
