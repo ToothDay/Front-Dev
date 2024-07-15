@@ -4,7 +4,6 @@ import styles from "@/components/modal/ToothWriteModal.module.scss";
 import BtnBottom from "../common/BtnBottom";
 import { useCostList, useTreatmentCost } from "@/stores/medicalWrite";
 import { useModalStore } from "@/stores/modal";
-import { CostList } from "@/stores/medicalWrite";
 
 type ToothWriteModalProps = {
   toothId: number;
@@ -19,6 +18,11 @@ type SelectedTreatment = {
   toothId: number;
   isCheck: boolean;
   isSaved: boolean;
+};
+
+type CheckedTreatment = {
+  id: number;
+  checked: boolean;
 };
 
 const ToothWriteModal = ({
@@ -37,7 +41,9 @@ const ToothWriteModal = ({
   const [filterTreatment, setFilterTreatment] = useState<SelectedTreatment[]>(
     []
   );
-  const [totalSaveNumber, setTotalSaveNumber] = useState<number>(0);
+  const [totalSaveNumber, setTotalSaveNumber] = useState<CheckedTreatment[]>(
+    []
+  );
 
   // 선택된 치료항목에 따른 버튼 활성화
   useEffect(() => {
@@ -87,12 +93,9 @@ const ToothWriteModal = ({
       isSaved
     };
 
-    const selectingTreatment = filterTreatment.filter(
-      (item) => item.isCheck
-    ).length;
+    const selectedCount = totalSaveNumber.filter((item) => item.checked).length;
 
-    const totalSelected = selectingTreatment + totalSaveNumber;
-    if (!isCheck && totalSelected >= 3 && !isSaved) {
+    if (!isCheck && selectedCount >= 3 && !isSaved) {
       return;
     }
 
@@ -177,15 +180,14 @@ const ToothWriteModal = ({
   };
 
   useEffect(() => {
-    const selectedNumber = filterTreatment.filter(
-      (item) => item.isSaved
-    ).length;
+    const selectedNumber = filterTreatment.map((item) => ({
+      id: item.id,
+      checked:
+        (item.isSaved && !item.isCheck) || (item.isCheck && !item.isSaved)
+    }));
+
     setTotalSaveNumber(selectedNumber);
   }, [filterTreatment]);
-
-  useEffect(() => {
-    console.log("selectedTreatment", selectedTreatment);
-  }, [selectedTreatment]);
 
   return (
     <div className={styles.write}>
