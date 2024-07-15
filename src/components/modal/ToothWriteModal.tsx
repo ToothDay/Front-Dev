@@ -69,10 +69,6 @@ const ToothWriteModal = ({
     setFilterTreatment([...filteredTreatments]);
   }, [treatmentCostList, toothId, selectedCost]);
 
-  useEffect(() => {
-    console.log("filterTreatment", filterTreatment);
-  }, [filterTreatment]);
-
   // 선택한 치료항목 추가, 중복 선택 방지
   const handleSelectedTreatment = (
     treatment: string,
@@ -107,36 +103,52 @@ const ToothWriteModal = ({
     });
   };
 
-  useEffect(() => {
-    console.log("selectedTreatment:", selectedTreatment);
-  }, [selectedTreatment]);
-
   // 선택된 치료항목의 치료비용을 전역 상태에 저장
   const updateToothCost = () => {
-    selectedTreatment.forEach((item) => {
+    const updatedSelectedTreatment = selectedTreatment.map((item) => {
       if (item.isCheck) {
-        item.isSaved = true;
-        item.isCheck = false;
+        return { ...item, isSaved: true, isCheck: false };
+      }
+      return item;
+    });
+
+    setFilterTreatment((prev) =>
+      prev.map(
+        (item) =>
+          updatedSelectedTreatment.find(
+            (treatment) => treatment.id === item.id
+          ) ?? item
+      )
+    );
+
+    const selectList = updatedSelectedTreatment.filter((item) => item.isSaved);
+
+    let updatedSelectedCost = [...selectedCost];
+
+    selectList.forEach((item) => {
+      const existingIndex = updatedSelectedCost.findIndex(
+        (cost) => cost.id === item.id
+      );
+      if (existingIndex !== -1) {
+        updatedSelectedCost.splice(existingIndex, 1);
+      } else {
+        updatedSelectedCost.push({
+          id: item.id,
+          category: item.category,
+          amount: Number(item.amount) ?? 0,
+          toothId: item.toothId
+        });
       }
     });
 
-    setFilterTreatment((prev) => {
-      const updateTreatment = prev.map(
-        (item) =>
-          selectedTreatment.find((treatment) => treatment.id === item.id) ??
-          item
-      );
-      return updateTreatment;
-    });
+    updateSelectedCost(updatedSelectedCost);
 
-    const selectList = selectedTreatment.filter((item) => item.isSaved);
-    const totalCategoryCost = selectList.map((item) => ({
-      id: item.id,
-      category: item.category,
-      amount: Number(item.amount) ?? 0,
-      toothId: item.toothId
+    const finalUpdatedTreatment = updatedSelectedTreatment.map((item) => ({
+      ...item,
+      isSaved: false
     }));
-    updateSelectedCost([...selectedCost, ...totalCategoryCost]);
+
+    setSelectedTreatment(finalUpdatedTreatment);
   };
 
   // 선택항목 체크 여부 및 저장 여부
