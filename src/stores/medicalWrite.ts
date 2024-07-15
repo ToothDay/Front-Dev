@@ -18,6 +18,13 @@ export type CostList = {
   value: string;
 };
 
+export type CostType = {
+  id: number;
+  category: string;
+  amount: number;
+  toothId: number;
+};
+
 type MedicalWriteState = {
   dentistId: number;
   visitDate: string;
@@ -42,6 +49,11 @@ type TreatmentTypeList = {
 type TreatmentCost = {
   treatmentCostList: CostList[];
   updateTreatmentCost: (treatmentCostList: CostList[]) => void;
+};
+
+type CostTypeList = {
+  selectedCost: CostType[];
+  updateSelectedCost: (selectedCost: CostType[]) => void;
 };
 
 export const useMedicalWriteStore = create<MedicalWriteState>((set) => ({
@@ -107,10 +119,13 @@ export const useTreatmentCost = create<TreatmentCost>((set) => ({
   }
 }));
 
-useTreatmentType.subscribe((state) => {
-  console.log("State changed:", state);
-});
+export const useCostList = create<CostTypeList>((set) => ({
+  selectedCost: [],
+  updateSelectedCost: (selectedCost: CostType[]) => {
+    set({ selectedCost });
+  }
+}));
 
-useTreatmentCost.subscribe((state) => {
+useCostList.subscribe((state) => {
   console.log("State changed:", state);
 });

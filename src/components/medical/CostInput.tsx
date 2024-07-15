@@ -1,12 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./CostInput.module.scss";
-import { useTreatmentCost, useTreatmentType } from "@/stores/medicalWrite";
+import {
+  useCostList,
+  useTreatmentCost,
+  useTreatmentType
+} from "@/stores/medicalWrite";
 import { useEffect } from "react";
 import { CostList } from "@/stores/medicalWrite";
-
+import { CostType } from "@/stores/medicalWrite";
 const CostInput = () => {
   const { treatmentType } = useTreatmentType();
   const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
+  const { selectedCost, updateSelectedCost } = useCostList();
 
   const checkTreatmentCost = () => {
     const newCostList: CostList[] = [];
@@ -32,9 +37,23 @@ const CostInput = () => {
     checkTreatmentCost();
   }, [treatmentType]);
 
-  useEffect(() => {
-    console.log(treatmentCostList);
-  }, [treatmentCostList]);
+  const updateSelectedCostList = (
+    newCostList: CostList[],
+    selectedCost: CostType[]
+  ) => {
+    return selectedCost.map((selected) => {
+      const matchingCostItem = newCostList.find(
+        (cost) => cost.id === selected.id
+      );
+      if (
+        matchingCostItem &&
+        matchingCostItem.value !== String(selected.amount)
+      ) {
+        return { ...selected, amount: Number(matchingCostItem.value) };
+      }
+      return selected;
+    });
+  };
 
   const handleChangeCost = (index: number, value: string) => {
     const newCostList = [...treatmentCostList];
@@ -44,12 +63,18 @@ const CostInput = () => {
     }
     newCostList[index].value = value;
     updateTreatmentCost(newCostList);
+
+    const selectedCostList = updateSelectedCostList(newCostList, selectedCost);
+    updateSelectedCost(selectedCostList);
   };
 
   const handleDeleteCost = (index: number) => {
     const newCostList = [...treatmentCostList];
     newCostList[index].value = "";
     updateTreatmentCost(newCostList);
+
+    const selectedCostList = updateSelectedCostList(newCostList, selectedCost);
+    updateSelectedCost(selectedCostList);
   };
 
   return (

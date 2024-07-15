@@ -34,7 +34,9 @@ const ToothWriteModal = ({
     SelectedTreatment[]
   >([]);
   const [isActiveBtn, setIsActiveBtn] = useState<boolean>(false);
-  const selectActiveTreatment = [];
+  const [filterTreatment, setFilterTreatment] = useState<SelectedTreatment[]>(
+    []
+  );
 
   // 선택된 치료항목에 따른 버튼 활성화
   useEffect(() => {
@@ -45,34 +47,35 @@ const ToothWriteModal = ({
   }, [selectedTreatment]);
 
   // 스케일링 잇몸 제외한 치료항목 필터링 및 selectedCost 항목 제거
-  const filterTreatment = treatmentCostList
-    .filter(
-      (treatment) =>
-        treatment.name !== "스케일링" &&
-        treatment.name !== "잇몸" &&
-        !selectedCost.some((cost) => cost.id === treatment.id)
-    )
-    .map((treatment) => ({
-      id: treatment.id,
-      category: treatment.name,
-      amount: treatment.value,
-      toothId: 0,
-      isCheck: false,
-      isSelected: false
-    }));
+  useEffect(() => {
+    const initialTreatments = treatmentCostList
+      .filter(
+        (treatment) =>
+          treatment.name !== "스케일링" &&
+          treatment.name !== "잇몸" &&
+          !selectedCost.some((cost) => cost.id === treatment.id)
+      )
+      .map((treatment) => ({
+        id: treatment.id,
+        category: treatment.name,
+        amount: treatment.value,
+        toothId: 0,
+        isCheck: false,
+        isSelected: false
+      }));
 
-  const getList = selectedCost.filter((item) => item.toothId === toothId);
-  const listitem = getList.map((item) => {
-    return {
-      id: item.id,
-      category: item.category,
-      amount: String(item.amount),
-      toothId: item.toothId,
-      isCheck: false,
-      isSelected: true
-    };
-  });
-  filterTreatment.push(...listitem);
+    const selectedTreatments = selectedCost
+      .filter((item) => item.toothId === toothId)
+      .map((item) => ({
+        id: item.id,
+        category: item.category,
+        amount: String(item.amount),
+        toothId: item.toothId,
+        isCheck: false,
+        isSelected: true
+      }));
+    setFilterTreatment([...initialTreatments, ...selectedTreatments]);
+  }, [treatmentCostList, selectedCost, toothId]);
 
   // 선택한 치료항목 추가, 중복 선택 방지
   const handleSelectedTreatment = (
