@@ -10,12 +10,14 @@ const UserWelcome = () => {
     <section className={styles.medicalSection}>
       <div className={styles.myMedical}>
         <div className={styles.medicalText}>
-          <span className={styles.title}>
-            안녕하세요 {userProfile?.name} 님!
-          </span>
+          <span className={styles.title}>안녕하세요</span>
+          <span className={styles.name}>{userProfile?.name || "-"}님!</span>
           <div className={styles.noDataText}>
-            <span className={styles.text}>최근 진료기록이</span>
-            <span className={styles.text}>아직 없습니다.</span>
+            <span className={styles.text}>
+              최근 진료 기록이
+              <br />
+              아직 없습니다.
+            </span>
           </div>
         </div>
         <Link href="/medical/write">

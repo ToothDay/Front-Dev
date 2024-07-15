@@ -5,7 +5,7 @@
   height: 100%;
   background-color: $blue;
   border-radius: 20px;
-  padding: 20px 91px;
+  padding: 20px;
 }
 
 .medicalText {
@@ -13,8 +13,8 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 9px;
-  @include font-style($headline);
+  @include font-style($subtitle1);
+  line-height: 33px;
   color: $white;
   text-align: center;
 }
