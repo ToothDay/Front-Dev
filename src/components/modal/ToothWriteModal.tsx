@@ -18,7 +18,7 @@ type SelectedTreatment = {
   amount: string;
   toothId: number;
   isCheck: boolean;
-  isSelected: boolean;
+  isSaved: boolean;
 };
 
 const ToothWriteModal = ({
@@ -51,76 +51,85 @@ const ToothWriteModal = ({
     const initialTreatments = treatmentCostList
       .filter(
         (treatment) =>
-          treatment.name !== "스케일링" &&
-          treatment.name !== "잇몸" &&
-          !selectedCost.some((cost) => cost.id === treatment.id)
+          treatment.name !== "스케일링" && treatment.name !== "잇몸"
       )
       .map((treatment) => ({
         id: treatment.id,
         category: treatment.name,
         amount: treatment.value,
-        toothId: 0,
+        toothId:
+          selectedCost.find((cost) => cost.id === treatment.id)?.toothId || 0,
         isCheck: false,
-        isSelected: false
+        isSaved: !!selectedCost.find((cost) => cost.id === treatment.id)
       }));
 
-    const selectedTreatments = selectedCost
-      .filter((item) => item.toothId === toothId)
-      .map((item) => ({
-        id: item.id,
-        category: item.category,
-        amount: String(item.amount),
-        toothId: item.toothId,
-        isCheck: false,
-        isSelected: true
-      }));
-    setFilterTreatment([...initialTreatments, ...selectedTreatments]);
-  }, [treatmentCostList, selectedCost, toothId]);
+    const filteredTreatments = initialTreatments.filter(
+      (treatment) => treatment.toothId === 0 || treatment.toothId === toothId
+    );
+    setFilterTreatment([...filteredTreatments]);
+  }, [treatmentCostList, toothId, selectedCost]);
+
+  useEffect(() => {
+    console.log("filterTreatment", filterTreatment);
+  }, [filterTreatment]);
 
   // 선택한 치료항목 추가, 중복 선택 방지
   const handleSelectedTreatment = (
     treatment: string,
     cost: string,
-    id: number
+    id: number,
+    isCheck: boolean,
+    isSaved: boolean
   ) => {
     const clickTreatment = {
       id,
       category: treatment,
       amount: cost,
       toothId,
-      isCheck: false,
-      isSelected: false
+      isCheck: !isCheck,
+      isSaved
     };
 
-    setSelectedTreatment((prevSelected) => {
-      const isCheck = prevSelected.find((item) => item.id === id);
+    setFilterTreatment((prev) => {
+      const updateTreatment = prev.map((item) =>
+        item.id === id ? clickTreatment : item
+      );
+      return updateTreatment;
+    });
 
-      if (isCheck) {
-        return prevSelected.map((item) =>
-          item.id === id ? { ...item, isCheck: !item.isCheck } : item
-        );
+    setSelectedTreatment((prev) => {
+      const isExist = prev.find((item) => item.id === id);
+      if (isExist) {
+        return prev.map((item) => (item.id === id ? clickTreatment : item));
       } else {
-        const sameTreatment = prevSelected.find(
-          (item) => item.category === treatment && item.toothId === toothId
-        );
-        if (sameTreatment) {
-          return prevSelected;
-        }
-        return [...prevSelected, { ...clickTreatment, isCheck: true }];
+        return [...prev, clickTreatment];
       }
     });
   };
+
+  useEffect(() => {
+    console.log("selectedTreatment:", selectedTreatment);
+  }, [selectedTreatment]);
 
   // 선택된 치료항목의 치료비용을 전역 상태에 저장
   const updateToothCost = () => {
     selectedTreatment.forEach((item) => {
       if (item.isCheck) {
-        item.isSelected = true;
+        item.isSaved = true;
         item.isCheck = false;
       }
     });
 
-    const selectList = selectedTreatment.filter((item) => item.isSelected);
+    setFilterTreatment((prev) => {
+      const updateTreatment = prev.map(
+        (item) =>
+          selectedTreatment.find((treatment) => treatment.id === item.id) ??
+          item
+      );
+      return updateTreatment;
+    });
+
+    const selectList = selectedTreatment.filter((item) => item.isSaved);
     const totalCategoryCost = selectList.map((item) => ({
       id: item.id,
       category: item.category,
@@ -131,12 +140,12 @@ const ToothWriteModal = ({
   };
 
   // 선택항목 체크 여부 및 저장 여부
-  const getTreatmentStatus = (id: number) => {
-    const treatment = filterTreatment.find((item) => item.id === id);
-    return {
-      isCheck: treatment?.isCheck || false,
-      isSelected: treatment?.isSelected || false
-    };
+  const getClassName = (treatment: SelectedTreatment) => {
+    if (treatment.isSaved) {
+      return treatment.isCheck ? "" : styles.selected;
+    } else {
+      return treatment.isCheck ? styles.selected : "";
+    }
   };
 
   // 모달 닫기 및 치료비용 저장
@@ -159,19 +168,17 @@ const ToothWriteModal = ({
       <div className={styles.teethBox}>
         <div className={styles.teethInfo}>
           {filterTreatment.map((treatment) => {
-            const { isCheck, isSelected } = getTreatmentStatus(treatment.id);
             return (
               <div
                 key={treatment.id}
-                className={[
-                  styles.info,
-                  isSelected ? styles.selected : ""
-                ].join(" ")}
+                className={[styles.info, getClassName(treatment)].join(" ")}
                 onClick={() =>
                   handleSelectedTreatment(
                     treatment.category,
                     treatment.amount,
-                    treatment.id
+                    treatment.id,
+                    treatment.isCheck,
+                    treatment.isSaved
                   )
                 }
               >
