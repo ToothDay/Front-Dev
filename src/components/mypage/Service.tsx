@@ -1,15 +1,12 @@
 "use client";
 import styles from "./Service.module.scss";
-import { removeToken } from "@/api/auth";
+import { useModalStore } from "@/stores/modal";
 import { useRouter } from "next/navigation";
+import AccountActionModal from "../modal/\bAccountActionModal";
 
 const Service = () => {
   const router = useRouter();
-
-  const userLogout = () => {
-    removeToken();
-    router.push("/");
-  };
+  const { isOpen, openModal } = useModalStore();
 
   const cancelMembership = () => {
     console.log("회원탈퇴 로직");
@@ -19,6 +16,10 @@ const Service = () => {
     router.push("/my-page/terms");
   };
 
+  const logout = () => {
+    openModal(<AccountActionModal accountType="logout" />);
+  };
+
   return (
     <div className={styles.serviceUse}>
       <div className={styles.serviceBox}>
@@ -26,7 +27,7 @@ const Service = () => {
         <button className={styles.serviceText} onClick={goTermsOfService}>
           이용약관
         </button>
-        <button className={styles.serviceText} onClick={userLogout}>
+        <button className={styles.serviceText} onClick={logout}>
           로그아웃
         </button>
         <button className={styles.serviceText} onClick={cancelMembership}>
