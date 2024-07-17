@@ -3,6 +3,7 @@ import Tab from "@/components/common/Tab";
 import Service from "@/components/mypage/Service";
 import Link from "next/link";
 import UserProfileCard from "@/components/mypage/UserProfileCard";
+import Modal from "@/components/modal/Modal";
 
 type CommunityList = {
   title: string;
@@ -65,6 +66,7 @@ const MyPage = () => {
       <section className={styles.serviceUse}>
         <Service />
       </section>
+      <Modal />
     </main>
   );
 };
