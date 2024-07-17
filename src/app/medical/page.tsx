@@ -2,7 +2,6 @@ import styles from "./page.module.scss";
 import Tab from "@/components/common/Tab";
 import HistoryCard from "@/components/common/HistoryCard";
 import TreatmentSwiper from "@/components/common/TreatmentSwiper";
-import Link from "next/link";
 import UserWelcome from "@/components/medical/UserWelcome";
 
 const MedicalPage = () => {
