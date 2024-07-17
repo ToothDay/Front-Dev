@@ -23,7 +23,3 @@ export const useUserStore = create<UserInfoState>((set) => ({
     set({ userProfile });
   }
 }));
-
-useUserStore.subscribe((userInfo) => {
-  console.log(userInfo);
-});

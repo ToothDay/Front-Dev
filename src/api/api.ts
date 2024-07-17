@@ -11,7 +11,6 @@ const axiosTooth = axios.create({
 axiosTooth.interceptors.request.use(
   (config) => {
     const token = Cookies.get("jwtToken");
-    console.log("token", token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
