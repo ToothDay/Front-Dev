@@ -4,7 +4,7 @@ import styles from "./UserWelcome.module.scss";
 import Link from "next/link";
 
 const UserWelcome = () => {
-  const { userProfile, setUserProfile } = useUserStore();
+  const { userProfile } = useUserStore();
 
   return (
     <section className={styles.medicalSection}>
