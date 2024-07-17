@@ -6,6 +6,7 @@ import { useMutation } from "react-query";
 import { fetchUserInfo, postUserInfo, UserInfo } from "@/api/authService";
 import { setToken } from "@/api/auth";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/Auth";
 
 type LoginProps = {
   hasToken: boolean;
@@ -13,8 +14,8 @@ type LoginProps = {
 
 const Login = ({ hasToken }: LoginProps) => {
   const [userInformation, setUserInformation] = useState<UserInfo | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const router = useRouter();
+  const { setToken: setAuthToken } = useAuthStore();
 
   const { mutate: fetchUser } = useMutation(fetchUserInfo, {
     onSuccess: (data) => {
@@ -29,7 +30,7 @@ const Login = ({ hasToken }: LoginProps) => {
   const { mutate: sendUserInfo } = useMutation(postUserInfo, {
     onSuccess: (data) => {
       setToken(data);
-      setIsAuthenticated(true);
+      setAuthToken(data);
       router.push("/medical");
     },
     onError: (error) => {
