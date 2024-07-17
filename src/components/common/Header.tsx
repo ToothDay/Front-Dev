@@ -5,13 +5,18 @@ import { useRouter } from "next/navigation";
 
 type PropsHeader = {
   title?: string;
+  openModal?: () => void;
 };
 
-const Header = ({ title }: PropsHeader) => {
+const Header = ({ title, openModal }: PropsHeader) => {
   const router = useRouter();
 
   const handleBack = () => {
-    router.back();
+    if (openModal) {
+      openModal();
+    } else {
+      router.back();
+    }
   };
   return (
     <header className={styles.header} onClick={handleBack}>

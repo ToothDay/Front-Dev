@@ -1,25 +1,18 @@
 @import "@/styles/common.scss";
 
-.delete {
+.main {
   width: 212px;
   margin: 81px 31px;
 }
 
-.deleteTitle {
+.mainTitle {
   @include font-style($subtitle2);
-  color: $black;
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.deleteContent {
-  @include font-style($body2);
   color: $black;
   text-align: center;
   margin-bottom: 24px;
 }
 
-.deleteButton {
+.mainBtn {
   border: 1px solid #d9d9d9;
   border-radius: 8px;
   padding: 7px 16px;
@@ -28,6 +21,8 @@
   color: $black;
   display: block;
   margin: 0 auto;
+  background-color: $deepblue;
+  color: $base-white;
 
   & + & {
     margin-top: 10px;

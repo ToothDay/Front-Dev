@@ -6,11 +6,16 @@ import ImageSwiper from "@/components/common/ImageSwiper";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useState } from "react";
 import { debounce } from "lodash";
+import { useModalStore } from "@/stores/modal";
+import Modal from "@/components/modal/Modal";
+import DeleteModal from "@/components/modal/DeleteModal";
+import SimpleModal from "@/components/modal/SimpleModal";
 
 const CommunityWritePage = () => {
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
   const [selected, setSelected] = useState<number[]>([]);
+  const { openModal } = useModalStore();
 
   const debouncedSetTitle = debounce((value: string) => setTitle(value), 300);
 
@@ -18,7 +23,6 @@ const CommunityWritePage = () => {
     (value: string) => setMainText(value),
     300
   );
-
   const handleTitleChange = (e: { target: { value: string } }) => {
     debouncedSetTitle(e.target.value);
   };
@@ -43,7 +47,14 @@ const CommunityWritePage = () => {
   return (
     <main className={styles.main}>
       <div className={styles.header}>
-        <Header title="게시글 작성하기" />
+        <Header
+          title="게시글 작성하기"
+          openModal={() =>
+            openModal(
+              <DeleteModal deleteType={"write"} commentY={"네 취소할게요"} />
+            )
+          }
+        />
       </div>
       <section>
         <article className={styles.titleDiv}>
@@ -89,13 +100,19 @@ const CommunityWritePage = () => {
             ))}
           </div>
         </article>
-        <div className={styles.endBtnDiv}>
+        <div
+          className={styles.endBtnDiv}
+          onClick={() =>
+            openModal(<SimpleModal type={"writeY"} answer={"보러가기"} />)
+          }
+        >
           <BtnBottom
             btnType={title.length > 0 && mainText.length > 0 ? true : false}
             title="작성 완료"
           />
         </div>
       </section>
+      <Modal />
     </main>
   );
 };
