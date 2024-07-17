@@ -1,0 +1,43 @@
+@import "@/styles/common.scss";
+.main {
+  background-color: $white;
+  height: 100vh;
+}
+
+.error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorImg {
+  margin-top: 131px;
+}
+
+.title {
+  margin-top: 11px;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 41px;
+}
+
+.text {
+  @include font-style($body2);
+  text-align: center;
+  margin-top: 11px;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  @include font-style($body2);
+  margin-top: 49px;
+  color: $deepblue;
+
+  &::after {
+    @include icon("/arrow-right-blue.svg", 20px, 20px);
+  }
+}
