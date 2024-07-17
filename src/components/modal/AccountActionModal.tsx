@@ -3,6 +3,7 @@ import { useModalStore } from "@/stores/modal";
 import styles from "./AccountActionModal.module.scss";
 import { removeToken } from "@/api/auth";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/Auth";
 
 type PropsAccountModal = {
   accountType: string;
@@ -33,6 +34,7 @@ const ACCOUNT_TYPE: AccountType = {
 
 const AccountActionModal = ({ accountType }: PropsAccountModal) => {
   const { closeModal } = useModalStore();
+  const { setToken } = useAuthStore();
   const router = useRouter();
 
   const handleCancel = () => {
@@ -42,6 +44,7 @@ const AccountActionModal = ({ accountType }: PropsAccountModal) => {
   const handleAccount = () => {
     if (accountType === "logout") {
       removeToken();
+      setToken("");
       closeModal();
       router.push("/");
     } else {
