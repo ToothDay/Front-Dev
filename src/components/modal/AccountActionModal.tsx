@@ -49,6 +49,7 @@ const AccountActionModal = ({ accountType }: PropsAccountModal) => {
       router.push("/");
     } else {
       console.log("회원탈퇴 로직");
+      closeModal();
     }
   };
 

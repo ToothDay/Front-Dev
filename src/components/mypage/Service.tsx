@@ -9,7 +9,7 @@ const Service = () => {
   const { isOpen, openModal } = useModalStore();
 
   const cancelMembership = () => {
-    console.log("회원탈퇴 로직");
+    openModal(<AccountActionModal accountType="userDelete" />);
   };
 
   const goTermsOfService = () => {
