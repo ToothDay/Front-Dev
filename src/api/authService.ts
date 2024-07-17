@@ -33,3 +33,8 @@ export const fetchUserInfo = async (token: string): Promise<UserInfo> => {
   );
   return response.data;
 };
+
+export const fetchUserProfile = async () => {
+  const response = await axiosTooth.get("/api/user/profile");
+  return response.data;
+};
