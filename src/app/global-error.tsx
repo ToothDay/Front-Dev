@@ -3,7 +3,13 @@
 import Error from "@/components/error/Error";
 
 const GlobalError = () => {
-  return <Error errorType={"error"} />;
+  return (
+    <html>
+      <body>
+        <Error errorType={"client"} />
+      </body>
+    </html>
+  );
 };
 
 export default GlobalError;
