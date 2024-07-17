@@ -1,22 +1,30 @@
 "use client";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useQuery } from "react-query";
 import { fetchUserProfile } from "@/api/authService";
 import { useUserStore } from "@/stores/user";
 import Loading from "@/app/loading";
 import Error from "./error/Error";
 import { useAuthStore } from "@/stores/Auth";
+import Cookies from "js-cookie";
 
 const UserProfileProvider = ({ children }: { children: React.ReactNode }) => {
-  const { token, isAuthenticated } = useAuthStore();
+  const { token, isAuthenticated, setToken } = useAuthStore();
   const { setUserProfile } = useUserStore();
-  const router = useRouter();
+
+  useEffect(() => {
+    if (!token) {
+      const cookieToken = Cookies.get("jwtToken");
+      if (cookieToken) {
+        setToken(cookieToken);
+      }
+    }
+  }, [token, setToken]);
 
   const { data, error, isLoading } = useQuery({
     queryKey: "userProfile",
     queryFn: fetchUserProfile,
-    enabled: isAuthenticated,
+    enabled: !!token,
     onSuccess: (data) => {
       const profile = {
         id: data.id,
