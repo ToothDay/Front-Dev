@@ -46,7 +46,7 @@ const AccountActionModal = ({ accountType }: PropsAccountModal) => {
       removeToken();
       setToken("");
       closeModal();
-      router.push("/");
+      router.push("/welcome/login");
     } else {
       console.log("회원탈퇴 로직");
       closeModal();
