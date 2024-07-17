@@ -1,7 +1,9 @@
+"use client";
+
 import Error from "@/components/error/Error";
 
-const Custom404 = () => {
+const ServerError = () => {
   return <Error errorType={"server"} />;
 };
 
-export default Custom404;
+export default ServerError;
