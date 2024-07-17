@@ -6,7 +6,6 @@ import { useMutation } from "react-query";
 import { fetchUserInfo, postUserInfo, UserInfo } from "@/api/authService";
 import { setToken } from "@/api/auth";
 import { useRouter } from "next/navigation";
-import { useUserStore } from "@/stores/user";
 
 type LoginProps = {
   hasToken: boolean;
@@ -16,11 +15,6 @@ const Login = ({ hasToken }: LoginProps) => {
   const [userInformation, setUserInformation] = useState<UserInfo | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const router = useRouter();
-  const { setUserProfile } = useUserStore();
-
-  useEffect(() => {
-    userInformation && setUserProfile(userInformation);
-  }, [userInformation]);
 
   const { mutate: fetchUser } = useMutation(fetchUserInfo, {
     onSuccess: (data) => {
