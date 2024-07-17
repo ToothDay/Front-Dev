@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { UserInfo } from "@/api/authService";
+
+type UserInfo = {
+  id: string;
+  email: string;
+  profileImageUrl: string;
+  username: string;
+};
 
 type UserInfoState = {
   userProfile: UserInfo;
@@ -10,10 +16,8 @@ export const useUserStore = create<UserInfoState>((set) => ({
   userProfile: {
     id: "",
     email: "",
-    verified_email: false,
-    name: "",
-    given_name: "",
-    picture: ""
+    profileImageUrl: "",
+    username: ""
   },
   setUserProfile: (userProfile: UserInfo) => {
     set({ userProfile });
