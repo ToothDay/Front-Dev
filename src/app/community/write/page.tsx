@@ -4,7 +4,7 @@ import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
 import ImageSwiper from "@/components/common/ImageSwiper";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { debounce } from "lodash";
 
 const CommunityWritePage = () => {
@@ -12,14 +12,11 @@ const CommunityWritePage = () => {
   const [mainText, setMainText] = useState("");
   const [selected, setSelected] = useState<number[]>([]);
 
-  const debouncedSetTitle = useCallback(
-    debounce((value: string) => setTitle(value), 300),
-    []
-  );
+  const debouncedSetTitle = debounce((value: string) => setTitle(value), 300);
 
-  const debouncedSetMainText = useCallback(
-    debounce((value: string) => setMainText(value), 300),
-    []
+  const debouncedSetMainText = debounce(
+    (value: string) => setMainText(value),
+    300
   );
 
   const handleTitleChange = (e: { target: { value: string } }) => {
