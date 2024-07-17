@@ -3,6 +3,7 @@ import styles from "./page.module.scss";
 import ScaleButton from "@/components/motion/ScaleButton";
 import Link from "next/link";
 import Login from "@/components/Login";
+import { cookies } from "next/headers";
 
 type PropsPage = {
   searchParams: {
@@ -11,6 +12,9 @@ type PropsPage = {
 };
 
 const LoginPage = ({ searchParams }: PropsPage) => {
+  const cookieStore = cookies();
+  const token = cookieStore.get("jwtToken");
+
   return (
     <main className={styles.main}>
       {searchParams.type === "guest" && (
@@ -34,7 +38,7 @@ const LoginPage = ({ searchParams }: PropsPage) => {
         </div>
         <div className={styles.loginWrapper}>
           <ScaleButton>
-            <Login />
+            <Login hasToken={!!token?.value} />
           </ScaleButton>
           <ScaleButton>
             <Link href="/community">

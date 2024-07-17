@@ -8,7 +8,11 @@ import { setToken } from "@/api/auth";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/user";
 
-const Login = () => {
+type LoginProps = {
+  hasToken: boolean;
+};
+
+const Login = ({ hasToken }: LoginProps) => {
   const [userInformation, setUserInformation] = useState<UserInfo | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const router = useRouter();
@@ -50,6 +54,10 @@ const Login = () => {
   });
 
   const handleLoginClick = () => {
+    if (hasToken) {
+      router.push("/medical");
+      return;
+    }
     googleSocialLogin();
   };
 
