@@ -59,8 +59,8 @@ const MyPage = () => {
       <section className={styles.community}>
         <h2 className={styles.communityTitle}>커뮤니티</h2>
         {COMMUNITY_LIST.map((list: CommunityList) => (
-          <Link href={list.link}>
-            <article className={styles.communityList} key={list.icon}>
+          <Link href={list.link} key={list.icon}>
+            <article className={styles.communityList}>
               <p className={[styles.listTitle, styles[list.icon]].join(" ")}>
                 {list.title}
               </p>
