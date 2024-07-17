@@ -1,31 +1,51 @@
 import { motion } from "framer-motion";
 import styles from "./TreatmentSelection.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
+import { useModalStore } from "@/stores/modal";
+import TreatmentAddModal from "../modal/TreatmentAddModal";
+import { useTreatmentType } from "@/stores/medicalWrite";
 
-type PropsTreatmentSelection = {
-  selectedTreatments: number[];
-  setSelectedTreatments: (
-    value: number[] | ((prev: number[]) => number[])
-  ) => void;
-};
+const TreatmentSelection = () => {
+  const { openModal } = useModalStore();
 
-const TreatmentSelection = ({
-  selectedTreatments,
-  setSelectedTreatments
-}: PropsTreatmentSelection) => {
-  const handleTreatmentClick = (id: number) => {
-    return () => {
-      setSelectedTreatments((prev) => {
-        if (prev.includes(id)) {
-          const newTreatments = prev.filter((selectedId) => selectedId !== id);
-          return newTreatments;
-        }
-        if (prev.length < 3) {
-          return [...prev, id];
-        }
-        return prev;
-      });
-    };
+  const { treatmentType, updateOrAddTreatmentType } = useTreatmentType();
+
+  const handleTreatmentClick = (id: number, name: string) => {
+    if (id !== 1 && id !== 2) {
+      openModal(<TreatmentAddModal treatmentName={name} treatmentId={id} />);
+    } else {
+      if (
+        treatmentType.find((treatment) => treatment.name === name)?.number === 1
+      ) {
+        updateOrAddTreatmentType(id, name, 0, false);
+      } else {
+        updateOrAddTreatmentType(id, name, 1, true);
+      }
+    }
+  };
+
+  const checkTreatment = (name: string) => {
+    const treatment = treatmentType.find(
+      (treatment) => treatment.name === name
+    );
+
+    return treatment && treatment.isClick;
+  };
+
+  const checkTreatmentNumber = (name: string) => {
+    const treatment = treatmentType.find(
+      (treatment) => treatment.name === name
+    );
+
+    return treatment ? treatment.number : 0;
+  };
+
+  const isDisplayNumber = (name: string, number: number) => {
+    if (name === "스케일링" || name === "잇몸") {
+      return false;
+    }
+
+    return number > 0;
   };
 
   return (
@@ -49,11 +69,19 @@ const TreatmentSelection = ({
             key={treatment.id}
             className={[
               styles.treatmentButton,
-              selectedTreatments.includes(treatment.id) ? styles.selected : ""
+              checkTreatment(treatment.name) ? styles.selected : ""
             ].join(" ")}
-            onClick={handleTreatmentClick(treatment.id)}
+            onClick={() => {
+              handleTreatmentClick(treatment.id, treatment.name);
+            }}
           >
             {treatment.name}
+            {isDisplayNumber(
+              treatment.name,
+              checkTreatmentNumber(treatment.name)
+            )
+              ? ` ${checkTreatmentNumber(treatment.name)}개 `
+              : ""}
           </button>
         ))}
       </div>
