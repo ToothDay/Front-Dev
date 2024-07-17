@@ -1,0 +1,28 @@
+@import "@/styles/common.scss";
+
+.main {
+  height: 100vh;
+  background-color: $base-white;
+  overflow: auto;
+  padding: 28px 24px;
+  position: relative;
+}
+
+.terms {
+  margin-top: 43px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 34px;
+}
+
+.termHeader {
+  @include font-style($subtitle2);
+  color: $black;
+}
+
+.termContent {
+  @include font-style($body2);
+  color: $black;
+  margin-top: 12px;
+}
