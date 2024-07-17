@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const axiosTooth = axios.create({
   baseURL: "http://3.34.135.181:8000",
@@ -9,7 +10,8 @@ const axiosTooth = axios.create({
 
 axiosTooth.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("jwtToken");
+    const token = Cookies.get("jwtToken");
+    console.log("token", token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
