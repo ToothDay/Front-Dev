@@ -10,6 +10,6 @@ type AuthState = {
 export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   isAuthenticated: false,
-  setToken: (token) => set({ token, isAuthenticated: true }),
+  setToken: (token) => set({ token, isAuthenticated: !!token }),
   clearToken: () => set({ token: null, isAuthenticated: false })
 }));
