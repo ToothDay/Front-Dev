@@ -28,7 +28,7 @@
   padding: 12px 42px 12px 18px;
   position: relative;
   @include font-style($body2);
-  color: $grey2;
+  color: $black;
   &:focus {
     border: 1px solid $deepblue;
   }
