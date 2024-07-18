@@ -60,7 +60,7 @@ export const useMedicalWriteStore = create<MedicalWriteState>((set) => ({
   dentistId: 0,
   visitDate: "",
   treatmentList: [],
-  isShared: false,
+  isShared: true,
   updateDentistId: (dentistId: number) => {
     set({ dentistId });
   },
@@ -125,3 +125,19 @@ export const useCostList = create<CostTypeList>((set) => ({
     set({ selectedCost });
   }
 }));
+
+useCostList.subscribe((state) => {
+  console.log(state);
+});
+
+useTreatmentCost.subscribe((state) => {
+  console.log(state);
+});
+
+useTreatmentType.subscribe((state) => {
+  console.log(state);
+});
+
+useMedicalWriteStore.subscribe((state) => {
+  console.log(state);
+});
