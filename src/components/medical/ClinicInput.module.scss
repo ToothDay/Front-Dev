@@ -84,7 +84,7 @@
 }
 
 .clinicName {
-  @include font-style($body3);
+  @include font-style($body2);
   color: $black;
   line-height: 15px;
 }
@@ -101,4 +101,27 @@
   right: 18px;
   width: 24px;
   height: 24px;
+}
+
+.noData {
+  @include font-style($body2);
+  font-weight: 500;
+  color: $black;
+  margin: 0 auto;
+  margin-top: 34px;
+}
+
+.fold {
+  margin-top: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7px;
+  &::before {
+    @include icon("/caret-up.svg", 8px, 4px);
+  }
 }
