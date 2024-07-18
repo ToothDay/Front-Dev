@@ -34,18 +34,17 @@ const ToothSelection = () => {
 
   useEffect(() => {
     const notHasToothId = treatmentCostList
-      .filter((cost) => cost.name !== "스케일링" && cost.name !== "잇몸")
-      .map((treatment) => {
-        return {
-          category: treatment.name,
-          amount: Number(treatment.value)
-        };
-      });
+      .filter((cost) => cost.name === "스케일링" || cost.name === "잇몸")
+      .map((cost) => ({
+        category: cost.name,
+        amount: Number(cost.value)
+      }));
 
     const treatmentCost = selectedCost.map((cost) => {
       return {
         category: cost.category,
-        amount: cost.amount
+        amount: cost.amount,
+        toothId: cost.toothId
       };
     });
 
