@@ -55,12 +55,8 @@ const CostInput = () => {
     });
   };
 
-  const handleChangeCost = (index: number, value: string) => {
+  const updateCostList = (index: number, value: string) => {
     const newCostList = [...treatmentCostList];
-    if (isNaN(Number(value))) {
-      newCostList[index].value = "";
-      return;
-    }
     newCostList[index].value = value;
     updateTreatmentCost(newCostList);
 
@@ -68,13 +64,16 @@ const CostInput = () => {
     updateSelectedCost(selectedCostList);
   };
 
-  const handleDeleteCost = (index: number) => {
-    const newCostList = [...treatmentCostList];
-    newCostList[index].value = "";
-    updateTreatmentCost(newCostList);
+  const handleChangeCost = (index: number, value: string) => {
+    if (isNaN(Number(value))) {
+      updateCostList(index, "");
+      return;
+    }
+    updateCostList(index, value);
+  };
 
-    const selectedCostList = updateSelectedCostList(newCostList, selectedCost);
-    updateSelectedCost(selectedCostList);
+  const handleDeleteCost = (index: number) => {
+    updateCostList(index, "");
   };
 
   return (
