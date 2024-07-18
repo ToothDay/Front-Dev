@@ -13,6 +13,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.7",
     "axios": "^1.7.2",
+    "date-fns": "^3.6.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "framer-motion": "^11.3.2",
     "js-cookie": "^3.0.5",
