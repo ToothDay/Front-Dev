@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "@/app/globals.scss";
 import styles from "@/app/layout.module.scss";
+import Providers from "@/components/Providers";
+import UserProfileProvider from "@/components/UserProfileProvider";
 
 export const metadata: Metadata = {
   title: "투스데이",
@@ -14,7 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={styles.root}>{children}</body>
+      <body className={styles.root}>
+        <Providers>
+          <UserProfileProvider>{children}</UserProfileProvider>
+        </Providers>
+      </body>
     </html>
   );
 }

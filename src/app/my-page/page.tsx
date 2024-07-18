@@ -1,5 +1,6 @@
 import styles from "@/app/my-page/page.module.scss";
 import Tab from "@/components/common/Tab";
+import Service from "@/components/mypage/Service";
 import Link from "next/link";
 
 type CommunityList = {
@@ -25,9 +26,11 @@ const MyPage = () => {
           <img src="/profile.svg" alt="user-profile" />
           <div className={styles.userDetail}>
             <span className={styles.userName}>유저 닉네임</span>
-            <button type="button" className={styles.profileButton}>
-              프로필 편집
-            </button>
+            <Link href="/my-page/edit">
+              <button type="button" className={styles.profileButton}>
+                프로필 편집
+              </button>
+            </Link>
           </div>
         </article>
         <article className={styles.info}>
@@ -56,8 +59,8 @@ const MyPage = () => {
       <section className={styles.community}>
         <h2 className={styles.communityTitle}>커뮤니티</h2>
         {COMMUNITY_LIST.map((list: CommunityList) => (
-          <Link href={list.link}>
-            <article className={styles.communityList} key={list.icon}>
+          <Link href={list.link} key={list.icon}>
+            <article className={styles.communityList}>
               <p className={[styles.listTitle, styles[list.icon]].join(" ")}>
                 {list.title}
               </p>
@@ -67,6 +70,9 @@ const MyPage = () => {
             </article>
           </Link>
         ))}
+      </section>
+      <section className={styles.serviceUse}>
+        <Service />
       </section>
     </main>
   );

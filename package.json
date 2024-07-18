@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
+    "@types/js-cookie": "^3.0.6",
+    "axios": "^1.7.2",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "framer-motion": "^11.3.2",
+    "js-cookie": "^3.0.5",
     "next": "14.2.4",
     "react": "^18.3.1",
     "react-calendar": "^5.0.0",
     "react-dom": "^18.3.1",
+    "react-query": "^3.39.3",
     "swiper": "^11.1.4",
     "zustand": "^4.5.4"
   },

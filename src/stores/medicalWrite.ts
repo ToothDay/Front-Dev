@@ -125,7 +125,3 @@ export const useCostList = create<CostTypeList>((set) => ({
     set({ selectedCost });
   }
 }));
-
-useCostList.subscribe((state) => {
-  console.log("State changed:", state);
-});
