@@ -6,8 +6,8 @@ import {
   useTreatmentType
 } from "@/stores/medicalWrite";
 import { useEffect } from "react";
-import { CostList } from "@/stores/medicalWrite";
-import { CostType } from "@/stores/medicalWrite";
+import { CostList, CostType } from "@/stores/medicalWrite";
+
 const CostInput = () => {
   const { treatmentType } = useTreatmentType();
   const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
@@ -127,6 +127,9 @@ const CostInput = () => {
             </motion.div>
           ))}
         </AnimatePresence>
+        {/* <span className={styles.errorText}>
+          각 치료의 비용을 입력해 주세요.
+        </span> */}
       </div>
     </motion.div>
   );
