@@ -3,6 +3,7 @@ import { create } from "zustand";
 type TreatmentList = {
   category: string;
   amount: number;
+  toothId?: number;
 };
 
 type TreatmentType = {
