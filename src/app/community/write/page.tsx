@@ -4,21 +4,30 @@ import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
 import ImageSwiper from "@/components/common/ImageSwiper";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
+import { debounce } from "lodash";
+import { useModalStore } from "@/stores/modal";
+import Modal from "@/components/modal/Modal";
+import DeleteModal from "@/components/modal/DeleteModal";
+import SimpleModal from "@/components/modal/SimpleModal";
 
 const CommunityWritePage = () => {
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
   const [selected, setSelected] = useState<number[]>([]);
-  const handleTitleChange = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setTitle(e.target.value);
+  const { openModal } = useModalStore();
+
+  const debouncedSetTitle = debounce((value: string) => setTitle(value), 300);
+
+  const debouncedSetMainText = debounce(
+    (value: string) => setMainText(value),
+    300
+  );
+  const handleTitleChange = (e: { target: { value: string } }) => {
+    debouncedSetTitle(e.target.value);
   };
-  const handleMainTextChange = (e: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setMainText(e.target.value);
+  const handleMainTextChange = (e: { target: { value: string } }) => {
+    debouncedSetMainText(e.target.value);
   };
   const handleKeywordClick = (id: number) => {
     setSelected((prevSelected) =>
@@ -38,7 +47,14 @@ const CommunityWritePage = () => {
   return (
     <main className={styles.main}>
       <div className={styles.header}>
-        <Header title="게시글 작성하기" />
+        <Header
+          title="게시글 작성하기"
+          openModal={() =>
+            openModal(
+              <DeleteModal deleteType={"write"} commentY={"네 취소할게요"} />
+            )
+          }
+        />
       </div>
       <section>
         <article className={styles.titleDiv}>
@@ -84,13 +100,19 @@ const CommunityWritePage = () => {
             ))}
           </div>
         </article>
-        <div className={styles.endBtnDiv}>
+        <div
+          className={styles.endBtnDiv}
+          onClick={() =>
+            openModal(<SimpleModal type={"writeY"} answer={"보러가기"} />)
+          }
+        >
           <BtnBottom
             btnType={title.length > 0 && mainText.length > 0 ? true : false}
             title="작성 완료"
           />
         </div>
       </section>
+      <Modal />
     </main>
   );
 };
