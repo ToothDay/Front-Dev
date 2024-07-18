@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import styles from "./MedicalWrite.module.scss";
 import BtnBottom from "../common/BtnBottom";
 import ClinicInput from "@/components/medical/ClinicInput";
@@ -9,8 +9,21 @@ import TreatmentSelection from "./TreatmentSelection";
 import CostInput from "./CostInput";
 import ToothSelection from "./ToothSelection";
 import ShareOption from "./ShareOption";
-import { useTreatmentType } from "@/stores/medicalWrite";
+import {
+  TreatmentList,
+  useMedicalWriteStore,
+  useTreatmentType
+} from "@/stores/medicalWrite";
 import Modal from "../modal/Modal";
+import { useMutation } from "react-query";
+import { saveMyDentist } from "@/api/medicalRecord";
+
+export type SaveParams = {
+  dentistId: number;
+  visitDate: string;
+  treatmentList: TreatmentList[];
+  isShared: boolean;
+};
 
 const MedicalWrite = () => {
   const [isShare, setIsShare] = useState<boolean>(true);
@@ -18,6 +31,17 @@ const MedicalWrite = () => {
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
   const { treatmentType } = useTreatmentType();
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
+  const { dentistId, visitDate, treatmentList, isShared } =
+    useMedicalWriteStore();
+
+  const [isFill, setIsFill] = useState<boolean>(false);
+
+  const [params, setParams] = useState<SaveParams>({
+    dentistId: 0,
+    visitDate: "",
+    treatmentList: [],
+    isShared: true
+  });
 
   useEffect(() => {
     treatmentType.filter((treatment) => {
@@ -26,6 +50,31 @@ const MedicalWrite = () => {
       ? setClickTreatment(true)
       : setClickTreatment(false);
   }, [treatmentType]);
+
+  useEffect(() => {
+    setParams({
+      dentistId,
+      visitDate,
+      treatmentList,
+      isShared
+    });
+  }, [dentistId, visitDate, treatmentList, isShared]);
+
+  const mutation = useMutation({
+    mutationFn: () => saveMyDentist(params),
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error("Failed to save my history", error);
+    }
+  });
+
+  const handleClick = () => {
+    if (isFill) {
+      mutation.mutate();
+    }
+  };
 
   return (
     <>
@@ -39,7 +88,9 @@ const MedicalWrite = () => {
               <CostInput />
               <ToothSelection />
               <ShareOption isShare={isShare} setIsShare={setIsShare} />
-              <BtnBottom btnType={false} title="기록 완료" />
+              <div onClick={handleClick}>
+                <BtnBottom btnType={false} title="기록 완료" />
+              </div>
             </>
           )}
         </AnimatePresence>
