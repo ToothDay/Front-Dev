@@ -6,6 +6,7 @@ import _ from "lodash";
 import { useQuery } from "react-query";
 import { searchDentist } from "@/api/medicalRecord";
 import Loading from "@/app/loading";
+import Highlight from "../common/Higtlight";
 
 type PropsClinicInput = {
   isClinic: boolean;
@@ -68,6 +69,11 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
     searchRef.current?.focus();
   };
 
+  const selectClinic = (name: string) => {
+    setIsClinic(false);
+    setSearchName(name);
+  };
+
   return (
     <motion.div
       className={styles.writeWrapper}
@@ -128,10 +134,20 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
                   </li>
                 ))}
               {data?.map((clinic: any, index: number) => (
-                <li key={index} className={styles.clinicItem}>
+                <li
+                  key={index}
+                  className={styles.clinicItem}
+                  onClick={() => {
+                    selectClinic(clinic.dentistName);
+                  }}
+                >
                   <div className={styles.clinicInfo}>
                     <span className={styles.clinicName}>
-                      {clinic.dentistName}
+                      <Highlight
+                        text={clinic.dentistName}
+                        highlight={searchName}
+                        color={"black"}
+                      />
                     </span>
                     <span className={styles.clinicLocation}>
                       {clinic.dentistAddress}

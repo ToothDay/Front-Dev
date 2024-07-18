@@ -16,7 +16,7 @@
   border-radius: 10px;
   border: 1px solid $grey1;
   @include font-style($body2);
-  color: $grey2;
+  color: $black;
 
   &:focus-within {
     border-color: $deepblue;
@@ -28,6 +28,11 @@
     border-right: 1px solid $deepblue;
     border-top: 1px solid $deepblue;
     border-bottom: 1px solid $grey1;
+  }
+
+  &::placeholder {
+    @include font-style($body2);
+    color: $grey2;
   }
 }
 
@@ -124,4 +129,8 @@
   &::before {
     @include icon("/caret-up.svg", 8px, 4px);
   }
+}
+
+.highlight {
+  font-weight: 600;
 }

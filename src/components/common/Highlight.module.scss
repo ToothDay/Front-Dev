@@ -1,0 +1,13 @@
+@import "@/styles/common.scss";
+
+.highlight {
+  &.black {
+    font-weight: 600;
+    color: $black;
+  }
+
+  &.blue {
+    font-weight: 600;
+    color: $blue;
+  }
+}
