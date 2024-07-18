@@ -154,6 +154,7 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
         </AnimatePresence>
         <img src="/search-icon.svg" alt="search" className={styles.inputIcon} />
       </div>
+      <span className={styles.errorText}>치과명을 입력해 주세요.</span>
     </motion.div>
   );
 };

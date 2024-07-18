@@ -102,6 +102,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
           </motion.div>
         )}
       </AnimatePresence>
+      <span className={styles.errorText}>날짜를 선택해 주세요.</span>
     </motion.div>
   );
 };
