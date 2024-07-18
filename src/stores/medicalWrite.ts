@@ -45,6 +45,7 @@ type TreatmentTypeList = {
     number: number,
     isClick: boolean
   ) => void;
+  clearTreatmentType: () => void;
 };
 
 type TreatmentCost = {
@@ -110,6 +111,9 @@ export const useTreatmentType = create<TreatmentTypeList>((set) => ({
         };
       }
     });
+  },
+  clearTreatmentType: () => {
+    set({ treatmentType: [] });
   }
 }));
 

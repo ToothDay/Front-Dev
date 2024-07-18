@@ -1,10 +1,15 @@
 "use client";
 import { useUserStore } from "@/stores/user";
 import styles from "./UserWelcome.module.scss";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const UserWelcome = () => {
   const { userProfile } = useUserStore();
+  const router = useRouter();
+
+  const handleButtonClick = () => {
+    router.push("/medical/write");
+  };
 
   return (
     <section className={styles.medicalSection}>
@@ -22,11 +27,13 @@ const UserWelcome = () => {
             </span>
           </div>
         </div>
-        <Link href="/medical/write">
-          <button type="button" className={styles.recordButton}>
-            진료 기록하러 가기
-          </button>
-        </Link>
+        <button
+          type="button"
+          className={styles.recordButton}
+          onClick={handleButtonClick}
+        >
+          진료 기록하러 가기
+        </button>
       </div>
     </section>
   );

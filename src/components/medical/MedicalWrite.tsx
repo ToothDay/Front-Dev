@@ -19,6 +19,7 @@ import { useMutation } from "react-query";
 import { saveMyDentist } from "@/api/medicalRecord";
 import { useRouter } from "next/navigation";
 import Error from "../error/Error";
+import Loading from "@/app/loading";
 
 export type SaveParams = {
   dentistId: number;
@@ -31,7 +32,7 @@ const MedicalWrite = () => {
   const [isShare, setIsShare] = useState<boolean>(true);
   const [isClinic, setIsClinic] = useState<boolean>(false);
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
-  const { treatmentType } = useTreatmentType();
+  const { treatmentType, clearTreatmentType } = useTreatmentType();
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
   const { dentistId, visitDate, treatmentlist, isShared } =
     useMedicalWriteStore();
@@ -44,6 +45,10 @@ const MedicalWrite = () => {
     treatmentlist: [],
     isShared: true
   });
+
+  useEffect(() => {
+    clearTreatmentType();
+  }, []);
 
   const router = useRouter();
 
@@ -77,7 +82,8 @@ const MedicalWrite = () => {
     }
   });
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
     if (isFill) {
       mutation.mutate();
     }
@@ -103,6 +109,7 @@ const MedicalWrite = () => {
         </AnimatePresence>
       </form>
       <Modal />
+      {mutation.isLoading && <Loading />}
       {mutation.error && <Error errorType="error" />}
     </>
   );
