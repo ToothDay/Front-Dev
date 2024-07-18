@@ -24,7 +24,11 @@
   @include font-style($body2);
 }
 
-.image {
+.image-write {
   width: 116px;
   height: 116px;
+}
+.image-read {
+  width: 200px;
+  height: 200px;
 }
