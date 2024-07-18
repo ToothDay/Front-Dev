@@ -46,7 +46,6 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
     }
   );
 
-  console.log("data", data);
   const getSearchData = useCallback(
     _.debounce((value: string) => {
       setDebouncedQuery(value);
