@@ -2,7 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "./DateInput.module.scss";
 import CustomCalendar from "../common/CustomCalendar";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { formatKoreaDate } from "@/util/formatDate";
+import { formatIsoDate, formatKoreaDate } from "@/util/formatDate";
+import { useMedicalWriteStore } from "@/stores/medicalWrite";
 
 type PropsDateInput = {
   isCalendar: boolean;
@@ -22,6 +23,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
 
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [value, setValue] = useState<Value>(null);
+  const { updateVisitDate } = useMedicalWriteStore();
 
   const formattedDate = useMemo(() => {
     if (value instanceof Date) {
@@ -33,6 +35,12 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
   useEffect(() => {
     setSelectedValue(formattedDate);
   }, [formattedDate]);
+
+  useEffect(() => {
+    if (value instanceof Date) {
+      updateVisitDate(formatIsoDate(value));
+    }
+  }, [value]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -106,7 +114,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
           )}
         </AnimatePresence>
       </div>
-      <span className={styles.errorText}>날짜를 선택해 주세요.</span>
+      {/* <span className={styles.errorText}>날짜를 선택해 주세요.</span> */}
     </motion.div>
   );
 };
