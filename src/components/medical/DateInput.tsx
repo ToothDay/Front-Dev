@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./DateInput.module.scss";
 import CustomCalendar from "../common/CustomCalendar";
+import { useEffect, useRef } from "react";
 
 type PropsDateInput = {
   isCalendar: boolean;
@@ -14,6 +15,24 @@ const slideInVariants = {
 };
 
 const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsCalendar(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]);
+
   return (
     <motion.div
       className={styles.writeWrapper}
@@ -52,6 +71,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
+            ref={wrapperRef}
           >
             <CustomCalendar />
           </motion.div>
