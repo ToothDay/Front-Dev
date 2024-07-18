@@ -2,6 +2,8 @@ import styles from "@/app/my-page/page.module.scss";
 import Tab from "@/components/common/Tab";
 import Service from "@/components/mypage/Service";
 import Link from "next/link";
+import UserProfileCard from "@/components/mypage/UserProfileCard";
+import Modal from "@/components/modal/Modal";
 
 type CommunityList = {
   title: string;
@@ -22,17 +24,7 @@ const MyPage = () => {
         <div className={styles.tab}>
           <Tab pageType="myPage" initialActiveTab="MY" />
         </div>
-        <article className={styles.user}>
-          <img src="/profile.svg" alt="user-profile" />
-          <div className={styles.userDetail}>
-            <span className={styles.userName}>유저 닉네임</span>
-            <Link href="/my-page/edit">
-              <button type="button" className={styles.profileButton}>
-                프로필 편집
-              </button>
-            </Link>
-          </div>
-        </article>
+        <UserProfileCard />
         <article className={styles.info}>
           <Link href="/my-page/history">
             <div className={styles.infoBox}>
@@ -74,6 +66,7 @@ const MyPage = () => {
       <section className={styles.serviceUse}>
         <Service />
       </section>
+      <Modal />
     </main>
   );
 };
