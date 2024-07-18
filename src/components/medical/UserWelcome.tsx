@@ -11,7 +11,9 @@ const UserWelcome = () => {
       <div className={styles.myMedical}>
         <div className={styles.medicalText}>
           <span className={styles.title}>안녕하세요</span>
-          <span className={styles.name}>{userProfile?.username || "-"}님!</span>
+          <span className={styles.name}>
+            {userProfile?.username || "회원"}님!
+          </span>
           <div className={styles.noDataText}>
             <span className={styles.text}>
               최근 진료 기록이

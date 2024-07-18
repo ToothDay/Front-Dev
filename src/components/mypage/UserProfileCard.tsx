@@ -25,7 +25,7 @@ const UserProfileCard = () => {
         blurDataURL="/profile.svg"
       />
       <div className={styles.userDetail}>
-        <span className={styles.userName}>{username || "-"}</span>
+        <span className={styles.userName}>{username || "회원님"}</span>
         <Link href="/my-page/edit">
           <button type="button" className={styles.profileButton}>
             프로필 편집

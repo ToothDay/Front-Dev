@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
 import styles from "./ShareOption.module.scss";
+import { useUserStore } from "@/stores/user";
+import { useMedicalWriteStore } from "@/stores/medicalWrite";
+import { useEffect } from "react";
 
 type PropsShareOption = {
   isShare: boolean;
@@ -16,6 +19,14 @@ const ShareOption = ({ isShare, setIsShare }: PropsShareOption) => {
     { label: "네", value: true },
     { label: "아니요", value: false }
   ];
+
+  const { userProfile } = useUserStore();
+  const { updateIsShared } = useMedicalWriteStore();
+
+  useEffect(() => {
+    updateIsShared(isShare);
+  }, [isShare]);
+
   return (
     <motion.div
       className={styles.writeWrapper}
@@ -28,7 +39,7 @@ const ShareOption = ({ isShare, setIsShare }: PropsShareOption) => {
         다른 사용자들에게 <br /> 기록을 공유할까요?
       </label>
       <span className={styles.helperText}>
-        -- 님의 기록이 다른 사용자들에게
+        {userProfile?.username || "회원"} 님의 기록이 다른 사용자들에게
         <br />
         좋은 정보가 될 수 있어요!
       </span>
