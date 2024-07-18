@@ -39,13 +39,7 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
     ["searchClinic", debouncedQuery],
     () => searchDentist(debouncedQuery),
     {
-      enabled: !!debouncedQuery,
-      onSuccess: (data) => {
-        console.log(data);
-      },
-      onError: (error) => {
-        console.log(error);
-      }
+      enabled: !!debouncedQuery
     }
   );
 
