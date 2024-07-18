@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "@/styles/CustomCalendar.css";
@@ -7,9 +6,13 @@ import "@/styles/CustomCalendar.css";
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-const CustomCalendar = () => {
-  const [value, onChange] = useState<Value>(new Date());
 
+type CustomCalendarProps = {
+  value: Value;
+  onChange: (value: Value) => void;
+};
+
+const CustomCalendar = ({ value, onChange }: CustomCalendarProps) => {
   return (
     <Calendar
       onChange={onChange}

@@ -1,0 +1,38 @@
+@import "@/styles/common.scss";
+
+.account {
+  width: 212px;
+  margin: 81px 31px;
+}
+
+.accountTitle {
+  @include font-style($subtitle2);
+  color: $black;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.accountContent {
+  @include font-style($body2);
+  color: $black;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.accountButtonList {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.accountButton {
+  width: 71px;
+  height: 36px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 7px 16px;
+  @include font-style($body2);
+  cursor: pointer;
+  color: $black;
+  display: block;
+}

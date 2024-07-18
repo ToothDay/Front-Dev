@@ -64,3 +64,11 @@ $default-line-clamp: 1;
   background-repeat: no-repeat;
   cursor: pointer;
 }
+
+// 에러 텍스트
+
+.errorText {
+  color: #ff4848;
+  margin-top: 2px;
+  @include font-style($caption1);
+}

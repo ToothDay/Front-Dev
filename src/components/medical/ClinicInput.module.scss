@@ -16,7 +16,7 @@
   border-radius: 10px;
   border: 1px solid $grey1;
   @include font-style($body2);
-  color: $grey2;
+  color: $black;
 
   &:focus-within {
     border-color: $deepblue;
@@ -28,6 +28,11 @@
     border-right: 1px solid $deepblue;
     border-top: 1px solid $deepblue;
     border-bottom: 1px solid $grey1;
+  }
+
+  &::placeholder {
+    @include font-style($body2);
+    color: $grey2;
   }
 }
 
@@ -84,7 +89,7 @@
 }
 
 .clinicName {
-  @include font-style($body3);
+  @include font-style($body2);
   color: $black;
   line-height: 15px;
 }
@@ -101,4 +106,31 @@
   right: 18px;
   width: 24px;
   height: 24px;
+}
+
+.noData {
+  @include font-style($body2);
+  font-weight: 500;
+  color: $black;
+  margin: 0 auto;
+  margin-top: 34px;
+}
+
+.fold {
+  margin-top: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 7px;
+  &::before {
+    @include icon("/caret-up.svg", 8px, 4px);
+  }
+}
+
+.highlight {
+  font-weight: 600;
 }

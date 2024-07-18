@@ -1,6 +1,12 @@
-import { useRef, useEffect } from "react";
+"use client";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ClinicInput.module.scss";
+import _ from "lodash";
+import { useQuery } from "react-query";
+import { searchDentist } from "@/api/medicalRecord";
+import Loading from "@/app/loading";
+import Highlight from "../common/Higtlight";
 
 type PropsClinicInput = {
   isClinic: boolean;
@@ -9,6 +15,9 @@ type PropsClinicInput = {
 
 const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const [searchName, setSearchName] = useState<string>("");
+  const [debouncedQuery, setDebouncedQuery] = useState<string>("");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -25,6 +34,39 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [wrapperRef]);
+
+  const { data, isLoading, error } = useQuery(
+    ["searchClinic", debouncedQuery],
+    () => searchDentist(debouncedQuery),
+    {
+      enabled: !!debouncedQuery
+    }
+  );
+
+  const getSearchData = useCallback(
+    _.debounce((value: string) => {
+      setDebouncedQuery(value);
+      setIsClinic(!!value);
+    }, 500),
+    []
+  );
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchName(value);
+    getSearchData(value);
+  };
+
+  const foldInput = () => {
+    setIsClinic(false);
+    setSearchName("");
+    searchRef.current?.focus();
+  };
+
+  const selectClinic = (name: string) => {
+    setIsClinic(false);
+    setSearchName(name);
+  };
 
   return (
     <motion.div
@@ -52,6 +94,9 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
             type="text"
             className={styles.searchClinic}
             placeholder="치과명으로 찾아주세요."
+            onChange={handleInputChange}
+            value={searchName}
+            ref={searchRef}
           />
         </div>
         <AnimatePresence>
@@ -63,17 +108,53 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.1, ease: "easeInOut" }}
             >
-              <li className={styles.clinicItem}>
-                <div className={styles.clinicInfo}>
-                  <span className={styles.clinicName}>치과1</span>
-                  <span className={styles.clinicLocation}>서울시 강남구</span>
-                </div>
-              </li>
+              {isLoading && (
+                <li className={styles.loadingItem}>
+                  <Loading useBg={false} />
+                </li>
+              )}
+
+              {error ||
+                (data?.length === 0 && (
+                  <li className={styles.noData}>
+                    <span>치과 검색 결과가 없습니다.</span>
+                    <button
+                      type="button"
+                      className={styles.fold}
+                      onClick={foldInput}
+                    >
+                      접기
+                    </button>
+                  </li>
+                ))}
+              {data?.map((clinic: any, index: number) => (
+                <li
+                  key={index}
+                  className={styles.clinicItem}
+                  onClick={() => {
+                    selectClinic(clinic.dentistName);
+                  }}
+                >
+                  <div className={styles.clinicInfo}>
+                    <span className={styles.clinicName}>
+                      <Highlight
+                        text={clinic.dentistName}
+                        highlight={searchName}
+                        color={"black"}
+                      />
+                    </span>
+                    <span className={styles.clinicLocation}>
+                      {clinic.dentistAddress}
+                    </span>
+                  </div>
+                </li>
+              ))}
             </motion.ul>
           )}
         </AnimatePresence>
         <img src="/search-icon.svg" alt="search" className={styles.inputIcon} />
       </div>
+      <span className={styles.errorText}>치과명을 입력해 주세요.</span>
     </motion.div>
   );
 };
