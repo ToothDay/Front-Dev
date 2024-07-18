@@ -21,7 +21,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [selectedValue, setSelectedValue] = useState<string>("");
-  const [value, setValue] = useState<Value>(new Date());
+  const [value, setValue] = useState<Value>(null);
 
   const formattedDate = useMemo(() => {
     if (value instanceof Date) {
@@ -58,6 +58,9 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
 
   const handleInputClick = (event: React.MouseEvent) => {
     event.stopPropagation();
+    if (!isCalendar) {
+      !value && setValue(new Date());
+    }
     setIsCalendar(!isCalendar);
   };
 
@@ -68,40 +71,41 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
       animate="visible"
       variants={slideInVariants}
       transition={{ duration: 1.0, ease: "easeInOut" }}
-      ref={wrapperRef}
     >
       <label className={styles.writeLabel}>
         진료를 진행한 날짜를 <br /> 선택해 주세요.
       </label>
-      <div className={styles.inputField} onClick={handleInputClick}>
-        <input
-          type="text"
-          className={styles.formInput}
-          placeholder="날짜를 선택해 주세요."
-          readOnly
-          value={selectedValue}
-        />
-        <img
-          src="/date-icon.svg"
-          alt="date"
-          aria-hidden="true"
-          className={styles.inputIcon}
-        />
+      <div ref={wrapperRef}>
+        <div className={styles.inputField} onClick={handleInputClick}>
+          <input
+            type="text"
+            className={styles.formInput}
+            placeholder="날짜를 선택해 주세요."
+            readOnly
+            value={selectedValue}
+          />
+          <img
+            src="/date-icon.svg"
+            alt="date"
+            aria-hidden="true"
+            className={styles.inputIcon}
+          />
+        </div>
+        <AnimatePresence>
+          {isCalendar && (
+            <motion.div
+              className={styles.calendar}
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              onClick={handleCalenderClick}
+            >
+              <CustomCalendar value={value} onChange={setValue} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      <AnimatePresence>
-        {isCalendar && (
-          <motion.div
-            className={styles.calendar}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            onClick={handleCalenderClick}
-          >
-            <CustomCalendar value={value} onChange={setValue} />
-          </motion.div>
-        )}
-      </AnimatePresence>
       <span className={styles.errorText}>날짜를 선택해 주세요.</span>
     </motion.div>
   );
