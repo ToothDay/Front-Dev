@@ -17,11 +17,13 @@ import {
 import Modal from "../modal/Modal";
 import { useMutation } from "react-query";
 import { saveMyDentist } from "@/api/medicalRecord";
+import { useRouter } from "next/navigation";
+import Error from "../error/Error";
 
 export type SaveParams = {
   dentistId: number;
   visitDate: string;
-  treatmentList: TreatmentList[];
+  treatmentlist: TreatmentList[];
   isShared: boolean;
 };
 
@@ -31,7 +33,7 @@ const MedicalWrite = () => {
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
   const { treatmentType } = useTreatmentType();
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
-  const { dentistId, visitDate, treatmentList, isShared } =
+  const { dentistId, visitDate, treatmentlist, isShared } =
     useMedicalWriteStore();
 
   const [isFill, setIsFill] = useState<boolean>(false);
@@ -39,9 +41,11 @@ const MedicalWrite = () => {
   const [params, setParams] = useState<SaveParams>({
     dentistId: 0,
     visitDate: "",
-    treatmentList: [],
+    treatmentlist: [],
     isShared: true
   });
+
+  const router = useRouter();
 
   useEffect(() => {
     treatmentType.filter((treatment) => {
@@ -55,15 +59,18 @@ const MedicalWrite = () => {
     setParams({
       dentistId,
       visitDate,
-      treatmentList,
+      treatmentlist,
       isShared
     });
-  }, [dentistId, visitDate, treatmentList, isShared]);
+    if (dentistId && visitDate && treatmentlist.length > 0) {
+      setIsFill(true);
+    }
+  }, [dentistId, visitDate, treatmentlist, isShared]);
 
   const mutation = useMutation({
     mutationFn: () => saveMyDentist(params),
     onSuccess: (data) => {
-      console.log(data);
+      router.push("/medical");
     },
     onError: (error) => {
       console.error("Failed to save my history", error);
@@ -89,13 +96,14 @@ const MedicalWrite = () => {
               <ToothSelection />
               <ShareOption isShare={isShare} setIsShare={setIsShare} />
               <div onClick={handleClick}>
-                <BtnBottom btnType={false} title="기록 완료" />
+                <BtnBottom btnType={isFill} title="기록 완료" />
               </div>
             </>
           )}
         </AnimatePresence>
       </form>
       <Modal />
+      {mutation.error && <Error errorType="error" />}
     </>
   );
 };
