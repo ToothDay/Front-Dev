@@ -133,9 +133,9 @@ const ToothSelection = () => {
                 </AnimatePresence>
               </div>
             </div>
-            <span className={styles.errorText}>
+            {/* <span className={styles.errorText}>
               치아를 눌러 치료를 기록해 주세요.
-            </span>
+            </span> */}
           </motion.div>
         </>
       )}
