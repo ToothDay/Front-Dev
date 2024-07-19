@@ -15,8 +15,8 @@ import {
   useTreatmentType
 } from "@/stores/medicalWrite";
 import Modal from "../modal/Modal";
-import { useMutation } from "react-query";
-import { saveMyDentist } from "@/api/medicalRecord";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { SaveMyDentistResponse, saveMyDentist } from "@/api/medicalRecord";
 import { useRouter } from "next/navigation";
 import Error from "../error/Error";
 import Loading from "@/app/loading";
@@ -72,20 +72,21 @@ const MedicalWrite = () => {
     }
   }, [dentistId, visitDate, treatmentlist, isShared]);
 
-  const mutation = useMutation({
-    mutationFn: () => saveMyDentist(params),
-    onSuccess: (data) => {
-      router.push("/medical");
-    },
-    onError: (error) => {
-      console.error("Failed to save my history", error);
-    }
-  });
+  const mutation: UseMutationResult<SaveMyDentistResponse, Error, SaveParams> =
+    useMutation({
+      mutationFn: saveMyDentist,
+      onSuccess: (data) => {
+        router.push("/medical");
+      },
+      onError: (error) => {
+        console.error("Failed to save my history", error);
+      }
+    });
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (isFill) {
-      mutation.mutate();
+      mutation.mutate(params);
     }
   };
 
@@ -109,8 +110,8 @@ const MedicalWrite = () => {
         </AnimatePresence>
       </form>
       <Modal />
-      {mutation.isLoading && <Loading />}
-      {mutation.error && <Error errorType="error" />}
+      {mutation.status === "success" && <Loading />}
+      {mutation.status === "error" && <Error errorType="error" />}
     </>
   );
 };

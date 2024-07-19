@@ -1,7 +1,8 @@
 "use client";
+
 import { useEffect } from "react";
-import { useQuery } from "react-query";
-import { fetchUserProfile } from "@/api/authService";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUserProfile, UserProfile } from "@/api/authService";
 import { useUserStore } from "@/stores/user";
 import Loading from "@/app/loading";
 import Error from "./error/Error";
@@ -9,7 +10,7 @@ import { useAuthStore } from "@/stores/Auth";
 import Cookies from "js-cookie";
 
 const UserProfileProvider = ({ children }: { children: React.ReactNode }) => {
-  const { token, isAuthenticated, setToken } = useAuthStore();
+  const { token, setToken } = useAuthStore();
   const { setUserProfile } = useUserStore();
 
   useEffect(() => {
@@ -21,11 +22,14 @@ const UserProfileProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [token, setToken]);
 
-  const { data, error, isLoading } = useQuery({
-    queryKey: "userProfile",
+  const { data, error, isLoading } = useQuery<UserProfile, Error>({
+    queryKey: ["userProfile"],
     queryFn: fetchUserProfile,
-    enabled: !!token,
-    onSuccess: (data) => {
+    enabled: !!token
+  });
+
+  useEffect(() => {
+    if (data) {
       const profile = {
         id: data.id,
         email: data.email,
@@ -33,11 +37,8 @@ const UserProfileProvider = ({ children }: { children: React.ReactNode }) => {
         username: data.username
       };
       setUserProfile(profile);
-    },
-    onError: (error) => {
-      console.error("Failed to fetch user profile", error);
     }
-  });
+  }, [data, setUserProfile]);
 
   if (isLoading) {
     return <Loading />;

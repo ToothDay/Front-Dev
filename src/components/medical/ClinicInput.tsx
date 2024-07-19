@@ -3,7 +3,7 @@ import { useRef, useEffect, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ClinicInput.module.scss";
 import _ from "lodash";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { searchDentist } from "@/api/medicalRecord";
 import Loading from "@/app/loading";
 import Highlight from "../common/Highlight";
@@ -37,14 +37,11 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
     };
   }, [wrapperRef]);
 
-  const { data, isLoading, error } = useQuery(
-    ["searchClinic", debouncedQuery],
-    () => searchDentist(debouncedQuery),
-
-    {
-      enabled: !!debouncedQuery
-    }
-  );
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["searchClinic", debouncedQuery],
+    queryFn: () => searchDentist(debouncedQuery),
+    enabled: !!debouncedQuery
+  });
 
   const getSearchData = useCallback(
     _.debounce((value: string) => {

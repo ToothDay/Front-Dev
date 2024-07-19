@@ -9,6 +9,13 @@ export type UserInfo = {
   picture: string;
 };
 
+export interface UserProfile {
+  id: string;
+  email: string;
+  profileImageUrl: string;
+  username: string;
+}
+
 export const postUserInfo = async (userInfo: UserInfo) => {
   const reqBody = {
     profileObj: {
@@ -34,7 +41,7 @@ export const fetchUserInfo = async (token: string): Promise<UserInfo> => {
   return response.data;
 };
 
-export const fetchUserProfile = async () => {
+export const fetchUserProfile = async (): Promise<UserProfile> => {
   const response = await axiosTooth.get("/api/user/profile");
   return response.data;
 };
