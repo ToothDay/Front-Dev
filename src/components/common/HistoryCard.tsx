@@ -2,6 +2,7 @@
 import { VisitData } from "@/api/medical";
 import styles from "@/components/common/HistoryCard.module.scss";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type PropsCard = {
@@ -10,6 +11,7 @@ type PropsCard = {
 };
 
 const HistoryCard = ({ cardType, userData }: PropsCard) => {
+  const router = useRouter();
   const [isImageError, setIsImageError] = useState<{ [key: number]: boolean }>(
     {}
   );
@@ -43,13 +45,26 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
     setIsImageError({});
   }, [userData]);
 
+  const handleViewAll = (visitId: string) => {
+    if (cardType === "myHistory") {
+      // 전체보기 버튼 클릭 시 전체보기 페이지로 이동
+    } else {
+      router.push(`/medical/detail/${visitId}?type=other`);
+    }
+  };
+
   return (
     <>
       {userData.map((data) => (
         <div key={data.visitID} className={styles.card}>
           <div className={styles.dentistInfo}>
             <div className={styles.cardTop}>
-              <button className={styles.moreButton}>전체보기</button>
+              <button
+                className={styles.moreButton}
+                onClick={() => handleViewAll(String(data.visitID))}
+              >
+                전체보기
+              </button>
               {cardType === "myHistory" && <span>{data.visitDate}</span>}
               <p className={styles.dentistName}>{data.dentistName}</p>
               <p>{data.dentistAddress}</p>
