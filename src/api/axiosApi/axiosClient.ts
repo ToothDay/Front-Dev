@@ -1,14 +1,10 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { axiosInstance } from "./axiosInstance";
 
-const axiosTooth = axios.create({
-  baseURL: "http://3.34.135.181:8000",
-  headers: {
-    "Content-Type": "application/json"
-  }
-});
+const axiosClient = axiosInstance;
 
-axiosTooth.interceptors.request.use(
+axiosClient.interceptors.request.use(
   (config) => {
     const token = Cookies.get("jwtToken");
     if (token) {
@@ -21,17 +17,16 @@ axiosTooth.interceptors.request.use(
   }
 );
 
-axiosTooth.interceptors.response.use(
+axiosClient.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
     if (error.response.status === 401) {
-      localStorage.removeItem("jwtToken");
-      window.location.href = "/login";
+      window.location.href = "/welcome/login";
     }
     return Promise.reject(error);
   }
 );
 
-export default axiosTooth;
+export default axiosClient;

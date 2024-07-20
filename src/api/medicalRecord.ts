@@ -1,4 +1,4 @@
-import axiosTooth from "./api";
+import axiosClient from "@/api/axiosApi/axiosClient";
 import { SaveParams } from "@/components/medical/MedicalWrite";
 
 export type SaveMyDentistResponse = {
@@ -19,13 +19,13 @@ export type SaveMyDentistResponse = {
 };
 
 export const searchDentist = async (query: string) => {
-  const response = await axiosTooth.get(`/dentists/search?query=${query}`);
+  const response = await axiosClient.get(`/dentists/search?query=${query}`);
   return response.data;
 };
 
 export const saveMyDentist = async (
   params: SaveParams
 ): Promise<SaveMyDentistResponse> => {
-  const response = await axiosTooth.post(`/visit`, params);
+  const response = await axiosClient.post(`/visit`, params);
   return response.data;
 };
