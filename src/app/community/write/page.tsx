@@ -75,7 +75,7 @@ const CommunityWritePage = () => {
             }
             onChange={handleMainTextChange}
           ></textarea>
-          <ImageSwiper listType="all" imageList={imageList} />
+          <ImageSwiper listType="all" imageList={imageList} type="write" />
           <div className={styles.imageDiv}>
             <button className={styles.image} />
             <div className={styles.imageNumber}>{`${imageList.length}/10`}</div>
