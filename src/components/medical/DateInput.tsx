@@ -38,7 +38,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
 
   useEffect(() => {
     if (value instanceof Date) {
-      updateVisitDate(formatIsoDate(value));
+      updateVisitDate(formatKoreaDate(value));
     }
   }, [value]);
 

@@ -7,7 +7,6 @@ type PropsCard = {
 };
 
 const HistoryCard = ({ cardType, userData }: PropsCard) => {
-  console.log(userData);
   return (
     <>
       {userData.map((data) => (
