@@ -1,9 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { cookies } from "next/headers";
-import { axiosInstance } from "./axiosInstance";
+import { createAxiosInstance } from "./axiosInstance";
 
-const createAxiosInstance = (): AxiosInstance => {
-  const instance = axiosInstance;
+const createServerAxiosInstance = (): AxiosInstance => {
+  const instance = createAxiosInstance();
 
   const cookieStore = cookies();
   const token = cookieStore.get("jwtToken")?.value;
@@ -16,22 +16,35 @@ const createAxiosInstance = (): AxiosInstance => {
 };
 
 const axiosServer = {
-  get: (url: string, config?: AxiosRequestConfig) => {
-    const instance = createAxiosInstance();
-    return instance.get(url, config);
+  get: <T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> => {
+    const instance = createServerAxiosInstance();
+    return instance.get<T>(url, config);
   },
-  post: (url: string, data?: any, config?: AxiosRequestConfig) => {
-    const instance = createAxiosInstance();
-    return instance.post(url, data, config);
+  post: <T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> => {
+    const instance = createServerAxiosInstance();
+    return instance.post<T>(url, data, config);
   },
-  put: (url: string, data?: any, config?: AxiosRequestConfig) => {
-    const instance = createAxiosInstance();
-    return instance.put(url, data, config);
+  put: <T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> => {
+    const instance = createServerAxiosInstance();
+    return instance.put<T>(url, data, config);
   },
-  delete: (url: string, config?: AxiosRequestConfig) => {
-    const instance = createAxiosInstance();
-    return instance.delete(url, config);
+  delete: <T>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> => {
+    const instance = createServerAxiosInstance();
+    return instance.delete<T>(url, config);
   }
 };
-
 export default axiosServer;

@@ -1,28 +1,29 @@
-import axios from "axios";
 import Cookies from "js-cookie";
-import { axiosInstance } from "./axiosInstance";
+import { createAxiosInstance } from "./axiosInstance";
+import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-const axiosClient = axiosInstance;
+const axiosClient = createAxiosInstance();
 
 axiosClient.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
     const token = Cookies.get("jwtToken");
     if (token) {
+      config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
+  (error: AxiosError): Promise<AxiosError> => {
     return Promise.reject(error);
   }
 );
 
 axiosClient.interceptors.response.use(
-  (response) => {
+  (response: AxiosResponse): AxiosResponse => {
     return response;
   },
-  (error) => {
-    if (error.response.status === 401) {
+  (error: AxiosError): Promise<AxiosError> => {
+    if (error.response && error.response.status === 401) {
       window.location.href = "/welcome/login";
     }
     return Promise.reject(error);
