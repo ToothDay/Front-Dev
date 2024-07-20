@@ -13,7 +13,7 @@ type PropsPage = {
     id: string;
   };
   searchParams: {
-    type: string;
+    type: "me" | "other";
   };
 };
 
