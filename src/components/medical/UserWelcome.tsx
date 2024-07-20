@@ -3,7 +3,11 @@ import { useUserStore } from "@/stores/user";
 import styles from "./UserWelcome.module.scss";
 import { useRouter } from "next/navigation";
 
-const UserWelcome = () => {
+type UserWelcomeProps = {
+  hasMyData: boolean;
+};
+
+const UserWelcome = ({ hasMyData }: UserWelcomeProps) => {
   const { userProfile } = useUserStore();
   const router = useRouter();
 
@@ -19,13 +23,15 @@ const UserWelcome = () => {
           <span className={styles.name}>
             {userProfile?.username || "회원"}님!
           </span>
-          <div className={styles.noDataText}>
-            <span className={styles.text}>
-              최근 진료 기록이
-              <br />
-              아직 없습니다.
-            </span>
-          </div>
+          {hasMyData && (
+            <div className={styles.noDataText}>
+              <span className={styles.text}>
+                최근 진료 기록이
+                <br />
+                아직 없습니다.
+              </span>
+            </div>
+          )}
         </div>
         <button
           type="button"

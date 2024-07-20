@@ -25,7 +25,7 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
                   .map((treatment) => treatment.category)
                   .join(", ")}
               </p>
-              <p>총 가격: {data.totalAmount}원</p>
+              <p>총 가격: {data.totalAmount.toLocaleString()}원</p>
               {cardType === "otherHistory" && (
                 <img
                   src="/default.svg"
