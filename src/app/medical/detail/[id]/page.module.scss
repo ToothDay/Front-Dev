@@ -1,0 +1,107 @@
+@import "@/styles/common.scss";
+
+.main {
+  height: 100vh;
+  background-color: $white;
+  overflow: auto;
+  padding: 28px 24px;
+  position: relative;
+}
+
+.infoSection {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.address {
+  @include font-style($body2);
+  color: $black;
+  &::before {
+    @include icon("/location_on.svg", 20px, 20px);
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-right: 2px;
+  }
+}
+
+.title {
+  @include font-style($subtitle1);
+  color: $black;
+}
+
+.treatment {
+  display: flex;
+  gap: 4px;
+  .treatmentName {
+    width: auto;
+    height: 32px;
+    background-color: $deepblue;
+    padding: 5px 12px;
+    border-radius: 61px;
+    @include font-style($semi-body1);
+    color: $base-white;
+    cursor: default;
+  }
+}
+
+.priceSection {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  padding: 17px 30px;
+  box-shadow: 0px 0px 10px 0px rgba(60, 65, 69, 0.05);
+}
+
+.totalPrice {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  @include font-style($semi-body1);
+  color: $black;
+  .label {
+    &::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background-color: $black;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 7px;
+    }
+  }
+}
+
+.detailPrices {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  gap: 5px;
+  @include font-style($body2);
+  padding-left: 13px;
+  color: $black;
+}
+
+.priceItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .label {
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background-color: $black;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 7px;
+    }
+  }
+}
+
+.toothSection {
+  margin-top: 38px;
+}
