@@ -16,7 +16,7 @@ export type VisitData = {
   writtenByCurrentUser: boolean;
   visitID: number;
   userID: number;
-  profileImageUrl: string | null;
+  profileImageUrl: string;
   shared: boolean;
 };
 
