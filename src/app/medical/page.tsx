@@ -41,9 +41,7 @@ const MedicalPage = async () => {
         <TreatmentSwiper listType="all" />
         <div className={styles.otherCard}>
           <div className={styles.cardList}>
-            {otherData.map((item) => (
-              <HistoryCard cardType="otherHistory" userData={otherData} />
-            ))}
+            <HistoryCard cardType="otherHistory" userData={otherData} />
           </div>
         </div>
       </section>
