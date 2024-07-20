@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Tooth from "../tooth/Tooth";
 import styles from "./ToothSelection.module.scss";
-import { useTreatmentType } from "../../stores/medicalWrite";
+import {
+  useCostList,
+  useMedicalWriteStore,
+  useTreatmentCost,
+  useTreatmentType
+} from "../../stores/medicalWrite";
 import { useModalStore } from "@/stores/modal";
 import ToothWriteModal from "../modal/ToothWriteModal";
 import { ToothType } from "@/constants/toothConstants";
@@ -23,6 +28,28 @@ const ToothSelection = () => {
     number: 0,
     icon: ""
   });
+  const { selectedCost } = useCostList();
+  const { updateTreatmentList } = useMedicalWriteStore();
+  const { treatmentCostList } = useTreatmentCost();
+
+  useEffect(() => {
+    const notHasToothId = treatmentCostList
+      .filter((cost) => cost.name === "스케일링" || cost.name === "잇몸")
+      .map((cost) => ({
+        category: cost.name,
+        amount: Number(cost.value)
+      }));
+
+    const treatmentCost = selectedCost.map((cost) => {
+      return {
+        category: cost.category,
+        amount: cost.amount,
+        toothId: cost.toothId
+      };
+    });
+
+    updateTreatmentList([...notHasToothId, ...treatmentCost]);
+  }, [selectedCost, treatmentCostList]);
 
   const { openModal } = useModalStore();
   const toothSide: ToothSide[] = [
@@ -106,6 +133,9 @@ const ToothSelection = () => {
                 </AnimatePresence>
               </div>
             </div>
+            {/* <span className={styles.errorText}>
+              치아를 눌러 치료를 기록해 주세요.
+            </span> */}
           </motion.div>
         </>
       )}

@@ -1,4 +1,4 @@
-import axiosTooth from "@/api/api";
+import axiosClient from "@/api/axiosApi/axiosClient";
 
 export type UserInfo = {
   id: string;
@@ -9,6 +9,13 @@ export type UserInfo = {
   picture: string;
 };
 
+export interface UserProfile {
+  id: string;
+  email: string;
+  profileImageUrl: string;
+  username: string;
+}
+
 export const postUserInfo = async (userInfo: UserInfo) => {
   const reqBody = {
     profileObj: {
@@ -18,12 +25,12 @@ export const postUserInfo = async (userInfo: UserInfo) => {
       name: userInfo.name
     }
   };
-  const response = await axiosTooth.post(`/oauth/jwt/google`, reqBody);
+  const response = await axiosClient.post(`/oauth/jwt/google`, reqBody);
   return response.data;
 };
 
 export const fetchUserInfo = async (token: string): Promise<UserInfo> => {
-  const response = await axiosTooth.get(
+  const response = await axiosClient.get(
     "https://www.googleapis.com/oauth2/v1/userinfo",
     {
       headers: {
@@ -34,7 +41,7 @@ export const fetchUserInfo = async (token: string): Promise<UserInfo> => {
   return response.data;
 };
 
-export const fetchUserProfile = async () => {
-  const response = await axiosTooth.get("/api/user/profile");
+export const fetchUserProfile = async (): Promise<UserProfile> => {
+  const response = await axiosClient.get("/api/user/profile");
   return response.data;
 };

@@ -2,7 +2,7 @@
 import styles from "./Login.module.scss";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { fetchUserInfo, postUserInfo, UserInfo } from "@/api/authService";
 import { setToken } from "@/api/auth";
 import { useRouter } from "next/navigation";
@@ -17,17 +17,19 @@ const Login = ({ hasToken }: LoginProps) => {
   const router = useRouter();
   const { setToken: setAuthToken } = useAuthStore();
 
-  const { mutate: fetchUser } = useMutation(fetchUserInfo, {
+  const fetchUser = useMutation({
+    mutationFn: fetchUserInfo,
     onSuccess: (data) => {
       setUserInformation(data);
-      sendUserInfo(data);
+      sendUserInfo.mutate(data);
     },
     onError: (error) => {
       console.error("Failed to fetch user info", error);
     }
   });
 
-  const { mutate: sendUserInfo } = useMutation(postUserInfo, {
+  const sendUserInfo = useMutation({
+    mutationFn: postUserInfo,
     onSuccess: (data) => {
       setToken(data);
       setAuthToken(data);
@@ -41,7 +43,7 @@ const Login = ({ hasToken }: LoginProps) => {
   const googleSocialLogin = useGoogleLogin({
     scope: "email profile",
     onSuccess: async (tokenRes) => {
-      fetchUser(tokenRes.access_token);
+      fetchUser.mutate(tokenRes.access_token);
     },
     onError: (errorResponse) => {
       console.error(errorResponse);

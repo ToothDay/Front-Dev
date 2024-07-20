@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import styles from "./MedicalWrite.module.scss";
 import BtnBottom from "../common/BtnBottom";
 import ClinicInput from "@/components/medical/ClinicInput";
@@ -9,15 +9,48 @@ import TreatmentSelection from "./TreatmentSelection";
 import CostInput from "./CostInput";
 import ToothSelection from "./ToothSelection";
 import ShareOption from "./ShareOption";
-import { useTreatmentType } from "@/stores/medicalWrite";
+import {
+  TreatmentList,
+  useMedicalWriteStore,
+  useTreatmentType
+} from "@/stores/medicalWrite";
 import Modal from "../modal/Modal";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { SaveMyDentistResponse, saveMyDentist } from "@/api/medicalRecord";
+import { useRouter } from "next/navigation";
+import Error from "../error/Error";
+import Loading from "@/app/loading";
+
+export type SaveParams = {
+  dentistId: number;
+  visitDate: string;
+  treatmentlist: TreatmentList[];
+  isShared: boolean;
+};
 
 const MedicalWrite = () => {
   const [isShare, setIsShare] = useState<boolean>(true);
   const [isClinic, setIsClinic] = useState<boolean>(false);
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
-  const { treatmentType } = useTreatmentType();
+  const { treatmentType, clearTreatmentType } = useTreatmentType();
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
+  const { dentistId, visitDate, treatmentlist, isShared } =
+    useMedicalWriteStore();
+
+  const [isFill, setIsFill] = useState<boolean>(false);
+
+  const [params, setParams] = useState<SaveParams>({
+    dentistId: 0,
+    visitDate: "",
+    treatmentlist: [],
+    isShared: true
+  });
+
+  useEffect(() => {
+    clearTreatmentType();
+  }, []);
+
+  const router = useRouter();
 
   useEffect(() => {
     treatmentType.filter((treatment) => {
@@ -26,6 +59,36 @@ const MedicalWrite = () => {
       ? setClickTreatment(true)
       : setClickTreatment(false);
   }, [treatmentType]);
+
+  useEffect(() => {
+    setParams({
+      dentistId,
+      visitDate,
+      treatmentlist,
+      isShared
+    });
+    if (dentistId && visitDate && treatmentlist.length > 0) {
+      setIsFill(true);
+    }
+  }, [dentistId, visitDate, treatmentlist, isShared]);
+
+  const mutation: UseMutationResult<SaveMyDentistResponse, Error, SaveParams> =
+    useMutation({
+      mutationFn: saveMyDentist,
+      onSuccess: (data) => {
+        router.push("/medical");
+      },
+      onError: (error) => {
+        console.error("Failed to save my history", error);
+      }
+    });
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (isFill) {
+      mutation.mutate(params);
+    }
+  };
 
   return (
     <>
@@ -39,12 +102,16 @@ const MedicalWrite = () => {
               <CostInput />
               <ToothSelection />
               <ShareOption isShare={isShare} setIsShare={setIsShare} />
-              <BtnBottom btnType={false} title="기록 완료" />
+              <div onClick={handleClick}>
+                <BtnBottom btnType={isFill} title="기록 완료" />
+              </div>
             </>
           )}
         </AnimatePresence>
       </form>
       <Modal />
+      {mutation.status === "success" && <Loading />}
+      {mutation.status === "error" && <Error errorType="error" />}
     </>
   );
 };

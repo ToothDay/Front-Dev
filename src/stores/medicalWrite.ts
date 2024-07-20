@@ -1,8 +1,9 @@
 import { create } from "zustand";
 
-type TreatmentList = {
+export type TreatmentList = {
   category: string;
   amount: number;
+  toothId?: number;
 };
 
 type TreatmentType = {
@@ -28,11 +29,11 @@ export type CostType = {
 type MedicalWriteState = {
   dentistId: number;
   visitDate: string;
-  treatmentList: TreatmentList[];
+  treatmentlist: TreatmentList[];
   isShared: boolean;
   updateDentistId: (dentistId: number) => void;
   updateVisitDate: (visitDate: string) => void;
-  updateTreatmentList: (treatmentList: TreatmentList[]) => void;
+  updateTreatmentList: (treatmentlist: TreatmentList[]) => void;
   updateIsShared: (isShared: boolean) => void;
 };
 
@@ -44,6 +45,7 @@ type TreatmentTypeList = {
     number: number,
     isClick: boolean
   ) => void;
+  clearTreatmentType: () => void;
 };
 
 type TreatmentCost = {
@@ -59,16 +61,16 @@ type CostTypeList = {
 export const useMedicalWriteStore = create<MedicalWriteState>((set) => ({
   dentistId: 0,
   visitDate: "",
-  treatmentList: [],
-  isShared: false,
+  treatmentlist: [],
+  isShared: true,
   updateDentistId: (dentistId: number) => {
     set({ dentistId });
   },
   updateVisitDate: (visitDate: string) => {
     set({ visitDate });
   },
-  updateTreatmentList: (treatmentList: TreatmentList[]) => {
-    set({ treatmentList });
+  updateTreatmentList: (treatmentlist: TreatmentList[]) => {
+    set({ treatmentlist });
   },
   updateIsShared: (isShared: boolean) => {
     set({ isShared });
@@ -109,6 +111,9 @@ export const useTreatmentType = create<TreatmentTypeList>((set) => ({
         };
       }
     });
+  },
+  clearTreatmentType: () => {
+    set({ treatmentType: [] });
   }
 }));
 
@@ -125,3 +130,19 @@ export const useCostList = create<CostTypeList>((set) => ({
     set({ selectedCost });
   }
 }));
+
+useCostList.subscribe((state) => {
+  console.log(state);
+});
+
+useTreatmentCost.subscribe((state) => {
+  console.log(state);
+});
+
+useTreatmentType.subscribe((state) => {
+  console.log(state);
+});
+
+useMedicalWriteStore.subscribe((state) => {
+  console.log(state);
+});

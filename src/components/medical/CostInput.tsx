@@ -6,8 +6,8 @@ import {
   useTreatmentType
 } from "@/stores/medicalWrite";
 import { useEffect } from "react";
-import { CostList } from "@/stores/medicalWrite";
-import { CostType } from "@/stores/medicalWrite";
+import { CostList, CostType } from "@/stores/medicalWrite";
+
 const CostInput = () => {
   const { treatmentType } = useTreatmentType();
   const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
@@ -55,12 +55,8 @@ const CostInput = () => {
     });
   };
 
-  const handleChangeCost = (index: number, value: string) => {
+  const updateCostList = (index: number, value: string) => {
     const newCostList = [...treatmentCostList];
-    if (isNaN(Number(value))) {
-      newCostList[index].value = "";
-      return;
-    }
     newCostList[index].value = value;
     updateTreatmentCost(newCostList);
 
@@ -68,13 +64,16 @@ const CostInput = () => {
     updateSelectedCost(selectedCostList);
   };
 
-  const handleDeleteCost = (index: number) => {
-    const newCostList = [...treatmentCostList];
-    newCostList[index].value = "";
-    updateTreatmentCost(newCostList);
+  const handleChangeCost = (index: number, value: string) => {
+    if (isNaN(Number(value))) {
+      updateCostList(index, "");
+      return;
+    }
+    updateCostList(index, value);
+  };
 
-    const selectedCostList = updateSelectedCostList(newCostList, selectedCost);
-    updateSelectedCost(selectedCostList);
+  const handleDeleteCost = (index: number) => {
+    updateCostList(index, "");
   };
 
   return (
@@ -127,6 +126,9 @@ const CostInput = () => {
             </motion.div>
           ))}
         </AnimatePresence>
+        {/* <span className={styles.errorText}>
+          각 치료의 비용을 입력해 주세요.
+        </span> */}
       </div>
     </motion.div>
   );
