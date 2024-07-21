@@ -64,7 +64,6 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
                   <span className={styles.visitDate}>{data.visitDate}</span>
                 )}
                 <p className={styles.dentistName}>{data.dentistName}</p>
-                <p>{data.dentistAddress}</p>
               </div>
               <button
                 className={styles.moreButton}
@@ -73,6 +72,7 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
                 전체보기
               </button>
             </div>
+            <p className={styles.address}>{data.dentistAddress}</p>
             <div className={styles.cardBottom}>
               <p>
                 치료종류:{" "}

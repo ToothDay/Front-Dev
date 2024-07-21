@@ -37,10 +37,13 @@
   @include font-style($body2);
   display: flex;
   flex-direction: column;
-  gap: 25px;
 }
 .visitDentist {
   max-width: 268px;
+}
+
+.address {
+  margin-top: 4px;
 }
 
 .dentistName {
@@ -49,6 +52,7 @@
 }
 
 .cardBottom {
+  margin-top: 25px;
   position: relative;
 }
 
