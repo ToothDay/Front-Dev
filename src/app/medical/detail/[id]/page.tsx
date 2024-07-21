@@ -1,6 +1,6 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
-import ToothSelectSelection from "@/components/tooth/ToothSelectSection";
+import ToothSelectSection from "@/components/tooth/ToothSelectSection";
 import BtnBottom from "@/components/common/BtnBottom";
 import {
   VisitDetail,

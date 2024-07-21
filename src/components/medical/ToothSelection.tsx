@@ -10,7 +10,7 @@ import {
 } from "../../stores/medicalWrite";
 import { useModalStore } from "@/stores/modal";
 import { ToothType } from "@/constants/toothConstants";
-import ToothSelectSelection from "../tooth/ToothSelectSection";
+import ToothSelectSection from "../tooth/ToothSelectSection";
 
 const ToothSelection = () => {
   const { treatmentType } = useTreatmentType();
@@ -82,7 +82,7 @@ const ToothSelection = () => {
           <span className={styles.helperText}>
             스케일링과 잇몸치료는 설정에서 제외됩니다.
           </span>
-          <ToothSelectSelection
+          <ToothSelectSection
             setSelectedTooth={setSelectedTooth}
             setIsDisplayModal={setIsDisplayModal}
           />
