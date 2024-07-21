@@ -17,7 +17,7 @@ export type VisitData = {
   visitId: number;
   userId: number;
   profileImageUrl?: string;
-  shared: boolean;
+  isShared: boolean;
 };
 
 export type VisitDetail = {
@@ -31,7 +31,7 @@ export type VisitDetail = {
   visitId?: number;
   userId?: number;
   profileImageUrl?: string;
-  shared?: boolean;
+  isShared?: boolean;
 };
 
 export type VisitMyDetail = Omit<
