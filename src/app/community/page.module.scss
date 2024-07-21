@@ -69,3 +69,20 @@
 .treatmentWrapper {
   margin-bottom: 18px;
 }
+
+.writeBtnDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 56px;
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  bottom: 28px;
+  right: 24px;
+  background-color: $lightblue;
+}
+
+.writeBtn {
+  @include icon("/pencil-black.svg", 24px, 24px);
+}

@@ -47,6 +47,9 @@ const Community = () => {
       {/* 검색종류 따라  */}
       {/* <NoSearchData searchType="post" /> */}
       {/* <NoSearchData searchType="word" /> */}
+      <div className={styles.writeBtnDiv}>
+        <button className={styles.writeBtn} />
+      </div>
     </main>
   );
 };
