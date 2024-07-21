@@ -6,9 +6,9 @@ import {
   RIGHT_TOP,
   RIGHT_BOTTOM
 } from "@/constants/toothConstants";
+import { useToothStore } from "@/stores/tooth";
 import { useCostList } from "@/stores/medicalWrite";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useToothStore } from "@/stores/Tooth";
 
 type PropsTooth = {
   location: "left" | "right";

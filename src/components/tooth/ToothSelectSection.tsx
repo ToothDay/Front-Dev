@@ -4,7 +4,7 @@ import styles from "./ToothSelectSection.module.scss";
 import Tooth from "./Tooth";
 import { ToothType } from "@/constants/toothConstants";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useToothStore } from "@/stores/Tooth";
+import { useToothStore } from "@/stores/tooth";
 
 type ToothSide = {
   value: "left" | "right";
