@@ -10,12 +10,15 @@
 
 .cardTop {
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 7px;
 }
 
 .moreButton {
-  position: absolute;
-  right: 0;
-  top: 0;
+  text-align: right;
+  width: 101px;
   @include font-style($body2);
   color: $deepblue;
   &::after {
@@ -24,18 +27,32 @@
   }
 }
 
+.visitDate {
+  @include font-style($body2);
+  color: $black;
+  font-weight: 500;
+}
+
 .dentistInfo {
   @include font-style($body2);
   display: flex;
   flex-direction: column;
-  gap: 25px;
+}
+.visitDentist {
+  max-width: 268px;
+}
+
+.address {
+  margin-top: 4px;
 }
 
 .dentistName {
   @include font-style($subtitle2);
+  word-break: break-all;
 }
 
 .cardBottom {
+  margin-top: 25px;
   position: relative;
 }
 

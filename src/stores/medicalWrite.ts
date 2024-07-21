@@ -29,11 +29,11 @@ export type CostType = {
 type MedicalWriteState = {
   dentistId: number;
   visitDate: string;
-  treatmentlist: TreatmentList[];
+  treatmentList: TreatmentList[];
   isShared: boolean;
   updateDentistId: (dentistId: number) => void;
   updateVisitDate: (visitDate: string) => void;
-  updateTreatmentList: (treatmentlist: TreatmentList[]) => void;
+  updateTreatmentList: (treatmentList: TreatmentList[]) => void;
   updateIsShared: (isShared: boolean) => void;
 };
 
@@ -61,7 +61,7 @@ type CostTypeList = {
 export const useMedicalWriteStore = create<MedicalWriteState>((set) => ({
   dentistId: 0,
   visitDate: "",
-  treatmentlist: [],
+  treatmentList: [],
   isShared: true,
   updateDentistId: (dentistId: number) => {
     set({ dentistId });
@@ -69,8 +69,8 @@ export const useMedicalWriteStore = create<MedicalWriteState>((set) => ({
   updateVisitDate: (visitDate: string) => {
     set({ visitDate });
   },
-  updateTreatmentList: (treatmentlist: TreatmentList[]) => {
-    set({ treatmentlist });
+  updateTreatmentList: (treatmentList: TreatmentList[]) => {
+    set({ treatmentList });
   },
   updateIsShared: (isShared: boolean) => {
     set({ isShared });

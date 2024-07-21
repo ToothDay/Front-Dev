@@ -2,7 +2,7 @@ import TreatmentSwiper from "@/components/common/TreatmentSwiper";
 import styles from "./page.module.scss";
 import Tab from "@/components/common/Tab";
 import PostCard from "@/components/common/PostCard";
-import NoSearchData from "@/components/community/NoSearchData";
+import NoSearchData from "@/components/noData/NoSearchData";
 
 const Community = () => {
   const hasNotice = false; //임시데이터값
