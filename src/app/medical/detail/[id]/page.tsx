@@ -70,6 +70,10 @@ const MedicalDetail = async ({ params, searchParams }: PropsPage) => {
     return acc;
   }, []);
 
+  const treatmentToothList = data.treatmentList
+    .map((item) => item.toothId)
+    .filter((toothId): toothId is number => toothId !== null);
+
   return (
     <main className={styles.main}>
       <Header />
@@ -112,7 +116,7 @@ const MedicalDetail = async ({ params, searchParams }: PropsPage) => {
       </section>
       <section className={styles.toothSection}>
         <span className={styles.title}>치아 상태</span>
-        <ToothSelectSelection />
+        <ToothSelectSelection treatmentToothList={treatmentToothList} />
       </section>
     </main>
   );

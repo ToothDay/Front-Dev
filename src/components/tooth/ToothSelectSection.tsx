@@ -3,7 +3,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import styles from "./ToothSelectSection.module.scss";
 import Tooth from "./Tooth";
 import { ToothType } from "@/constants/toothConstants";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useToothStore } from "@/stores/Tooth";
 
 type ToothSide = {
   value: "left" | "right";
@@ -13,11 +14,13 @@ type ToothSide = {
 type ToothSelectSectionProps = {
   setSelectedTooth?: (tooth: ToothType) => void;
   setIsDisplayModal?: Dispatch<SetStateAction<boolean>>;
+  treatmentToothList?: number[];
 };
 
 const ToothSelectSection = ({
   setSelectedTooth,
-  setIsDisplayModal
+  setIsDisplayModal,
+  treatmentToothList
 }: ToothSelectSectionProps) => {
   const [toothSelect, setToothSelect] = useState<"left" | "right">("left");
   const toothSide: ToothSide[] = [
@@ -30,6 +33,13 @@ const ToothSelectSection = ({
       name: "오른쪽"
     }
   ];
+  const { setSaveTooth } = useToothStore();
+
+  useEffect(() => {
+    if (treatmentToothList) {
+      setSaveTooth(treatmentToothList);
+    }
+  }, [toothSelect]);
 
   return (
     <div className={styles.toothItem}>

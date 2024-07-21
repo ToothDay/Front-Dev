@@ -7,11 +7,12 @@ import {
   RIGHT_BOTTOM
 } from "@/constants/toothConstants";
 import { useCostList } from "@/stores/medicalWrite";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useToothStore } from "@/stores/Tooth";
 
 type PropsTooth = {
   location: "left" | "right";
-  setIsDisplayModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsDisplayModal?: Dispatch<SetStateAction<boolean>>;
   setSelectedTooth?: (value: {
     toothId: number;
     name: string;
@@ -25,6 +26,8 @@ const Tooth = ({
   setIsDisplayModal,
   setSelectedTooth
 }: PropsTooth) => {
+  const { saveTooth, setSaveTooth } = useToothStore();
+
   const topTooth = location === "left" ? LEFT_TOP : RIGHT_TOP;
   const bottomTooth = location === "left" ? LEFT_BOTTOM : RIGHT_BOTTOM;
 
@@ -39,15 +42,16 @@ const Tooth = ({
   };
 
   const { selectedCost } = useCostList();
-  const [saveSelectedTooth, setSaveSelectedTooth] = useState<number[]>([]);
 
   useEffect(() => {
-    const updateSelectedTooth = selectedCost.map((cost) => cost.toothId);
-    setSaveSelectedTooth(updateSelectedTooth);
+    if (selectedCost.length > 0) {
+      const updateSelectedTooth = selectedCost.map((cost) => cost.toothId);
+      setSaveTooth(updateSelectedTooth);
+    }
   }, [selectedCost]);
 
   const findToothIcon = (toothId: number) => {
-    return saveSelectedTooth.includes(toothId);
+    return saveTooth.includes(toothId);
   };
 
   return (
