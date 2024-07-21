@@ -1,8 +1,13 @@
+"use client";
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ImageSwiper from "@/components/common/ImageSwiper";
+import Modal from "@/components/modal/Modal";
+import DeleteModal from "@/components/modal/DeleteModal";
+import { useModalStore } from "@/stores/modal";
 
 const PostMain = () => {
+  const { openModal } = useModalStore();
   const imageList = [
     { id: 1, src: "/profile.svg" },
     { id: 2, src: "/profile.svg" },
@@ -44,10 +49,16 @@ const PostMain = () => {
         <div>#레진</div>
       </div>
       <div className={styles.postFooter}>
-        <span className={styles.commentNumber}>10</span>
-        <span className={[styles.likeNumber, styles.selected].join(" ")}>
-          10
-        </span>
+        <div className={styles.postFooterLeft}>
+          <span className={styles.commentNumber}>10</span>
+          <span className={[styles.likeNumber, styles.selected].join(" ")}>
+            10
+          </span>
+        </div>
+        <span
+          className={styles.postFooterRight}
+          onClick={() => openModal(<DeleteModal deleteType="post" />)}
+        />
       </div>
       <div className={styles.commentMain}>
         <div className={styles.commentTitle}>답글</div>
@@ -128,6 +139,7 @@ const PostMain = () => {
           </div>
         </div>
       </div>
+      <Modal />
     </main>
   );
 };
