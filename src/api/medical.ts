@@ -16,7 +16,7 @@ export type VisitData = {
   writtenByCurrentUser: boolean;
   visitID: number;
   userID: number;
-  profileImageUrl: string;
+  profileImageUrl?: string;
   shared: boolean;
 };
 
@@ -37,6 +37,11 @@ export type VisitDetail = {
 export type VisitMyDetail = Omit<
   VisitDetail,
   "visitID" | "userID" | "profileImageUrl" | "shared"
+>;
+
+export type VisitMyHistory = Omit<
+  VisitDetail,
+  "userID" | "profileImageUrl" | "shared"
 >;
 
 export const fetchOtherMedicalDetail = async (

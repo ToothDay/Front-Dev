@@ -11,6 +11,7 @@ const createServerAxiosInstance = (): AxiosInstance => {
   if (token) {
     instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
+  instance.defaults.headers.common["Cache-Control"] = "no-store";
 
   return instance;
 };

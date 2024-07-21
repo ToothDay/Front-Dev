@@ -35,3 +35,7 @@ export const fetchVisitData = async (): Promise<VisitData[]> => {
   const response = await axiosClient.get(`/visit`);
   return response.data;
 };
+export const fetchVisitMyData = async () => {
+  const response = await axiosClient.get(`/mypage/visit`);
+  return response.data;
+};
