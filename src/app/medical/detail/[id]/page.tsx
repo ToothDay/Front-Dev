@@ -10,6 +10,7 @@ import {
 } from "@/api/medical";
 import DetailActionButton from "@/components/medical/DetailActionButton";
 import Modal from "@/components/modal/Modal";
+import DetailTooth from "@/components/tooth/DetailTooth";
 
 type PropsPage = {
   params: {
@@ -118,10 +119,7 @@ const MedicalDetail = async ({ params, searchParams }: PropsPage) => {
             ))}
           </div>
         </section>
-        <section className={styles.toothSection}>
-          <span className={styles.title}>치아 상태</span>
-          <ToothSelectSelection treatmentToothList={treatmentToothList} />
-        </section>
+        <DetailTooth treatmentList={data?.treatmentList} />
         {data?.writtenByCurrentUser && <DetailActionButton id={params.id} />}
       </main>
       <Modal />
