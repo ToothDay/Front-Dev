@@ -7,6 +7,7 @@ import UserWelcome from "@/components/medical/UserWelcome";
 import { VisitData } from "../../api/medical";
 import ScrollToTop from "@/components/common/ScrollToTop";
 import { useRef } from "react";
+import NoSearchData from "../noData/NoSearchData";
 
 type MedicalContentProps = {
   myData: VisitData[];
@@ -25,15 +26,17 @@ const MedicalContent = ({
       <main className={styles.main} ref={mainRef}>
         <Tab pageType="page" initialActiveTab="진료기록" />
         <UserWelcome hasMyData={hasMyData} />
-        <section className={styles.medicalRecentlySection}>
-          <div className={styles.titleWrapper}>
-            <span className={styles.wrapperTitle}>최근 진료 기록</span>
-            <button className={styles.allButton}>전체보기</button>
-          </div>
-          <div className={styles.recentlyCard}>
-            <HistoryCard cardType="myHistory" userData={myData} />
-          </div>
-        </section>
+        {myData.length !== 0 && (
+          <section className={styles.medicalRecentlySection}>
+            <div className={styles.titleWrapper}>
+              <span className={styles.wrapperTitle}>최근 진료 기록</span>
+              <button className={styles.allButton}>전체보기</button>
+            </div>
+            <div className={styles.recentlyCard}>
+              <HistoryCard cardType="myHistory" userData={myData} />
+            </div>
+          </section>
+        )}
         <section className={styles.medicalOtherSection}>
           <div className={styles.titleWrapper}>
             <span className={styles.wrapperTitle}>
@@ -43,7 +46,11 @@ const MedicalContent = ({
           <TreatmentSwiper listType="all" />
           <div className={styles.otherCard}>
             <div className={styles.cardList}>
-              <HistoryCard cardType="otherHistory" userData={otherData} />
+              {otherData.length === 0 ? (
+                <NoSearchData searchType="record" />
+              ) : (
+                <HistoryCard cardType="otherHistory" userData={otherData} />
+              )}
             </div>
           </div>
         </section>
