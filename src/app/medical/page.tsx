@@ -5,20 +5,10 @@ import { fetchVisitData } from "@/api/medicalRecord";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../loading";
 
-const getMedicalHistory = async (): Promise<VisitData[]> => {
-  try {
-    const response = await fetchVisitData();
-    return response;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-};
-
-const MedicalPage = async () => {
+const MedicalPage = () => {
   const { data = [], isLoading } = useQuery<VisitData[]>({
     queryKey: ["medicalHistory"],
-    queryFn: getMedicalHistory,
+    queryFn: fetchVisitData,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
