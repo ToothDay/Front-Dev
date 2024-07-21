@@ -47,7 +47,7 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
 
   const handleViewAll = (visitId: string) => {
     if (cardType === "myHistory") {
-      // 전체보기 버튼 클릭 시 전체보기 페이지로 이동
+      router.push(`/medical/detail/${visitId}?type=my`);
     } else {
       router.push(`/medical/detail/${visitId}?type=other`);
     }

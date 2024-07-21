@@ -1,3 +1,4 @@
+"use client";
 import styles from "@/components/common/BtnBottom.module.scss";
 
 type PropsBtn = {

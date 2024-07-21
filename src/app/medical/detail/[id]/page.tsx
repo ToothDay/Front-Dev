@@ -1,12 +1,15 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ToothSelectSelection from "@/components/tooth/ToothSelectSection";
+import BtnBottom from "@/components/common/BtnBottom";
 import {
   VisitDetail,
   VisitMyDetail,
   fetchMyMedicalDetail,
   fetchOtherMedicalDetail
 } from "@/api/medical";
+import DetailActionButton from "@/components/medical/DetailActionButton";
+import Modal from "@/components/modal/Modal";
 
 type PropsPage = {
   params: {
@@ -75,50 +78,54 @@ const MedicalDetail = async ({ params, searchParams }: PropsPage) => {
     .filter((toothId): toothId is number => toothId !== null);
 
   return (
-    <main className={styles.main}>
-      <Header />
-      <section className={styles.infoSection}>
-        <div className={styles.address}>{data?.dentistAddress}</div>
-        <div className={styles.title}>{data?.dentistName}에서</div>
-        {data?.writtenByCurrentUser && (
-          <div className={styles.title}>{data?.visitDate}</div>
-        )}
-        <div className={styles.treatment}>
-          {categoryList.map((item, index) => (
-            <span className={styles.treatmentName}>
-              {item.category}{" "}
-              {item.category !== "스케일링" &&
-                item.category !== "잇몸" &&
-                item.count > 1 &&
-                `${item.count}개`}
-            </span>
-          ))}
-        </div>
-        <div className={styles.title}>치료 완료했습니다</div>
-      </section>
-      <section className={styles.priceSection}>
-        <div className={styles.totalPrice}>
-          <span className={styles.label}>총 가격</span>
-          <span className={styles.price}>
-            {data?.totalAmount.toLocaleString()}원
-          </span>
-        </div>
-        <div className={styles.detailPrices}>
-          {data?.treatmentList.map((item, index) => (
-            <div className={styles.priceItem}>
-              <span className={styles.label}>{item.category} 치료</span>
-              <span className={styles.price}>
-                {item.amount.toLocaleString()}원
+    <>
+      <main className={styles.main}>
+        <Header />
+        <section className={styles.infoSection}>
+          <div className={styles.address}>{data?.dentistAddress}</div>
+          <div className={styles.title}>{data?.dentistName}에서</div>
+          {data?.writtenByCurrentUser && (
+            <div className={styles.title}>{data?.visitDate}</div>
+          )}
+          <div className={styles.treatment}>
+            {categoryList.map((item, index) => (
+              <span className={styles.treatmentName} key={index}>
+                {item.category}{" "}
+                {item.category !== "스케일링" &&
+                  item.category !== "잇몸" &&
+                  item.count > 1 &&
+                  `${item.count}개`}
               </span>
-            </div>
-          ))}
-        </div>
-      </section>
-      <section className={styles.toothSection}>
-        <span className={styles.title}>치아 상태</span>
-        <ToothSelectSelection treatmentToothList={treatmentToothList} />
-      </section>
-    </main>
+            ))}
+          </div>
+          <div className={styles.title}>치료 완료했습니다</div>
+        </section>
+        <section className={styles.priceSection}>
+          <div className={styles.totalPrice}>
+            <span className={styles.label}>총 가격</span>
+            <span className={styles.price}>
+              {data?.totalAmount.toLocaleString()}원
+            </span>
+          </div>
+          <div className={styles.detailPrices}>
+            {data?.treatmentList.map((item, index) => (
+              <div className={styles.priceItem} key={index}>
+                <span className={styles.label}>{item.category} 치료</span>
+                <span className={styles.price}>
+                  {item.amount.toLocaleString()}원
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section className={styles.toothSection}>
+          <span className={styles.title}>치아 상태</span>
+          <ToothSelectSelection treatmentToothList={treatmentToothList} />
+        </section>
+        {data?.writtenByCurrentUser && <DetailActionButton id={params.id} />}
+      </main>
+      <Modal />
+    </>
   );
 };
 
