@@ -60,7 +60,9 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
           <div className={styles.dentistInfo}>
             <div className={styles.cardTop}>
               <div className={styles.visitDentist}>
-                {cardType === "myHistory" && <span>{data.visitDate}</span>}
+                {cardType === "myHistory" && (
+                  <span className={styles.visitDate}>{data.visitDate}</span>
+                )}
                 <p className={styles.dentistName}>{data.dentistName}</p>
                 <p>{data.dentistAddress}</p>
               </div>
