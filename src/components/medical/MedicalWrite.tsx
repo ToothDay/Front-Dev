@@ -31,7 +31,6 @@ import {
 import { useRouter } from "next/navigation";
 import Error from "../error/Error";
 import Loading from "@/app/loading";
-import { TreatmentItem, VisitMyDetail } from "@/api/medical";
 
 export type SaveParams = {
   dentistId: number;
@@ -47,10 +46,16 @@ const MedicalWrite = () => {
   const { treatmentType, clearTreatmentType } = useTreatmentType();
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
   const [isDisplay, setIsDisplay] = useState<boolean>(false);
-  const { dentistId, visitDate, treatmentList, isShared } =
-    useMedicalWriteStore();
-  const { updateTreatmentCost } = useTreatmentCost();
-
+  const {
+    dentistId,
+    visitDate,
+    treatmentList,
+    isShared,
+    updateIsShared,
+    updateDentistId,
+    updateTreatmentList,
+    updateVisitDate
+  } = useMedicalWriteStore();
   const [isFill, setIsFill] = useState<boolean>(false);
 
   const [params, setParams] = useState<SaveParams>({
@@ -117,6 +122,10 @@ const MedicalWrite = () => {
   useEffect(() => {
     if (data) {
       setModifyData(data);
+      data.isShared && updateIsShared(data.isShared);
+      updateDentistId(data.dentistId);
+      updateTreatmentList(data.treatmentList);
+      updateVisitDate(data.visitDate);
     }
   }, [data]);
 
@@ -145,7 +154,10 @@ const MedicalWrite = () => {
               />
               <ShareOption isShare={isShare} setIsShare={setIsShare} />
               <div onClick={handleClick}>
-                <BtnBottom btnType={isFill} title="기록 완료" />
+                <BtnBottom
+                  btnType={isFill}
+                  title={modifyId > 0 ? "수정 완료" : "기록 완료"}
+                />
               </div>
             </>
           )}
