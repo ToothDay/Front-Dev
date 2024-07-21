@@ -19,23 +19,23 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
     [key: number]: boolean;
   }>({});
 
-  const handleImageError = (visitID: number) => {
-    if (!isImageError[visitID]) {
-      setIsImageError((prev) => ({ ...prev, [visitID]: true }));
-      setIsImageLoading((prev) => ({ ...prev, [visitID]: false }));
+  const handleImageError = (visitId: number) => {
+    if (!isImageError[visitId]) {
+      setIsImageError((prev) => ({ ...prev, [visitId]: true }));
+      setIsImageLoading((prev) => ({ ...prev, [visitId]: false }));
     }
   };
 
-  const handleImageLoad = (visitID: number) => {
-    if (isImageLoading[visitID]) {
-      setIsImageLoading((prev) => ({ ...prev, [visitID]: false }));
+  const handleImageLoad = (visitId: number) => {
+    if (isImageLoading[visitId]) {
+      setIsImageLoading((prev) => ({ ...prev, [visitId]: false }));
     }
   };
 
   useEffect(() => {
     const initialLoadingState = userData.reduce(
       (acc, data) => {
-        acc[data.visitID] = true;
+        acc[data.visitId] = true;
         return acc;
       },
       {} as { [key: number]: boolean }
@@ -56,7 +56,7 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
   return (
     <>
       {userData.map((data) => (
-        <div key={data.visitID} className={styles.card}>
+        <div key={data.visitId} className={styles.card}>
           <div className={styles.dentistInfo}>
             <div className={styles.cardTop}>
               <div className={styles.visitDentist}>
@@ -67,7 +67,7 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
               </div>
               <button
                 className={styles.moreButton}
-                onClick={() => handleViewAll(String(data.visitID))}
+                onClick={() => handleViewAll(String(data.visitId))}
               >
                 전체보기
               </button>
@@ -76,14 +76,15 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
             <div className={styles.cardBottom}>
               <p>
                 치료종류:{" "}
-                {data.treatmentList
-                  .map((treatment) => treatment.category)
-                  .join(", ")}
+                {data.treatmentList &&
+                  data.treatmentList
+                    .map((treatment) => treatment.category)
+                    .join(", ")}
               </p>
               <p>총 가격: {data.totalAmount.toLocaleString()}원</p>
               {cardType === "otherHistory" && (
                 <div className={styles.imageContainer}>
-                  {isImageLoading[data.visitID] ? (
+                  {isImageLoading[data.visitId] ? (
                     <Image
                       src="/profile.svg"
                       alt="loading"
@@ -94,7 +95,7 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
                   ) : (
                     <Image
                       src={
-                        data.profileImageUrl && !isImageError[data.visitID]
+                        data.profileImageUrl && !isImageError[data.visitId]
                           ? data.profileImageUrl
                           : "/profile.svg"
                       }
@@ -105,8 +106,8 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
                       loading="lazy"
                       blurDataURL="/profile.svg"
                       placeholder="blur"
-                      onLoad={() => handleImageLoad(data.visitID)}
-                      onError={() => handleImageError(data.visitID)}
+                      onLoad={() => handleImageLoad(data.visitId)}
+                      onError={() => handleImageError(data.visitId)}
                     />
                   )}
                 </div>

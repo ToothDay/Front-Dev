@@ -14,8 +14,8 @@ export type VisitData = {
   treatmentList: TreatmentItem[];
   totalAmount: number;
   writtenByCurrentUser: boolean;
-  visitID: number;
-  userID: number;
+  visitId: number;
+  userId: number;
   profileImageUrl?: string;
   shared: boolean;
 };
@@ -28,20 +28,20 @@ export type VisitDetail = {
   treatmentList: TreatmentItem[];
   totalAmount: number;
   writtenByCurrentUser: boolean;
-  visitID?: number;
-  userID?: number;
+  visitId?: number;
+  userId?: number;
   profileImageUrl?: string;
   shared?: boolean;
 };
 
 export type VisitMyDetail = Omit<
   VisitDetail,
-  "visitID" | "userID" | "profileImageUrl" | "shared"
+  "visitId" | "userId" | "profileImageUrl" | "shared"
 >;
 
 export type VisitMyHistory = Omit<
   VisitDetail,
-  "userID" | "profileImageUrl" | "shared"
+  "userId" | "profileImageUrl" | "shared"
 >;
 
 export const fetchOtherMedicalDetail = async (
@@ -54,7 +54,7 @@ export const fetchOtherMedicalDetail = async (
 export const fetchMyMedicalDetail = async (
   visitId: string
 ): Promise<VisitMyDetail> => {
-  const response = await axiosServer.get<VisitMyDetail>(
+  const response = await axiosServer.get<VisitDetail>(
     `/mypage/visit/${visitId}`
   );
   return response.data;
