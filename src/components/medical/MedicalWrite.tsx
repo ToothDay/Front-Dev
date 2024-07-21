@@ -10,16 +10,28 @@ import CostInput from "./CostInput";
 import ToothSelection from "./ToothSelection";
 import ShareOption from "./ShareOption";
 import {
+  CostList,
   TreatmentList,
   useMedicalWriteStore,
+  useModifyData,
+  useTreatmentCost,
   useTreatmentType
 } from "@/stores/medicalWrite";
 import Modal from "../modal/Modal";
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { SaveMyDentistResponse, saveMyDentist } from "@/api/medicalRecord";
+import {
+  useMutation,
+  UseMutationResult,
+  useQuery
+} from "@tanstack/react-query";
+import {
+  SaveMyDentistResponse,
+  fetchVisitDetail,
+  saveMyDentist
+} from "@/api/medicalRecord";
 import { useRouter } from "next/navigation";
 import Error from "../error/Error";
 import Loading from "@/app/loading";
+import { TreatmentItem, VisitMyDetail } from "@/api/medical";
 
 export type SaveParams = {
   dentistId: number;
@@ -34,8 +46,10 @@ const MedicalWrite = () => {
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
   const { treatmentType, clearTreatmentType } = useTreatmentType();
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
+  const [isDisplay, setIsDisplay] = useState<boolean>(false);
   const { dentistId, visitDate, treatmentList, isShared } =
     useMedicalWriteStore();
+  const { updateTreatmentCost } = useTreatmentCost();
 
   const [isFill, setIsFill] = useState<boolean>(false);
 
@@ -46,8 +60,17 @@ const MedicalWrite = () => {
     isShared: true
   });
 
+  const [modifyId, setModifyId] = useState<number>(0);
+
   useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    const id = query.get("id");
     clearTreatmentType();
+    if (id) {
+      setModifyId(Number(id));
+      setClickTreatment(true);
+      setIsDisplay(true);
+    }
   }, []);
 
   const router = useRouter();
@@ -83,6 +106,20 @@ const MedicalWrite = () => {
       }
     });
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["fetchModifyData"],
+    queryFn: () => fetchVisitDetail(String(modifyId)),
+    enabled: !!modifyId
+  });
+
+  const { setModifyData } = useModifyData();
+
+  useEffect(() => {
+    if (data) {
+      setModifyData(data);
+    }
+  }, [data]);
+
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (isFill) {
@@ -92,15 +129,20 @@ const MedicalWrite = () => {
 
   return (
     <>
+      {isLoading && <Loading />}
       <form className={styles.writeForm}>
         <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic} />
         <DateInput isCalendar={isCalendar} setIsCalendar={setIsCalendar} />
-        <TreatmentSelection />
+        <TreatmentSelection isModify={modifyId > 0} />
         <AnimatePresence>
-          {clickTreatment && (
+          {(clickTreatment || modifyId) && (
             <>
-              <CostInput />
-              <ToothSelection />
+              <CostInput isModify={modifyId > 0} />
+              <ToothSelection
+                isDisplay={isDisplay}
+                isModify={modifyId > 0}
+                setIsDisplay={setIsDisplay}
+              />
               <ShareOption isShare={isShare} setIsShare={setIsShare} />
               <div onClick={handleClick}>
                 <BtnBottom btnType={isFill} title="기록 완료" />

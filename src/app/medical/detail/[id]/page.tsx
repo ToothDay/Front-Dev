@@ -73,10 +73,6 @@ const MedicalDetail = async ({ params, searchParams }: PropsPage) => {
     return acc;
   }, []);
 
-  const treatmentToothList = data.treatmentList
-    .map((item) => item.toothId)
-    .filter((toothId): toothId is number => toothId !== null);
-
   return (
     <>
       <main className={styles.main}>

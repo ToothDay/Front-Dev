@@ -1,17 +1,25 @@
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./CostInput.module.scss";
 import {
+  TreatmentList,
   useCostList,
+  useModifyData,
   useTreatmentCost,
   useTreatmentType
 } from "@/stores/medicalWrite";
 import { useEffect } from "react";
 import { CostList, CostType } from "@/stores/medicalWrite";
+import { TreatmentItem } from "@/api/medical";
 
-const CostInput = () => {
+type CostInputProps = {
+  isModify: boolean;
+};
+
+const CostInput = ({ isModify }: CostInputProps) => {
   const { treatmentType } = useTreatmentType();
   const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
   const { selectedCost, updateSelectedCost } = useCostList();
+  const { treatmentList } = useModifyData();
 
   const checkTreatmentCost = () => {
     const newCostList: CostList[] = [];
@@ -33,15 +41,54 @@ const CostInput = () => {
     updateTreatmentCost(newCostList);
   };
 
+  const transformData = (
+    costList: CostList[],
+    treatmentItems: TreatmentList[]
+  ): CostList[] => {
+    const categoryCountMap: { [key: string]: number } = {};
+    treatmentItems.forEach((item) => {
+      if (!categoryCountMap[item.category]) {
+        categoryCountMap[item.category] = 0;
+      }
+    });
+
+    const updatedCostList = costList.map((cost) => {
+      const category = cost.name;
+
+      if (categoryCountMap[category] !== undefined) {
+        const currentCount = categoryCountMap[category];
+
+        const treatmentItem = treatmentItems.find(
+          (item) => item.category === category && item.amount > currentCount
+        );
+
+        if (treatmentItem) {
+          cost.value = String(treatmentItem.amount);
+          categoryCountMap[category]++;
+        }
+      }
+
+      return cost;
+    });
+
+    return updatedCostList;
+  };
+
   useEffect(() => {
     checkTreatmentCost();
   }, [treatmentType]);
 
   useEffect(() => {
-    const newSelectedCost = selectedCost.filter((selected) => {
-      return treatmentCostList.some((cost) => cost.id === selected.id);
-    });
-    updateSelectedCost(newSelectedCost);
+    if (!isModify) {
+      const newSelectedCost = selectedCost.filter((selected) => {
+        return treatmentCostList.some((cost) => cost.id === selected.id);
+      });
+      updateSelectedCost(newSelectedCost);
+    } else {
+      if (treatmentCostList.length > 0) {
+        transformData(treatmentCostList, treatmentList);
+      }
+    }
   }, [treatmentCostList]);
 
   const updateSelectedCostList = (
@@ -68,7 +115,6 @@ const CostInput = () => {
     updateTreatmentCost(newCostList);
 
     const selectedCostList = updateSelectedCostList(newCostList, selectedCost);
-    console.log("123", selectedCostList);
     updateSelectedCost(selectedCostList);
   };
 

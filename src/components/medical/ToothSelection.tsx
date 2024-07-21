@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ToothWriteModal from "../modal/ToothWriteModal";
 import styles from "./ToothSelection.module.scss";
@@ -12,9 +12,19 @@ import { useModalStore } from "@/stores/modal";
 import { ToothType } from "@/constants/toothConstants";
 import ToothSelectSection from "../tooth/ToothSelectSection";
 
-const ToothSelection = () => {
+interface ToothSelectionProps {
+  setIsDisplay: Dispatch<React.SetStateAction<boolean>>;
+  isDisplay: boolean;
+  isModify: boolean;
+}
+
+const ToothSelection = ({
+  isDisplay,
+  setIsDisplay,
+  isModify
+}: ToothSelectionProps) => {
   const { treatmentType } = useTreatmentType();
-  const [isDisplay, setIsDisplay] = useState<boolean>(false);
+
   const [isDisplayModal, setIsDisplayModal] = useState<boolean>(false);
   const [selectedTooth, setSelectedTooth] = useState<ToothType>({
     toothId: 0,
@@ -47,10 +57,13 @@ const ToothSelection = () => {
   }, [selectedCost, treatmentCostList]);
 
   useEffect(() => {
-    const shouldDisplay = !treatmentType.every(
-      (treatment) => treatment.name === "스케일링" || treatment.name === "잇몸"
-    );
-    setIsDisplay(shouldDisplay);
+    if (!isModify) {
+      const shouldDisplay = !treatmentType.every(
+        (treatment) =>
+          treatment.name === "스케일링" || treatment.name === "잇몸"
+      );
+      setIsDisplay((prev) => shouldDisplay);
+    }
   }, [treatmentType]);
 
   useEffect(() => {

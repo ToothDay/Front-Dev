@@ -3,7 +3,7 @@ import styles from "./DateInput.module.scss";
 import CustomCalendar from "../common/CustomCalendar";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { formatIsoDate, formatKoreaDate } from "@/util/formatDate";
-import { useMedicalWriteStore } from "@/stores/medicalWrite";
+import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 
 type PropsDateInput = {
   isCalendar: boolean;
@@ -24,6 +24,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [value, setValue] = useState<Value>(null);
   const { updateVisitDate } = useMedicalWriteStore();
+  const { visitDate } = useModifyData();
 
   const formattedDate = useMemo(() => {
     if (value instanceof Date) {
@@ -71,6 +72,12 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
     }
     setIsCalendar(!isCalendar);
   };
+
+  useEffect(() => {
+    if (visitDate) {
+      setSelectedValue(visitDate);
+    }
+  }, [visitDate]);
 
   return (
     <motion.div

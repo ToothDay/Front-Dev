@@ -4,6 +4,9 @@ import styles from "./DetailActionButton.module.scss";
 import BtnBottom from "../common/BtnBottom";
 import { useModalStore } from "@/stores/modal";
 import DeleteModal from "../modal/DeleteModal";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Loading from "@/app/loading";
 
 type DetailActionButtonProps = {
   id: string;
@@ -11,9 +14,13 @@ type DetailActionButtonProps = {
 
 const DetailActionButton = ({ id }: DetailActionButtonProps) => {
   const { openModal } = useModalStore();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleModify = () => {
-    console.log("수정하기");
+    setIsLoading(true);
+    router.push(`/medical/write?id=${id}`);
+    setIsLoading(false);
   };
 
   const handleDelete = () => {
@@ -22,14 +29,17 @@ const DetailActionButton = ({ id }: DetailActionButtonProps) => {
   };
 
   return (
-    <section className={styles.buttonList}>
-      <div className={styles.modifyButton} onClick={handleModify}>
-        <BtnBottom title="수정하기" btnType={false} />
-      </div>
-      <div className={styles.deleteButton} onClick={handleDelete}>
-        <BtnBottom title="삭제하기" btnType={false} />
-      </div>
-    </section>
+    <>
+      {isLoading && <Loading />}
+      <section className={styles.buttonList}>
+        <div className={styles.modifyButton} onClick={handleModify}>
+          <BtnBottom title="수정하기" btnType={false} />
+        </div>
+        <div className={styles.deleteButton} onClick={handleDelete}>
+          <BtnBottom title="삭제하기" btnType={false} />
+        </div>
+      </section>
+    </>
   );
 };
 

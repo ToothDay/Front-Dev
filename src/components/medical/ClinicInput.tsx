@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { searchDentist } from "@/api/medicalRecord";
 import Loading from "@/app/loading";
 import Highlight from "../common/Highlight";
-import { useMedicalWriteStore } from "@/stores/medicalWrite";
+import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 
 type PropsClinicInput = {
   isClinic: boolean;
@@ -20,6 +20,7 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
   const [searchName, setSearchName] = useState<string>("");
   const [debouncedQuery, setDebouncedQuery] = useState<string>("");
   const { updateDentistId } = useMedicalWriteStore();
+  const { dentistName } = useModifyData();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -68,6 +69,12 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
     setSearchName(name);
     updateDentistId(id);
   };
+
+  useEffect(() => {
+    if (dentistName) {
+      setSearchName(dentistName);
+    }
+  }, [dentistName]);
 
   return (
     <motion.div
