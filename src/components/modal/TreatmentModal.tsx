@@ -1,40 +1,60 @@
+"use client";
+import { TreatmentItem } from "@/api/medical";
 import styles from "@/components/modal/TreatmentModal.module.scss";
+import { ToothType } from "@/constants/toothConstants";
+import { useEffect, useState } from "react";
 
-const TreatmentModal = () => {
+type TreatmentModalProps = {
+  treatmentList: TreatmentItem[];
+  toothInfo: ToothType;
+  type: "detail" | "all";
+};
+
+const TreatmentModal = ({
+  treatmentList,
+  toothInfo,
+  type
+}: TreatmentModalProps) => {
+  const [treatmentName, setTreatmentName] = useState<string>("");
+  const [treatTotal, setTreatTotal] = useState<number>(0);
+
+  useEffect(() => {
+    const toothListName = treatmentList
+      .map((item) => {
+        return item.category;
+      })
+      .join(", ");
+    const toothListTotal = treatmentList.reduce((acc, cur) => {
+      return acc + Number(cur.amount);
+    }, 0);
+    setTreatmentName(toothListName);
+    setTreatTotal(toothListTotal);
+  }, [treatmentList]);
+
   return (
     <div className={styles.treatment}>
-      {/* 데이터에 맞게 수정될 예정  */}
-      <img src="/default.svg" alt="tooth" className={styles.teethImage} />
-      <div className={styles.hasData}>
-        <p className={styles.teethName}>왼쪽 7번 어금니</p>
-        <div className={styles.teethInfo}>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>임플란트, 크라운, 인레이</span>
-            <span className={styles.infoTotal}>300,000원</span>
-            <span className={styles.infoDate}>2023.07.01 수요일</span>
+      <img src={toothInfo.icon} alt="tooth" className={styles.teethImage} />
+      {treatmentList.length > 0 ? (
+        <div className={styles.hasData}>
+          <p className={styles.teethName}>{toothInfo.name}</p>
+          <div className={styles.teethInfo}>
+            <div className={styles.info}>
+              <span className={styles.infoTitle}>{treatmentName}</span>
+              {type === "detail" && (
+                <span className={styles.infoTotal}>{treatTotal}원</span>
+              )}
+              {type === "all" && (
+                <span className={styles.infoDate}>2024.08</span>
+              )}
+            </div>
           </div>
         </div>
-        {/* 데이터 맵핑 후 삭제예정 */}
-        <div className={styles.teethInfo}>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>인레이222222</span>
-            <span className={styles.infoTotal}>300,000원</span>
-            <span className={styles.infoDate}>2023.07.01 수요일</span>
-          </div>
+      ) : (
+        <div className={styles.noData}>
+          <p>{toothInfo.name}는</p>
+          <p>치료 받은 기록이 없습니다.</p>
         </div>
-        <div className={styles.teethInfo}>
-          <div className={styles.info}>
-            <span className={styles.infoTitle}>인레이222222</span>
-            <span className={styles.infoTotal}>300,000원</span>
-            <span className={styles.infoDate}>2023.07.01 수요일</span>
-          </div>
-        </div>
-      </div>
-      {/* 데이터 없을경우 케이스 */}
-      {/* <div className={styles.noData}>
-        <p>오른쪽 7번 어금니는</p>
-        <p>치료 받은 기록이 없습니다.</p>
-      </div> */}
+      )}
     </div>
   );
 };
