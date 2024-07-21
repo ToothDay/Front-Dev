@@ -38,6 +38,8 @@ const ToothSelectSection = ({
   useEffect(() => {
     if (treatmentToothList) {
       setSaveTooth(treatmentToothList);
+    } else {
+      setSaveTooth([]);
     }
   }, [toothSelect]);
 

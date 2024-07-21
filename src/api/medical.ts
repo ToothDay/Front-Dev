@@ -39,11 +39,6 @@ export type VisitMyDetail = Omit<
   "visitID" | "userID" | "profileImageUrl" | "shared"
 >;
 
-export const fetchVisitData = async (): Promise<VisitData[]> => {
-  const response = await axiosServer.get<VisitData[]>(`/visit`);
-  return response.data;
-};
-
 export const fetchOtherMedicalDetail = async (
   visitId: string
 ): Promise<VisitDetail> => {
