@@ -4,17 +4,23 @@ import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
 import ImageSwiper from "@/components/common/ImageSwiper";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { debounce } from "lodash";
 import { useModalStore } from "@/stores/modal";
 import Modal from "@/components/modal/Modal";
 import DeleteModal from "@/components/modal/DeleteModal";
 import SimpleModal from "@/components/modal/SimpleModal";
+import { useMutation } from "@tanstack/react-query";
+import { PostCommunity } from "@/api/communityApi";
 
 const CommunityWritePage = () => {
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
   const [selected, setSelected] = useState<number[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imageList, setImageList] = useState<
+    { id: number; src: string; file: File }[]
+  >([]);
   const { openModal } = useModalStore();
 
   const debouncedSetTitle = debounce((value: string) => setTitle(value), 300);
@@ -37,13 +43,60 @@ const CommunityWritePage = () => {
     );
   };
 
-  const imageList = [
-    { id: 1, src: "/profile.svg" },
-    { id: 2, src: "/profile.svg" },
-    { id: 3, src: "/profile.svg" },
-    { id: 4, src: "/profile.svg" },
-    { id: 5, src: "/image-add.svg" }
-  ];
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newImages = Array.from(e.target.files).map((file, index) => ({
+        id: imageList.length + index,
+        src: URL.createObjectURL(file),
+        file: file
+      }));
+      setImageList((prevList) => [...prevList, ...newImages]);
+    }
+  };
+
+  const mutation = useMutation({
+    mutationFn: PostCommunity,
+    onSuccess: (res) => {
+      openModal(
+        <SimpleModal type={"writeY"} answer={"보러가기"} to={res.postId} />
+      );
+    },
+    onError: (error) => {
+      console.log(error);
+      openModal(
+        <DeleteModal
+          deleteType={"write"}
+          commentY={"다시 시도하기"}
+          commentN={"뒤로가기"}
+        />
+      );
+    }
+  });
+  const handleSubmit = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (title.length > 0 && mainText.length > 0) {
+      const formData = new FormData();
+      const postForm = {
+        title,
+        content: mainText,
+        keywords: selected
+      };
+      console.log(selected);
+      formData.append(
+        "postForm",
+        new Blob([JSON.stringify(postForm)], { type: "application/json" })
+      );
+      imageList.forEach((image) => {
+        formData.append("files", image.file);
+      });
+
+      try {
+        mutation.mutate(formData);
+      } catch (error) {
+        console.error("FormData error:", error);
+      }
+    }
+  };
   return (
     <main className={styles.main}>
       <div className={styles.header}>
@@ -76,8 +129,18 @@ const CommunityWritePage = () => {
             onChange={handleMainTextChange}
           ></textarea>
           <ImageSwiper listType="all" imageList={imageList} type="write" />
-          <div className={styles.imageDiv}>
+          <div
+            className={styles.imageDiv}
+            onClick={() => fileInputRef?.current?.click()}
+          >
             <button className={styles.image} />
+            <input
+              type="file"
+              multiple
+              className={styles.fileInput}
+              ref={fileInputRef}
+              onChange={handleImageChange}
+            />
             <div className={styles.imageNumber}>{`${imageList.length}/10`}</div>
           </div>
         </article>
@@ -88,11 +151,13 @@ const CommunityWritePage = () => {
               <span
                 className={[
                   styles.keyword,
-                  selected.indexOf(treatment.id) >= 0 ? styles.selected : ""
+                  selected.indexOf(treatment.keywordId) >= 0
+                    ? styles.selected
+                    : ""
                 ].join(" ")}
                 key={treatment.id}
                 onClick={() => {
-                  handleKeywordClick(treatment.id);
+                  handleKeywordClick(treatment.keywordId);
                 }}
               >
                 {`# ${treatment.name}`}
@@ -102,9 +167,13 @@ const CommunityWritePage = () => {
         </article>
         <div
           className={styles.endBtnDiv}
-          onClick={() =>
-            openModal(<SimpleModal type={"writeY"} answer={"보러가기"} />)
-          }
+          onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+            if (title.length > 0 && mainText.length > 0) {
+              handleSubmit(e);
+            } else {
+              return;
+            }
+          }}
         >
           <BtnBottom
             btnType={title.length > 0 && mainText.length > 0 ? true : false}

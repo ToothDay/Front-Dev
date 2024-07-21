@@ -5,7 +5,7 @@ import "swiper/css";
 
 type PropsImage = {
   listType?: "all";
-  imageList?: { id: number; src: string }[];
+  imageList?: { id?: number; src: string }[];
   type: "read" | "write";
 };
 

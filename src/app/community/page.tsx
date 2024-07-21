@@ -3,6 +3,7 @@ import styles from "./page.module.scss";
 import Tab from "@/components/common/Tab";
 import PostCard from "@/components/common/PostCard";
 import NoSearchData from "@/components/community/NoSearchData";
+import Link from "next/link";
 
 const Community = () => {
   const hasNotice = false; //임시데이터값
@@ -47,9 +48,11 @@ const Community = () => {
       {/* 검색종류 따라  */}
       {/* <NoSearchData searchType="post" /> */}
       {/* <NoSearchData searchType="word" /> */}
-      <div className={styles.writeBtnDiv}>
-        <button className={styles.writeBtn} />
-      </div>
+      <Link href={"/community/write"}>
+        <div className={styles.writeBtnDiv}>
+          <button className={styles.writeBtn} />
+        </div>
+      </Link>
     </main>
   );
 };
