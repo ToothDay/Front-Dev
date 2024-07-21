@@ -40,38 +40,38 @@ const CostInput = ({ isModify }: CostInputProps) => {
     });
     updateTreatmentCost(newCostList);
   };
-
   const transformData = (
-    costList: CostList[],
-    treatmentItems: TreatmentList[]
+    items: CostList[],
+    data: TreatmentList[]
   ): CostList[] => {
-    const categoryCountMap: { [key: string]: number } = {};
-    treatmentItems.forEach((item) => {
-      if (!categoryCountMap[item.category]) {
-        categoryCountMap[item.category] = 0;
+    const categoryAmounts: { [key: string]: number[] } = {};
+
+    data.forEach((d) => {
+      if (!categoryAmounts[d.category]) {
+        categoryAmounts[d.category] = [];
       }
+      categoryAmounts[d.category].push(d.amount);
     });
 
-    const updatedCostList = costList.map((cost) => {
-      const category = cost.name;
+    const categoryIndex: { [key: string]: number } = {};
 
-      if (categoryCountMap[category] !== undefined) {
-        const currentCount = categoryCountMap[category];
+    return items.map((item) => {
+      const category = item.name;
 
-        const treatmentItem = treatmentItems.find(
-          (item) => item.category === category && item.amount > currentCount
-        );
-
-        if (treatmentItem) {
-          cost.value = String(treatmentItem.amount);
-          categoryCountMap[category]++;
-        }
+      if (!categoryIndex[category]) {
+        categoryIndex[category] = 0;
       }
 
-      return cost;
-    });
+      const index = categoryIndex[category];
+      const amounts = categoryAmounts[category];
 
-    return updatedCostList;
+      if (amounts && index < amounts.length) {
+        item.value = amounts[index].toString();
+        categoryIndex[category]++;
+      }
+
+      return item;
+    });
   };
 
   useEffect(() => {
