@@ -1,1 +1,10 @@
 @import "@/styles/common.scss";
+
+.toothSection {
+  margin-top: 38px;
+}
+
+.title {
+  @include font-style($subtitle1);
+  color: $black;
+}
