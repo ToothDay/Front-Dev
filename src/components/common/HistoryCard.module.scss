@@ -10,12 +10,12 @@
 
 .cardTop {
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .moreButton {
-  position: absolute;
-  right: 0;
-  top: 0;
   @include font-style($body2);
   color: $deepblue;
   &::after {
@@ -33,6 +33,7 @@
 
 .dentistName {
   @include font-style($subtitle2);
+  word-break: break-all;
 }
 
 .cardBottom {

@@ -59,15 +59,17 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
         <div key={data.visitID} className={styles.card}>
           <div className={styles.dentistInfo}>
             <div className={styles.cardTop}>
+              <div className={styles.visitDentist}>
+                {cardType === "myHistory" && <span>{data.visitDate}</span>}
+                <p className={styles.dentistName}>{data.dentistName}</p>
+                <p>{data.dentistAddress}</p>
+              </div>
               <button
                 className={styles.moreButton}
                 onClick={() => handleViewAll(String(data.visitID))}
               >
                 전체보기
               </button>
-              {cardType === "myHistory" && <span>{data.visitDate}</span>}
-              <p className={styles.dentistName}>{data.dentistName}</p>
-              <p>{data.dentistAddress}</p>
             </div>
             <div className={styles.cardBottom}>
               <p>
