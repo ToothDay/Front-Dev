@@ -8,7 +8,7 @@ export type SaveMyDentistResponse = {
   dentistAddress: string;
   visitDate: string;
   isShared: boolean;
-  treatmentlist: [
+  treatmentList: [
     {
       toothId: number | null;
       category: string;
