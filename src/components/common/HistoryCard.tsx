@@ -15,22 +15,13 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
   const [isImageError, setIsImageError] = useState<{ [key: number]: boolean }>(
     {}
   );
-  const [isImageLoading, setIsImageLoading] = useState<{
-    [key: number]: boolean;
-  }>({});
 
   const handleImageError = (visitId: number) => {
     if (!isImageError[visitId]) {
       setIsImageError((prev) => ({ ...prev, [visitId]: true }));
-      setIsImageLoading((prev) => ({ ...prev, [visitId]: false }));
     }
   };
 
-  const handleImageLoad = (visitId: number) => {
-    if (isImageLoading[visitId]) {
-      setIsImageLoading((prev) => ({ ...prev, [visitId]: false }));
-    }
-  };
 
   useEffect(() => {
     const initialLoadingState = userData.reduce(
@@ -41,7 +32,6 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
       {} as { [key: number]: boolean }
     );
 
-    setIsImageLoading(initialLoadingState);
     setIsImageError({});
   }, [userData]);
 
@@ -84,15 +74,6 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
               <p>총 가격: {data.totalAmount.toLocaleString()}원</p>
               {cardType === "otherHistory" && (
                 <div className={styles.imageContainer}>
-                  {isImageLoading[data.visitId] ? (
-                    <Image
-                      src="/profile.svg"
-                      alt="loading"
-                      width={42}
-                      height={42}
-                      className={styles.profileIcon}
-                    />
-                  ) : (
                     <Image
                       src={
                         data.profileImageUrl && !isImageError[data.visitId]
@@ -106,10 +87,8 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
                       loading="lazy"
                       blurDataURL="/profile.svg"
                       placeholder="blur"
-                      onLoad={() => handleImageLoad(data.visitId)}
                       onError={() => handleImageError(data.visitId)}
                     />
-                  )}
                 </div>
               )}
             </div>
