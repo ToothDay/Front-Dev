@@ -13,6 +13,7 @@ import {
   TreatmentList,
   useMedicalWriteStore,
   useModifyData,
+  useTreatmentCost,
   useTreatmentType
 } from "@/stores/medicalWrite";
 import Modal from "../modal/Modal";
@@ -65,6 +66,7 @@ const MedicalWrite = () => {
   });
 
   const [modifyId, setModifyId] = useState<number>(0);
+  const { treatmentCostList } = useTreatmentCost();
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -143,6 +145,7 @@ const MedicalWrite = () => {
       updateDentistId(data.dentistId);
       updateTreatmentList(data.treatmentList);
       updateVisitDate(data.visitDate);
+      console.log("data____", data);
     }
   }, [data]);
 

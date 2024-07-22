@@ -16,6 +16,13 @@ import { useParams, useSearchParams } from "next/navigation";
 import Loading from "@/app/loading";
 import { useToothStore } from "@/stores/tooth";
 import { useEffect } from "react";
+import {
+  useMedicalWriteStore,
+  useModifyData,
+  useTreatmentCost,
+  useTreatmentType
+} from "@/stores/medicalWrite";
+import { update } from "lodash";
 
 type CategoryList = {
   category: string;
@@ -28,6 +35,16 @@ const MedicalDetail = () => {
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
   const type = searchParams.get("type");
   const { setSaveTooth } = useToothStore();
+  const {
+    updateIsShared,
+    updateDentistId,
+    updateTreatmentList,
+    updateVisitDate
+  } = useMedicalWriteStore();
+  const { setModifyData } = useModifyData();
+  const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
+  const { treatmentType, updateOrAddTreatmentType, clearTreatmentType } =
+    useTreatmentType();
 
   if (!id || !type) {
     return <div>Error: Invalid parameters</div>;
@@ -53,12 +70,27 @@ const MedicalDetail = () => {
   >(queryOptions);
 
   useEffect(() => {
+    updateDentistId(0);
+    updateTreatmentList([]);
+    updateVisitDate("");
+    updateIsShared(true);
+    clearTreatmentType();
+  }, []);
+
+  useEffect(() => {
     const TreatmentTooth =
       data &&
       data.treatmentList
         .map((item) => item.toothId)
         .filter((toothId): toothId is number => toothId !== null);
     if (TreatmentTooth) setSaveTooth(TreatmentTooth);
+    if (data) {
+      setModifyData(data);
+      data.isShared && updateIsShared(data.isShared);
+      updateDentistId(data.dentistId);
+      updateTreatmentList(data.treatmentList);
+      updateVisitDate(data.visitDate);
+    }
   }, [data]);
 
   const categoryList: CategoryList[] | undefined =

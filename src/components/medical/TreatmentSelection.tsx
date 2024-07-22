@@ -18,7 +18,8 @@ type TreatmentSelectionProps = {
 const TreatmentSelection = ({ isModify }: TreatmentSelectionProps) => {
   const { openModal } = useModalStore();
 
-  const { treatmentType, updateOrAddTreatmentType } = useTreatmentType();
+  const { treatmentType, updateOrAddTreatmentType, clearTreatmentType } =
+    useTreatmentType();
   const { treatmentList } = useModifyData();
 
   const handleTreatmentClick = (id: number, name: string) => {
@@ -62,12 +63,13 @@ const TreatmentSelection = ({ isModify }: TreatmentSelectionProps) => {
 
   useEffect(() => {
     if (isModify) {
+      clearTreatmentType();
       const modifyData = modifyInitialData(treatmentList);
       modifyData.forEach((data) => {
         updateOrAddTreatmentType(data.id, data.name, data.number, data.isClick);
       });
     }
-  }, [treatmentList, isModify]);
+  }, [isModify, treatmentList]);
 
   const checkTreatment = (name: string) => {
     const treatment = treatmentType.find(
