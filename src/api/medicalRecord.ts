@@ -47,3 +47,8 @@ export const fetchVisitMyData = async () => {
   const response = await axiosClient.get(`/mypage/visit`);
   return response.data;
 };
+
+export const deleteMyData = async (visitId: string) => {
+  const response = await axiosClient.delete(`/visit/${visitId}`);
+  return response.data;
+};
