@@ -26,6 +26,7 @@ import {
 import {
   SaveMyDentistResponse,
   fetchVisitDetail,
+  modifyMyDentist,
   saveMyDentist
 } from "@/api/medicalRecord";
 import { useRouter } from "next/navigation";
@@ -117,6 +118,20 @@ const MedicalWrite = () => {
     enabled: !!modifyId
   });
 
+  const modifyMutation: UseMutationResult<
+    SaveMyDentistResponse,
+    Error,
+    { visitId: string; params: SaveParams }
+  > = useMutation({
+    mutationFn: ({ visitId, params }) => modifyMyDentist(visitId, params),
+    onSuccess: (data) => {
+      router.push("/medical");
+    },
+    onError: (error) => {
+      console.error("Failed to save my history", error);
+    }
+  });
+
   const { setModifyData } = useModifyData();
 
   useEffect(() => {
@@ -132,7 +147,11 @@ const MedicalWrite = () => {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (isFill) {
-      mutation.mutate(params);
+      if (modifyId > 0) {
+        modifyMutation.mutate({ visitId: String(modifyId), params });
+      } else {
+        mutation.mutate(params);
+      }
     }
   };
 

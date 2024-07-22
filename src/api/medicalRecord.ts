@@ -31,6 +31,14 @@ export const saveMyDentist = async (
   return response.data;
 };
 
+export const modifyMyDentist = async (
+  visitId: string,
+  params: SaveParams
+): Promise<SaveMyDentistResponse> => {
+  const response = await axiosClient.put(`/visit/${visitId}`, params);
+  return response.data;
+};
+
 export const fetchVisitData = async (): Promise<VisitData[]> => {
   const response = await axiosClient.get(`/visit`);
   return response.data;
