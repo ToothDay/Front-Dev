@@ -89,7 +89,7 @@ const CostInput = ({ isModify }: CostInputProps) => {
         transformData(treatmentCostList, treatmentList);
       }
     }
-  }, [treatmentCostList]);
+  }, [treatmentCostList, isModify, treatmentList]);
 
   const updateSelectedCostList = (
     newCostList: CostList[],

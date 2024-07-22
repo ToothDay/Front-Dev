@@ -67,7 +67,7 @@ const TreatmentSelection = ({ isModify }: TreatmentSelectionProps) => {
         updateOrAddTreatmentType(data.id, data.name, data.number, data.isClick);
       });
     }
-  }, [treatmentList]);
+  }, [treatmentList, isModify]);
 
   const checkTreatment = (name: string) => {
     const treatment = treatmentType.find(
