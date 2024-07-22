@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import styles from "./MedicalWrite.module.scss";
 import BtnBottom from "../common/BtnBottom";
@@ -10,11 +10,9 @@ import CostInput from "./CostInput";
 import ToothSelection from "./ToothSelection";
 import ShareOption from "./ShareOption";
 import {
-  CostList,
   TreatmentList,
   useMedicalWriteStore,
   useModifyData,
-  useTreatmentCost,
   useTreatmentType
 } from "@/stores/medicalWrite";
 import Modal from "../modal/Modal";
@@ -25,13 +23,13 @@ import {
 } from "@tanstack/react-query";
 import {
   SaveMyDentistResponse,
-  fetchVisitDetail,
   modifyMyDentist,
   saveMyDentist
 } from "@/api/medicalRecord";
 import { useRouter } from "next/navigation";
 import Error from "../error/Error";
 import Loading from "@/app/loading";
+import { fetchMyMedicalDetail } from "@/api/medical";
 
 export type SaveParams = {
   dentistId: number;
@@ -114,8 +112,12 @@ const MedicalWrite = () => {
 
   const { data, isLoading } = useQuery({
     queryKey: ["fetchModifyData"],
-    queryFn: () => fetchVisitDetail(String(modifyId)),
-    enabled: !!modifyId
+    queryFn: () => fetchMyMedicalDetail(String(modifyId)),
+    enabled: !!modifyId,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    staleTime: 0
   });
 
   const modifyMutation: UseMutationResult<

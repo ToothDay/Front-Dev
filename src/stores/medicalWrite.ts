@@ -1,4 +1,3 @@
-import { VisitDetail } from "@/api/medical";
 import { create } from "zustand";
 
 export type TreatmentList = {
@@ -159,22 +158,22 @@ export const useModifyData = create<ModifyDataState>((set) => ({
     set((state) => ({ ...state, ...data }))
 }));
 
-useCostList.subscribe((state) => {
-  console.log(state);
-});
+// useCostList.subscribe((state) => {
+//   console.log(state);
+// });
 
-useTreatmentCost.subscribe((state) => {
-  console.log(state);
-});
+// useTreatmentCost.subscribe((state) => {
+//   console.log(state);
+// });
 
-useTreatmentType.subscribe((state) => {
-  console.log(state);
-});
+// useTreatmentType.subscribe((state) => {
+//   console.log(state);
+// });
 
-useMedicalWriteStore.subscribe((state) => {
-  console.log(state);
-});
+// useMedicalWriteStore.subscribe((state) => {
+//   console.log(state);
+// });
 
-useModifyData.subscribe((state) => {
-  console.log(state);
-});
+// useModifyData.subscribe((state) => {
+//   console.log(state);
+// });

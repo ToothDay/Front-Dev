@@ -1,6 +1,6 @@
 import axiosClient from "@/api/axiosApi/axiosClient";
 import { SaveParams } from "@/components/medical/MedicalWrite";
-import { VisitData, VisitDetail } from "./medical";
+import { VisitData } from "./medical";
 
 export type SaveMyDentistResponse = {
   dentistId: number;
@@ -45,12 +45,5 @@ export const fetchVisitData = async (): Promise<VisitData[]> => {
 };
 export const fetchVisitMyData = async () => {
   const response = await axiosClient.get(`/mypage/visit`);
-  return response.data;
-};
-
-export const fetchVisitDetail = async (
-  visitId: string
-): Promise<VisitDetail> => {
-  const response = await axiosClient.get(`/mypage/visit/${visitId}`);
   return response.data;
 };
