@@ -6,7 +6,6 @@ import { useModalStore } from "@/stores/modal";
 import { useEffect, useState } from "react";
 import TreatmentModal from "../modal/TreatmentModal";
 import { ToothType } from "@/constants/toothConstants";
-import { useToothStore } from "@/stores/tooth";
 
 type DetailToothProps = {
   treatmentList?: TreatmentItem[];
@@ -21,7 +20,6 @@ const DetailTooth = ({ treatmentList = [] }: DetailToothProps) => {
     icon: ""
   });
   const { openModal } = useModalStore();
-  const { setSaveTooth } = useToothStore();
 
   useEffect(() => {
     const clickItem = treatmentList.filter((item) => {
@@ -39,13 +37,6 @@ const DetailTooth = ({ treatmentList = [] }: DetailToothProps) => {
       setIsDisplayModal(false);
     }
   }, [isDisplayModal, openModal]);
-
-  useEffect(() => {
-    const treatmentToothList = treatmentList
-      .map((item) => item.toothId)
-      .filter((toothId): toothId is number => toothId !== null);
-    setSaveTooth(treatmentToothList);
-  }, [treatmentList]);
 
   return (
     <section className={styles.toothSection}>

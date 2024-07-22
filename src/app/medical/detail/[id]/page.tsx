@@ -11,9 +11,11 @@ import {
 import DetailActionButton from "@/components/medical/DetailActionButton";
 import Modal from "@/components/modal/Modal";
 import DetailTooth from "@/components/tooth/DetailTooth";
-import { useQuery } from "@tanstack/react-query";
+import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "next/navigation";
 import Loading from "@/app/loading";
+import { useToothStore } from "@/stores/tooth";
+import { useEffect } from "react";
 
 type CategoryList = {
   category: string;
@@ -25,26 +27,39 @@ const MedicalDetail = () => {
   const searchParams = useSearchParams();
   const id = Array.isArray(params?.id) ? params.id[0] : params?.id;
   const type = searchParams.get("type");
+  const { setSaveTooth } = useToothStore();
 
   if (!id || !type) {
     return <div>Error: Invalid parameters</div>;
   }
+  const queryFn =
+    type === "me"
+      ? () => fetchMyMedicalDetail(id)
+      : () => fetchOtherMedicalDetail(id);
 
-  const { data, error, isLoading } = useQuery<
-    VisitMyDetail | VisitDetail,
-    Error
-  >({
+  const queryOptions: UseQueryOptions<VisitMyDetail | VisitDetail, Error> = {
     queryKey: ["visitDetail", id],
-    queryFn:
-      type === "me"
-        ? () => fetchMyMedicalDetail(id)
-        : () => fetchOtherMedicalDetail(id),
+    queryFn,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
     staleTime: 0,
     enabled: !!id
-  });
+  };
+
+  const { data, error, isLoading } = useQuery<
+    VisitMyDetail | VisitDetail,
+    Error
+  >(queryOptions);
+
+  useEffect(() => {
+    const TreatmentTooth =
+      data &&
+      data.treatmentList
+        .map((item) => item.toothId)
+        .filter((toothId): toothId is number => toothId !== null);
+    if (TreatmentTooth) setSaveTooth(TreatmentTooth);
+  }, [data]);
 
   const categoryList: CategoryList[] | undefined =
     data &&
