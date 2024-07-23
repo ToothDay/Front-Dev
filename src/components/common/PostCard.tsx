@@ -1,4 +1,5 @@
 import styles from "@/components/common/PostCard.module.scss";
+import { useUserStore } from "@/stores/user";
 import { formatYYYYMMDDTIME } from "@/util/formatDate";
 
 type PropsPost = {
@@ -21,12 +22,6 @@ type PropsPost = {
       profileImageUrl: string;
       username: string;
     };
-  };
-  loginUser?: {
-    email: string;
-    id: string;
-    profileImageUrl: string;
-    username: string;
   };
 };
 
@@ -88,7 +83,8 @@ const Comment = () => (
   </div>
 );
 
-const PostCard = ({ type, data, loginUser }: PropsPost) => {
+const PostCard = ({ type, data }: PropsPost) => {
+  const { userProfile } = useUserStore();
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>

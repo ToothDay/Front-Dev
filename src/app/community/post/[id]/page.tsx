@@ -11,6 +11,7 @@ import Loading from "@/app/loading";
 import Modal from "@/components/modal/Modal";
 import DeleteModal from "@/components/modal/DeleteModal";
 import { useModalStore } from "@/stores/modal";
+import { useUserStore } from "@/stores/user";
 type postMainProps = {
   params: {
     id: number;
@@ -18,7 +19,7 @@ type postMainProps = {
 };
 const PostMain = (props: postMainProps) => {
   const [imageList, setImageList] = useState<{ src: string }[]>([]);
-
+  const { userProfile } = useUserStore();
   const { data, isLoading, error } = useQuery({
     queryKey: ["getCommunityPost"],
     queryFn: () => getCommunityPost(props.params.id),
@@ -68,10 +69,12 @@ const PostMain = (props: postMainProps) => {
             {data?.likeCount}
           </span>
         </div>
-        <span
-          className={styles.postFooterRight}
-          onClick={() => openModal(<DeleteModal deleteType="post" />)}
-        />
+        {data.id == userProfile.id && (
+          <span
+            className={styles.postFooterRight}
+            onClick={() => openModal(<DeleteModal deleteType="post" />)}
+          />
+        )}
       </div>
       <div className={styles.commentMain}>
         <div className={styles.commentTitle}>답글</div>
