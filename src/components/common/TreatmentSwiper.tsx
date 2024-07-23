@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 
 type PropsTreatment = {
   listType?: "all";
+  showSelected?: (keyword: number) => void;
 };
 
-const TreatmentSwiper = ({ listType }: PropsTreatment) => {
+const TreatmentSwiper = ({ listType, showSelected }: PropsTreatment) => {
   const [selected, setSelected] = useState<number>(0);
 
   const treatmentItem: Treatment[] =
@@ -20,7 +21,6 @@ const TreatmentSwiper = ({ listType }: PropsTreatment) => {
   useEffect(() => {
     setSelected(treatmentItem[0].id);
   }, [listType]);
-
   return (
     <Swiper
       slidesPerView={"auto"}
@@ -34,9 +34,14 @@ const TreatmentSwiper = ({ listType }: PropsTreatment) => {
           key={treatment.id}
           className={[
             styles.treatmentItem,
-            treatment.id === selected ? styles.selected : ""
+            treatment.keywordId === selected ? styles.selected : ""
           ].join(" ")}
-          onClick={() => setSelected(treatment.id)}
+          onClick={() => {
+            setSelected(treatment.keywordId);
+            if (showSelected) {
+              showSelected(treatment.keywordId);
+            }
+          }}
         >
           {treatment.name}
         </SwiperSlide>

@@ -5,9 +5,9 @@ import Tab from "@/components/common/Tab";
 import PostCard from "@/components/common/PostCard";
 import Link from "next/link";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getLoginedCommunityList } from "@/api/communityApi";
+import { getLoginedKeywordCommunityList } from "@/api/communityApi";
 import Loading from "../loading";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type PostDataType = {
   postId: number;
@@ -31,10 +31,12 @@ type PostDataType = {
 
 const Community = () => {
   const hasNotice = false; //임시데이터값
-  const { data, fetchNextPage, hasNextPage, isLoading, error } =
+  const [selectedKeyword, setSelectedKeyword] = useState(1);
+  const { data, fetchNextPage, hasNextPage, isLoading, error, refetch } =
     useInfiniteQuery({
       queryKey: ["getCommunity"],
-      queryFn: ({ pageParam = 0 }) => getLoginedCommunityList({ pageParam }),
+      queryFn: ({ pageParam = 0 }) =>
+        getLoginedKeywordCommunityList({ pageParam }, selectedKeyword),
       getNextPageParam: (lastPage) => lastPage.nextOffset ?? false,
       initialPageParam: 0
     });
@@ -59,6 +61,15 @@ const Community = () => {
       }
     };
   }, [fetchNextPage, hasNextPage]);
+
+  const handleKeyowrd = (keyword: number) => {
+    setSelectedKeyword(keyword);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [selectedKeyword, refetch]);
+
   return (
     <main className={styles.main}>
       {isLoading && <Loading useBg={false} />}
@@ -88,7 +99,7 @@ const Community = () => {
         </button>
       </div>
       <div className={styles.treatmentWrapper}>
-        <TreatmentSwiper listType="all" />
+        <TreatmentSwiper listType="all" showSelected={handleKeyowrd} />
       </div>
       {/* 데이터 맵핑 예정 */}
       {data?.pages.map((page) =>
