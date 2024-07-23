@@ -1,6 +1,7 @@
+import { postLike } from "@/api/communityApi";
 import styles from "@/components/common/PostCard.module.scss";
-import { useUserStore } from "@/stores/user";
 import { formatYYYYMMDDTIME } from "@/util/formatDate";
+import { useMutation } from "@tanstack/react-query";
 
 type PropsPost = {
   type: "post" | "comment" | "like" | "community";
@@ -23,6 +24,7 @@ type PropsPost = {
       username: string;
     };
   };
+  refetch?: any;
 };
 
 const TagList = () => (
@@ -90,7 +92,18 @@ const Comment = () => (
   </div>
 );
 
-const PostCard = ({ type, data }: PropsPost) => {
+const PostCard = ({ type, data, refetch }: PropsPost) => {
+  const mutation = useMutation({
+    mutationFn: (postId: number) => postLike(postId),
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (e) => console.log(e)
+  });
+  const handleLikeBtn = async () => {
+    if (!data) return;
+    mutation.mutate(data.postId);
+  };
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>
@@ -113,6 +126,10 @@ const PostCard = ({ type, data }: PropsPost) => {
               styles.likeNumber,
               data?.likedByCurrentUser ? styles.selected : ""
             ].join(" ")}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLikeBtn();
+            }}
           >
             {data?.likeCount}
           </span>
