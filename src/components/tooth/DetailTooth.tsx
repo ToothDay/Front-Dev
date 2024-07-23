@@ -8,10 +8,10 @@ import TreatmentModal from "../modal/TreatmentModal";
 import { ToothType } from "@/constants/toothConstants";
 
 type DetailToothProps = {
-  treatmentList: TreatmentItem[];
+  treatmentList?: TreatmentItem[];
 };
 
-const DetailTooth = ({ treatmentList }: DetailToothProps) => {
+const DetailTooth = ({ treatmentList = [] }: DetailToothProps) => {
   const [isDisplayModal, setIsDisplayModal] = useState<boolean>(false);
   const [selectedTooth, setSelectedTooth] = useState<ToothType>({
     toothId: 0,
@@ -38,15 +38,10 @@ const DetailTooth = ({ treatmentList }: DetailToothProps) => {
     }
   }, [isDisplayModal, openModal]);
 
-  const treatmentToothList = treatmentList
-    .map((item) => item.toothId)
-    .filter((toothId): toothId is number => toothId !== null);
-
   return (
     <section className={styles.toothSection}>
       <span className={styles.title}>치아 상태</span>
       <ToothSelectSection
-        treatmentToothList={treatmentToothList}
         setIsDisplayModal={setIsDisplayModal}
         setSelectedTooth={setSelectedTooth}
       />

@@ -41,7 +41,9 @@ const TreatmentModal = ({
             <div className={styles.info}>
               <span className={styles.infoTitle}>{treatmentName}</span>
               {type === "detail" && (
-                <span className={styles.infoTotal}>{treatTotal}원</span>
+                <span className={styles.infoTotal}>
+                  {treatTotal.toLocaleString()}원
+                </span>
               )}
               {type === "all" && (
                 <span className={styles.infoDate}>2024.08</span>

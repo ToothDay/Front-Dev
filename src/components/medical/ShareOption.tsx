@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import styles from "./ShareOption.module.scss";
 import { useUserStore } from "@/stores/user";
-import { useMedicalWriteStore } from "@/stores/medicalWrite";
+import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 import { useEffect } from "react";
 
 type PropsShareOption = {
@@ -22,10 +22,17 @@ const ShareOption = ({ isShare, setIsShare }: PropsShareOption) => {
 
   const { userProfile } = useUserStore();
   const { updateIsShared } = useMedicalWriteStore();
+  const { isShared: isSharedStore } = useModifyData();
 
   useEffect(() => {
     updateIsShared(isShare);
   }, [isShare]);
+
+  useEffect(() => {
+    if (isSharedStore !== undefined) {
+      setIsShare(isSharedStore);
+    }
+  }, [isSharedStore]);
 
   return (
     <motion.div

@@ -1,11 +1,11 @@
 import styles from "@/components/modal/DeleteModal.module.scss";
 import { useModalStore } from "@/stores/modal";
-import { useRouter } from "next/navigation";
 
 type PropsDeleteModal = {
   deleteType: string;
   commentY?: string;
   commentN?: string;
+  onConfirm?: () => void;
 };
 
 type DeleteType = {
@@ -49,9 +49,19 @@ const DELETE_TYPE: DeleteType = {
   }
 };
 
-const DeleteModal = ({ deleteType, commentY, commentN }: PropsDeleteModal) => {
+const DeleteModal = ({
+  deleteType,
+  commentY,
+  commentN,
+  onConfirm
+}: PropsDeleteModal) => {
   const { closeModal } = useModalStore();
-  const router = useRouter();
+
+  const handleConfirm = () => {
+    if (onConfirm) {
+      onConfirm();
+    }
+  };
 
   return (
     <div className={styles.delete}>
@@ -60,10 +70,7 @@ const DeleteModal = ({ deleteType, commentY, commentN }: PropsDeleteModal) => {
       <button
         type="button"
         className={styles.deleteButton}
-        onClick={() => {
-          router.back();
-          closeModal();
-        }}
+        onClick={handleConfirm}
       >
         {commentY ? commentY : "네 삭제할게요"}
       </button>
