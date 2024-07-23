@@ -86,3 +86,8 @@
 .writeBtn {
   @include icon("/pencil-black.svg", 24px, 24px);
 }
+
+.scrollDiv {
+  height: "20px";
+  background: "transparent";
+}

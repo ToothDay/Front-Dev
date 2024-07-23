@@ -4,9 +4,10 @@ import styles from "./page.module.scss";
 import Tab from "@/components/common/Tab";
 import PostCard from "@/components/common/PostCard";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getLoginedCommunityList } from "@/api/communityApi";
 import Loading from "../loading";
+import { useEffect, useRef } from "react";
 
 type PostDataType = {
   postId: number;
@@ -30,10 +31,34 @@ type PostDataType = {
 
 const Community = () => {
   const hasNotice = false; //임시데이터값
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["getCommunity"],
-    queryFn: () => getLoginedCommunityList()
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading, error } =
+    useInfiniteQuery({
+      queryKey: ["getCommunity"],
+      queryFn: ({ pageParam = 0 }) => getLoginedCommunityList({ pageParam }),
+      getNextPageParam: (lastPage) => lastPage.nextOffset ?? false,
+      initialPageParam: 0
+    });
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!loadMoreRef.current || !hasNextPage) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      {
+        threshold: 1.0
+      }
+    );
+
+    observer.observe(loadMoreRef.current);
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+    };
+  }, [fetchNextPage, hasNextPage]);
   return (
     <main className={styles.main}>
       {isLoading && <Loading useBg={false} />}
@@ -66,11 +91,14 @@ const Community = () => {
         <TreatmentSwiper listType="all" />
       </div>
       {/* 데이터 맵핑 예정 */}
-      {data?.map((v: PostDataType) => (
-        <Link key={v.postId} href={`/community/post/${v.postId}`}>
-          <PostCard type="community" data={v} />
-        </Link>
-      ))}
+      {data?.pages.map((page) =>
+        page.posts.map((v: PostDataType) => (
+          <Link key={v.postId} href={`/community/post/${v.postId}`}>
+            <PostCard type="community" data={v} />
+          </Link>
+        ))
+      )}
+      <div ref={loadMoreRef} className={styles.scrollDiv} />
 
       {/* 검색종류 따라  */}
       {/* <NoSearchData searchType="post" /> */}
