@@ -12,9 +12,10 @@ import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 type PropsClinicInput = {
   isClinic: boolean;
   setIsClinic: (value: boolean) => void;
+  isModify?: boolean;
 };
 
-const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
+const ClinicInput = ({ isClinic, setIsClinic, isModify }: PropsClinicInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const [searchName, setSearchName] = useState<string>("");
@@ -71,7 +72,7 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
   };
 
   useEffect(() => {
-    if (dentistName) {
+    if (dentistName && isModify) {
       setSearchName(dentistName);
     }
   }, [dentistName]);

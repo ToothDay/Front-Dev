@@ -120,12 +120,15 @@ const MedicalWrite = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["fetchModifyData"],
     queryFn: () => fetchMyMedicalDetail(String(modifyId)),
-    enabled: !!modifyId,
+    enabled: !!modifyId && modifyId > 0,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
     staleTime: 0
   });
+
+  console.log("modifyId____", modifyId);
+  console.log("data____", data);
 
   const modifyMutation: UseMutationResult<
     SaveMyDentistResponse,
@@ -150,7 +153,7 @@ const MedicalWrite = () => {
       updateDentistId(data.dentistId);
       updateTreatmentList(data.treatmentList);
       updateVisitDate(data.visitDate);
-      console.log("data____", data);
+
     }
   }, [data]);
 
@@ -169,8 +172,8 @@ const MedicalWrite = () => {
     <>
       {isLoading && <Loading />}
       <form className={styles.writeForm}>
-        <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic} />
-        <DateInput isCalendar={isCalendar} setIsCalendar={setIsCalendar} />
+        <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic}  isModify={modifyId > 0} />
+        <DateInput isCalendar={isCalendar} setIsCalendar={setIsCalendar}  isModify={modifyId > 0}/>
         <TreatmentSelection isModify={modifyId > 0} />
         <AnimatePresence>
           {(clickTreatment || modifyId) && (

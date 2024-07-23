@@ -8,6 +8,7 @@ import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 type PropsDateInput = {
   isCalendar: boolean;
   setIsCalendar: (value: boolean) => void;
+  isModify?: boolean;
 };
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -18,7 +19,7 @@ const slideInVariants = {
   exit: { opacity: 0, x: -100 }
 };
 
-const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
+const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [selectedValue, setSelectedValue] = useState<string>("");
@@ -27,7 +28,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
   const { visitDate } = useModifyData();
 
   const formattedDate = useMemo(() => {
-    if (value instanceof Date) {
+    if (value instanceof Date)  {
       return formatKoreaDate(value);
     }
     return "";
@@ -74,7 +75,7 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
   };
 
   useEffect(() => {
-    if (visitDate) {
+    if (visitDate && isModify) {
       setSelectedValue(visitDate);
     }
   }, [visitDate]);
