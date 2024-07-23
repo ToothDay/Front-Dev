@@ -19,7 +19,7 @@ const TreatmentSwiper = ({ listType, showSelected }: PropsTreatment) => {
       : TREATMENT_LIST;
 
   useEffect(() => {
-    setSelected(treatmentItem[0].id);
+    setSelected(treatmentItem[0].keywordId);
   }, [listType]);
   return (
     <Swiper

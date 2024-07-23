@@ -34,11 +34,12 @@ const Community = () => {
   const [selectedKeyword, setSelectedKeyword] = useState(1);
   const { data, fetchNextPage, hasNextPage, isLoading, error, refetch } =
     useInfiniteQuery({
-      queryKey: ["getCommunity"],
+      queryKey: ["getCommunity", selectedKeyword],
       queryFn: ({ pageParam = 0 }) =>
         getLoginedKeywordCommunityList({ pageParam }, selectedKeyword),
       getNextPageParam: (lastPage) => lastPage.nextOffset ?? false,
-      initialPageParam: 0
+      initialPageParam: 0,
+      staleTime: 0
     });
   const loadMoreRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -65,10 +66,6 @@ const Community = () => {
   const handleKeyowrd = (keyword: number) => {
     setSelectedKeyword(keyword);
   };
-
-  useEffect(() => {
-    refetch();
-  }, [selectedKeyword, refetch]);
 
   return (
     <main className={styles.main}>
