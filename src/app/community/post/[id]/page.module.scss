@@ -69,7 +69,9 @@
 .postFooter {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 10px;
+  @include font-style($semi-caption1);
 }
 
 .postFooterLeft {
@@ -89,6 +91,7 @@
   display: flex;
   align-items: center;
   gap: 2px;
+  height: 19px;
   color: #fadd79;
   cursor: pointer;
   &::before {
@@ -100,6 +103,7 @@
   display: flex;
   align-items: center;
   gap: 2px;
+  height: 19px;
   color: #ff85ce;
   cursor: pointer;
   &::before {
