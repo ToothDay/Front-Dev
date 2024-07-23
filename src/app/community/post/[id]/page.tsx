@@ -69,7 +69,7 @@ const PostMain = (props: postMainProps) => {
             {data?.likeCount}
           </span>
         </div>
-        {data.id == userProfile.id && (
+        {data?.user?.id == userProfile?.id && (
           <span
             className={styles.postFooterRight}
             onClick={() => openModal(<DeleteModal deleteType="post" />)}
