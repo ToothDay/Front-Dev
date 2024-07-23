@@ -36,20 +36,14 @@ const SimpleModal = ({ type, answer, to }: PropsModal) => {
     closeModal();
     if (type === "medicalY") {
       router.push("/medical");
+    } else {
+      router.push(`/community/post/${to}`);
     }
   };
 
   return (
     <div className={styles.main}>
       <p className={styles.mainTitle}>{MODAL_TYPE[type].title}</p>
-<!--       <button
-        type="button"
-        className={styles.mainBtn}
-        onClick={() => {
-          closeModal();
-          router.push(`/community/post/${to}`);
-        }}
-      > -->
       <button type="button" className={styles.mainBtn} onClick={handleClick}>
         {answer}
       </button>
