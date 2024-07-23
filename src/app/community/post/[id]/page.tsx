@@ -194,6 +194,18 @@ const PostMain = (props: postMainProps) => {
               </div>
             );
           })}
+          {data?.commentDTOList?.length == 0 ? (
+            <div className={styles.noneComment}>
+              <span className={styles.noneCommentTitle}>
+                아직 댓글이 없습니다.
+              </span>
+              <span className={styles.noneCommentContent}>
+                댓글을 남겨 소통해보세요.
+              </span>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <Modal />
