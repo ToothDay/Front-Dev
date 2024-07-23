@@ -22,6 +22,12 @@ type PropsPost = {
       username: string;
     };
   };
+  loginUser?: {
+    email: string;
+    id: string;
+    profileImageUrl: string;
+    username: string;
+  };
 };
 
 const TagList = () => (
@@ -82,8 +88,7 @@ const Comment = () => (
   </div>
 );
 
-const PostCard = ({ type, data }: PropsPost) => {
-  console.log(data);
+const PostCard = ({ type, data, loginUser }: PropsPost) => {
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>
