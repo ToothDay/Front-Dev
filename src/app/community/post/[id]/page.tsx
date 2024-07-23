@@ -17,7 +17,7 @@ import Modal from "@/components/modal/Modal";
 import DeleteModal from "@/components/modal/DeleteModal";
 import { useModalStore } from "@/stores/modal";
 import { useUserStore } from "@/stores/user";
-import { debounce } from "lodash";
+
 type postMainProps = {
   params: {
     id: number;
