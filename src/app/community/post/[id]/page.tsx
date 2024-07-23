@@ -2,8 +2,13 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ImageSwiper from "@/components/common/ImageSwiper";
-import { useQuery } from "@tanstack/react-query";
-import { getCommunityPost } from "@/api/communityApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  delComment,
+  getCommunityPost,
+  postComment,
+  postLike
+} from "@/api/communityApi";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useEffect, useState } from "react";
 import { formatYYYYMMDDTIME } from "./../../../../util/formatDate";
@@ -11,15 +16,26 @@ import Loading from "@/app/loading";
 import Modal from "@/components/modal/Modal";
 import DeleteModal from "@/components/modal/DeleteModal";
 import { useModalStore } from "@/stores/modal";
+import { useUserStore } from "@/stores/user";
+import { debounce } from "lodash";
 type postMainProps = {
   params: {
     id: number;
   };
 };
+type commentDTOList = {
+  id: number;
+  content: string;
+  createDate: Date;
+  profileImageUrl: string;
+  username: string;
+  writtenByCurrentUser: boolean;
+};
 const PostMain = (props: postMainProps) => {
   const [imageList, setImageList] = useState<{ src: string }[]>([]);
-
-  const { data, isLoading, error } = useQuery({
+  const [comment, setComment] = useState("");
+  const { userProfile } = useUserStore();
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["getCommunityPost"],
     queryFn: () => getCommunityPost(props.params.id),
     staleTime: 0
@@ -32,6 +48,48 @@ const PostMain = (props: postMainProps) => {
       setImageList(newImageList);
     }
   }, [data]);
+
+  const mutation = useMutation({
+    mutationFn: (postId: number) => postLike(postId),
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (e) => console.log(e)
+  });
+
+  const mutationComment = useMutation({
+    mutationFn: (postId: number) => postComment(postId, comment),
+    onSuccess: () => {
+      refetch();
+      setComment("");
+    },
+    onError: (e) => console.log(e)
+  });
+
+  const mutationDelComment = useMutation({
+    mutationFn: (commentId: number) => delComment(commentId),
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (e) => console.log(e)
+  });
+
+  const handleLikeBtn = async () => {
+    mutation.mutate(data?.postId);
+  };
+  const handleEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      mutationComment.mutate(data?.postId);
+    }
+  };
+
+  const handleCommentChange = (e: { target: { value: string } }) => {
+    setComment(e.target.value);
+  };
+
+  const handleDelComment = (commentId: number) => {
+    mutationDelComment.mutate(commentId);
+  };
   return (
     <main className={styles.main}>
       {isLoading && <Loading useBg={false} />}
@@ -64,14 +122,22 @@ const PostMain = (props: postMainProps) => {
       <div className={styles.postFooter}>
         <div className={styles.postFooterLeft}>
           <span className={styles.commentNumber}>{data?.commentCount}</span>
-          <span className={[styles.likeNumber, styles.selected].join(" ")}>
+          <span
+            className={[
+              styles.likeNumber,
+              data?.likedByCurrentUser ? styles.selected : ""
+            ].join(" ")}
+            onClick={handleLikeBtn}
+          >
             {data?.likeCount}
           </span>
         </div>
-        <span
-          className={styles.postFooterRight}
-          onClick={() => openModal(<DeleteModal deleteType="post" />)}
-        />
+        {data?.user?.id == userProfile?.id && (
+          <span
+            className={styles.postFooterRight}
+            onClick={() => openModal(<DeleteModal deleteType="post" />)}
+          />
+        )}
       </div>
       <div className={styles.commentMain}>
         <div className={styles.commentTitle}>답글</div>
@@ -84,72 +150,62 @@ const PostMain = (props: postMainProps) => {
           <input
             className={styles.commentinput}
             placeholder="댓글을 작성해 주세요."
+            onKeyDown={handleEnterComment}
+            onChange={handleCommentChange}
+            value={comment}
           />
         </div>
         <div className={styles.comments}>
-          <div className={styles.comment}>
-            <div className={styles.commentHeader}>
-              <img
-                src="/profile.svg"
-                alt="user-profile"
-                className={styles.commentProfile}
-              />
-              <div className={styles.commentHeaderMain}>
-                <div>
-                  <span className={styles.commentNickName}>닉네임</span>
-                  <span className={styles.commentTime}>2024.07.03 18:00</span>
+          {data?.commentDTOList.map((commentInfo: commentDTOList) => {
+            return (
+              <div className={styles.comment} key={commentInfo?.id}>
+                <div className={styles.commentHeader}>
+                  <img
+                    src="/profile.svg"
+                    alt="user-profile"
+                    className={styles.commentProfile}
+                  />
+                  <div className={styles.commentHeaderMain}>
+                    <div>
+                      <span className={styles.commentNickName}>
+                        {commentInfo?.username}
+                      </span>
+                      <span className={styles.commentTime}>
+                        {formatYYYYMMDDTIME(commentInfo.createDate)}
+                      </span>
+                    </div>
+                    {/* <span className={styles.commentLike} /> */}
+                  </div>
                 </div>
-                <span className={styles.commentLike} />
-              </div>
-            </div>
-            <div className={styles.commentContent}>
-              레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이
-              무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지 아시는
-            </div>
-            <button className={styles.commentBtn}>답글쓰기</button>
-          </div>
-          <div className={styles.comment}>
-            <div className={styles.commentHeader}>
-              <img
-                src="/profile.svg"
-                alt="user-profile"
-                className={styles.commentProfile}
-              />
-              <div className={styles.commentHeaderMain}>
-                <div>
-                  <span className={styles.commentNickName}>닉네임</span>
-                  <span className={styles.commentTime}>2024.07.03 18:00</span>
+                <div className={styles.commentContent}>
+                  {commentInfo?.content}
                 </div>
-                <span className={styles.commentLike} />
+                {/* <button className={styles.commentBtn}>답글쓰기</button> */}
+                {commentInfo?.writtenByCurrentUser === true ? (
+                  <button
+                    className={styles.commentBtn}
+                    onClick={() => handleDelComment(commentInfo?.id)}
+                  >
+                    삭제하기
+                  </button>
+                ) : (
+                  ""
+                )}
               </div>
+            );
+          })}
+          {data?.commentDTOList?.length == 0 ? (
+            <div className={styles.noneComment}>
+              <span className={styles.noneCommentTitle}>
+                아직 댓글이 없습니다.
+              </span>
+              <span className={styles.noneCommentContent}>
+                댓글을 남겨 소통해보세요.
+              </span>
             </div>
-            <div className={styles.commentContent}>
-              레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이
-              무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지 아시는
-            </div>
-            <button className={styles.commentBtn}>답글쓰기</button>
-          </div>
-          <div className={styles.comment}>
-            <div className={styles.commentHeader}>
-              <img
-                src="/profile.svg"
-                alt="user-profile"
-                className={styles.commentProfile}
-              />
-              <div className={styles.commentHeaderMain}>
-                <div>
-                  <span className={styles.commentNickName}>닉네임</span>
-                  <span className={styles.commentTime}>2024.07.03 18:00</span>
-                </div>
-                <span className={styles.commentLike} />
-              </div>
-            </div>
-            <div className={styles.commentContent}>
-              레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이
-              무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지 아시는
-            </div>
-            <button className={styles.commentBtn}>답글쓰기</button>
-          </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <Modal />

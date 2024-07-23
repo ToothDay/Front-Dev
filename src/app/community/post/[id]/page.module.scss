@@ -209,3 +209,20 @@
   margin: 3px 0px 0px 42px;
   @include font-style($caption1);
 }
+
+.noneComment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  .noneCommentTitle {
+    height: 22px;
+    margin-top: 39px;
+    @include font-style($semi-body1);
+  }
+  .noneCommentContent {
+    height: 19px;
+    margin-top: 5px;
+    @include font-style($caption1);
+  }
+}

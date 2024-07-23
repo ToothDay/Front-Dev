@@ -1,4 +1,5 @@
 import styles from "@/components/common/PostCard.module.scss";
+import { useUserStore } from "@/stores/user";
 import { formatYYYYMMDDTIME } from "@/util/formatDate";
 
 type PropsPost = {
@@ -22,12 +23,6 @@ type PropsPost = {
       username: string;
     };
   };
-  loginUser?: {
-    email: string;
-    id: string;
-    profileImageUrl: string;
-    username: string;
-  };
 };
 
 const TagList = () => (
@@ -42,7 +37,13 @@ const PostHeader = ({ type, data }: PropsPost) => (
   <div className={styles.postHeader}>
     {type !== "post" && (
       <img
-        src={`http://3.34.135.181:8000/upload/profileImage/${data?.user?.profileImageUrl}`}
+        src={
+          data?.user?.profileImageUrl
+            ? data?.user?.profileImageUrl.includes("http")
+              ? `${data?.user?.profileImageUrl}`
+              : `http://3.34.135.181:8000/upload/profileImage/${data?.user?.profileImageUrl}`
+            : `/image-default.png`
+        }
         alt="user-profile"
         className={styles.profile}
       />
@@ -88,7 +89,7 @@ const Comment = () => (
   </div>
 );
 
-const PostCard = ({ type, data, loginUser }: PropsPost) => {
+const PostCard = ({ type, data }: PropsPost) => {
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>
@@ -106,7 +107,12 @@ const PostCard = ({ type, data, loginUser }: PropsPost) => {
       {type !== "comment" && (
         <div className={styles.postFooter}>
           <span className={styles.commentNumber}>{data?.commentCount}</span>
-          <span className={[styles.likeNumber, styles.selected].join(" ")}>
+          <span
+            className={[
+              styles.likeNumber,
+              data?.likedByCurrentUser ? styles.selected : ""
+            ].join(" ")}
+          >
             {data?.likeCount}
           </span>
         </div>
