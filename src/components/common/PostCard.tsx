@@ -39,8 +39,10 @@ const PostHeader = ({ type, data }: PropsPost) => (
       <img
         src={
           data?.user?.profileImageUrl
-            ? `http://3.34.135.181:8000/upload/profileImage/${data?.user?.profileImageUrl}`
-            : "/image-default.png"
+            ? data?.user?.profileImageUrl.includes("http")
+              ? `${data?.user?.profileImageUrl}`
+              : `http://3.34.135.181:8000/upload/profileImage/${data?.user?.profileImageUrl}`
+            : `/image-default.png`
         }
         alt="user-profile"
         className={styles.profile}
