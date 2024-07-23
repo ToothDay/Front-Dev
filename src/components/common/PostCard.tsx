@@ -2,6 +2,25 @@ import styles from "@/components/common/PostCard.module.scss";
 
 type PropsPost = {
   type: "post" | "comment" | "like" | "community";
+  data?: {
+    postId: number;
+    createDate: Date;
+    title: string;
+    content: string;
+    commentCount: number;
+    likeCount: number;
+    likedByCurrentUser: boolean;
+    writtenByCurrentUser: boolean;
+    imageUrl: string[];
+    commentDTOList: [];
+    keyword: number[];
+    user: {
+      email: string;
+      id: number;
+      profileImageUrl: string;
+      username: string;
+    };
+  };
 };
 
 const TagList = () => (
@@ -58,7 +77,7 @@ const Comment = () => (
   </div>
 );
 
-const PostCard = ({ type }: PropsPost) => {
+const PostCard = ({ type, data }: PropsPost) => {
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>

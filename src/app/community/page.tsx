@@ -1,13 +1,18 @@
+"use client";
 import TreatmentSwiper from "@/components/common/TreatmentSwiper";
 import styles from "./page.module.scss";
 import Tab from "@/components/common/Tab";
 import PostCard from "@/components/common/PostCard";
-import NoSearchData from "@/components/community/NoSearchData";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import { getLoginedCommunityList } from "@/api/communityApi";
 
 const Community = () => {
   const hasNotice = false; //임시데이터값
-
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["getCommunity"],
+    queryFn: () => getLoginedCommunityList()
+  });
   return (
     <main className={styles.main}>
       <div className={styles.tab}>
@@ -39,11 +44,11 @@ const Community = () => {
         <TreatmentSwiper listType="all" />
       </div>
       {/* 데이터 맵핑 예정 */}
-      <PostCard type="community" />
-      <PostCard type="community" />
-      <PostCard type="community" />
-      <PostCard type="community" />
-      <PostCard type="community" />
+      <PostCard type="community" data={data} />
+      <PostCard type="community" data={data} />
+      <PostCard type="community" data={data} />
+      <PostCard type="community" data={data} />
+      <PostCard type="community" data={data} />
 
       {/* 검색종류 따라  */}
       {/* <NoSearchData searchType="post" /> */}

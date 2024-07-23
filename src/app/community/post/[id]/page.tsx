@@ -5,27 +5,31 @@ import ImageSwiper from "@/components/common/ImageSwiper";
 import { useQuery } from "@tanstack/react-query";
 import { getCommunityPost } from "@/api/communityApi";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
+import { useEffect, useState } from "react";
+import { formatYYYYMMDDTIME } from "./../../../../util/formatDate";
+import Loading from "@/app/loading";
 type postMainProps = {
   params: {
     id: number;
   };
 };
 const PostMain = (props: postMainProps) => {
-  const imageList = [
-    { id: 1, src: "/profile.svg" },
-    { id: 2, src: "/profile.svg" },
-    { id: 3, src: "/profile.svg" },
-    { id: 4, src: "/profile.svg" },
-    { id: 5, src: "/image-add.svg" }
-  ];
+  const [imageList, setImageList] = useState<{ src: string }[]>([]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["getCommunityPost"],
     queryFn: () => getCommunityPost(props.params.id)
   });
-  console.log(data);
+
+  useEffect(() => {
+    if (data) {
+      const newImageList = data.imageUrl.map((url: string) => ({ src: url }));
+      setImageList(newImageList);
+    }
+  }, [data]);
   return (
     <main className={styles.main}>
+      {isLoading && <Loading useBg={false} />}
       <div className={styles.header}>
         <Header />
       </div>
@@ -35,7 +39,9 @@ const PostMain = (props: postMainProps) => {
           <p className={styles.postTitle}>{data?.title}</p>
           <div className={styles.postSubInfo}>
             <span className={styles.nickName}>{data?.user?.username}</span>
-            <span className={styles.time}>{data?.createDate}</span>
+            <span className={styles.time}>
+              {formatYYYYMMDDTIME(data?.createDate)}
+            </span>
           </div>
         </div>
       </div>

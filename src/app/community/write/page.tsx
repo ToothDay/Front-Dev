@@ -81,7 +81,6 @@ const CommunityWritePage = () => {
         content: mainText,
         keywords: selected
       };
-      console.log(selected);
       formData.append(
         "postForm",
         new Blob([JSON.stringify(postForm)], { type: "application/json" })

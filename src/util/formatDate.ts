@@ -8,3 +8,8 @@ export const formatKoreaDate = (date: Date): string => {
 export const formatIsoDate = (date: Date): string => {
   return format(date, "yyyy-MM-dd");
 };
+
+export const formatYYYYMMDDTIME = (date: Date): string => {
+  if (!date) return "null";
+  return format(date, "yyyy.MM.dd HH:mm", { locale: ko });
+};
