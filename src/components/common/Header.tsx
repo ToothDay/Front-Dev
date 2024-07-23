@@ -19,8 +19,10 @@ const Header = ({ title, openModal }: PropsHeader) => {
     }
   };
   return (
-    <header className={styles.header} onClick={handleBack}>
-      <button className={styles.beforeButton}>이전</button>
+    <header className={styles.header}>
+      <button className={styles.beforeButton} onClick={handleBack}>
+        이전
+      </button>
       <h1 className={styles.title}>{title}</h1>
     </header>
   );

@@ -6,6 +6,7 @@ import PostCard from "@/components/common/PostCard";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getLoginedCommunityList } from "@/api/communityApi";
+import NoSearchData from "@/components/noData/NoSearchData";
 
 const Community = () => {
   const hasNotice = false; //임시데이터값

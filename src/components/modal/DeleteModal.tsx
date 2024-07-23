@@ -62,6 +62,7 @@ const DeleteModal = ({ deleteType, commentY, commentN }: PropsDeleteModal) => {
         className={styles.deleteButton}
         onClick={() => {
           router.back();
+          closeModal();
         }}
       >
         {commentY ? commentY : "네 삭제할게요"}

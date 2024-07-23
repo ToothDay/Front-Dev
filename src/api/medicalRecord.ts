@@ -1,5 +1,6 @@
 import axiosClient from "@/api/axiosApi/axiosClient";
 import { SaveParams } from "@/components/medical/MedicalWrite";
+import { VisitData } from "./medical";
 
 export type SaveMyDentistResponse = {
   dentistId: number;
@@ -7,7 +8,7 @@ export type SaveMyDentistResponse = {
   dentistAddress: string;
   visitDate: string;
   isShared: boolean;
-  treatmentlist: [
+  treatmentList: [
     {
       toothId: number | null;
       category: string;
@@ -27,5 +28,14 @@ export const saveMyDentist = async (
   params: SaveParams
 ): Promise<SaveMyDentistResponse> => {
   const response = await axiosClient.post(`/visit`, params);
+  return response.data;
+};
+
+export const fetchVisitData = async (): Promise<VisitData[]> => {
+  const response = await axiosClient.get(`/visit`);
+  return response.data;
+};
+export const fetchVisitMyData = async () => {
+  const response = await axiosClient.get(`/mypage/visit`);
   return response.data;
 };

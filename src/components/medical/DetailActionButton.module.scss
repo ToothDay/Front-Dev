@@ -1,0 +1,10 @@
+@import "@/styles/common.scss";
+
+.buttonList {
+  margin: 30px auto 0;
+  width: 248px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}

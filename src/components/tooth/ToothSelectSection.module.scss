@@ -1,0 +1,28 @@
+@import "@/styles/common.scss";
+
+.toothItem {
+  margin-top: 7px;
+}
+
+.toothSelect {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.treatmentButton {
+  border: 1px solid $grey1;
+  border-radius: 8px;
+  padding: 7px 16px;
+  @include font-style($body2);
+  color: $black;
+  cursor: pointer;
+}
+
+.selected {
+  @include button-select;
+}
+
+.toothImg {
+  margin-top: 12px;
+}
