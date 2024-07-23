@@ -75,7 +75,7 @@ const ClinicInput = ({ isClinic, setIsClinic, isModify }: PropsClinicInput) => {
     if (dentistName && isModify) {
       setSearchName(dentistName);
     }
-  }, [dentistName]);
+  }, [dentistName,isModify]);
 
   return (
     <motion.div

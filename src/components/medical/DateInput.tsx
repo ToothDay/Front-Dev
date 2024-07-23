@@ -78,7 +78,7 @@ const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
     if (visitDate && isModify) {
       setSelectedValue(visitDate);
     }
-  }, [visitDate]);
+  }, [visitDate,isModify]);
 
   return (
     <motion.div
