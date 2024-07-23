@@ -1,0 +1,46 @@
+@import "@/styles/common.scss";
+
+.main {
+  height: 100vh;
+  background-color: $white;
+  overflow: auto;
+  padding: 28px 24px;
+  position: relative;
+}
+
+.medicalRecentlySection {
+  margin-top: 26px;
+}
+
+.titleWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.wrapperTitle {
+  @include font-style($semi-subtitle1);
+  color: $black;
+}
+
+.allButton {
+  @include icon("/right-icon.svg", 24px, 24px);
+  text-indent: -9999px;
+}
+
+.medicalOtherSection {
+  margin-top: 26px;
+}
+
+.otherCard {
+  margin-top: 14px;
+}
+
+.cardList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-direction: column;
+}

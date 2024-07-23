@@ -24,7 +24,7 @@ import Loading from "@/app/loading";
 export type SaveParams = {
   dentistId: number;
   visitDate: string;
-  treatmentlist: TreatmentList[];
+  treatmentList: TreatmentList[];
   isShared: boolean;
 };
 
@@ -34,7 +34,7 @@ const MedicalWrite = () => {
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
   const { treatmentType, clearTreatmentType } = useTreatmentType();
   const [clickTreatment, setClickTreatment] = useState<boolean>(false);
-  const { dentistId, visitDate, treatmentlist, isShared } =
+  const { dentistId, visitDate, treatmentList, isShared } =
     useMedicalWriteStore();
 
   const [isFill, setIsFill] = useState<boolean>(false);
@@ -42,7 +42,7 @@ const MedicalWrite = () => {
   const [params, setParams] = useState<SaveParams>({
     dentistId: 0,
     visitDate: "",
-    treatmentlist: [],
+    treatmentList: [],
     isShared: true
   });
 
@@ -64,13 +64,13 @@ const MedicalWrite = () => {
     setParams({
       dentistId,
       visitDate,
-      treatmentlist,
+      treatmentList,
       isShared
     });
-    if (dentistId && visitDate && treatmentlist.length > 0) {
+    if (dentistId && visitDate && treatmentList.length > 0) {
       setIsFill(true);
     }
-  }, [dentistId, visitDate, treatmentlist, isShared]);
+  }, [dentistId, visitDate, treatmentList, isShared]);
 
   const mutation: UseMutationResult<SaveMyDentistResponse, Error, SaveParams> =
     useMutation({

@@ -68,8 +68,21 @@
 
 .postFooter {
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
   margin-top: 10px;
+}
+
+.postFooterLeft {
+  display: flex;
+  gap: 8px;
+}
+
+.postFooterRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include icon("/trashCan-icon.svg", 24px, 24px);
+  cursor: pointer;
 }
 
 .commentNumber {
@@ -77,6 +90,7 @@
   align-items: center;
   gap: 2px;
   color: #fadd79;
+  cursor: pointer;
   &::before {
     @include icon("/comment-icon.svg", 24px, 24px);
   }
@@ -87,6 +101,7 @@
   align-items: center;
   gap: 2px;
   color: #ff85ce;
+  cursor: pointer;
   &::before {
     @include icon("/like-icon.svg", 24px, 24px);
   }

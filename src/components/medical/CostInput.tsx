@@ -37,6 +37,13 @@ const CostInput = () => {
     checkTreatmentCost();
   }, [treatmentType]);
 
+  useEffect(() => {
+    const newSelectedCost = selectedCost.filter((selected) => {
+      return treatmentCostList.some((cost) => cost.id === selected.id);
+    });
+    updateSelectedCost(newSelectedCost);
+  }, [treatmentCostList]);
+
   const updateSelectedCostList = (
     newCostList: CostList[],
     selectedCost: CostType[]
@@ -61,6 +68,7 @@ const CostInput = () => {
     updateTreatmentCost(newCostList);
 
     const selectedCostList = updateSelectedCostList(newCostList, selectedCost);
+    console.log("123", selectedCostList);
     updateSelectedCost(selectedCostList);
   };
 

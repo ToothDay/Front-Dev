@@ -8,6 +8,9 @@ import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useEffect, useState } from "react";
 import { formatYYYYMMDDTIME } from "./../../../../util/formatDate";
 import Loading from "@/app/loading";
+import Modal from "@/components/modal/Modal";
+import DeleteModal from "@/components/modal/DeleteModal";
+import { useModalStore } from "@/stores/modal";
 type postMainProps = {
   params: {
     id: number;
@@ -21,6 +24,7 @@ const PostMain = (props: postMainProps) => {
     queryFn: () => getCommunityPost(props.params.id),
     staleTime: 0
   });
+  const { openModal } = useModalStore();
 
   useEffect(() => {
     if (data) {
@@ -58,10 +62,16 @@ const PostMain = (props: postMainProps) => {
         })}
       </div>
       <div className={styles.postFooter}>
-        <span className={styles.commentNumber}>{data?.commentCount}</span>
-        <span className={[styles.likeNumber, styles.selected].join(" ")}>
-          {data?.likeCount}
-        </span>
+        <div className={styles.postFooterLeft}>
+          <span className={styles.commentNumber}>{data?.commentCount}</span>
+          <span className={[styles.likeNumber, styles.selected].join(" ")}>
+            {data?.likeCount}
+          </span>
+        </div>
+        <span
+          className={styles.postFooterRight}
+          onClick={() => openModal(<DeleteModal deleteType="post" />)}
+        />
       </div>
       <div className={styles.commentMain}>
         <div className={styles.commentTitle}>답글</div>
@@ -142,6 +152,7 @@ const PostMain = (props: postMainProps) => {
           </div>
         </div>
       </div>
+      <Modal />
     </main>
   );
 };

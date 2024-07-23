@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getLoginedCommunityList } from "@/api/communityApi";
 import Loading from "../loading";
 import { useRouter } from "next/navigation";
+import NoSearchData from "@/components/noData/NoSearchData";
+
 type PostDataType = {
   postId: number;
   createDate: Date;
@@ -27,6 +29,7 @@ type PostDataType = {
     username: string;
   };
 };
+
 const Community = () => {
   const hasNotice = false; //임시데이터값
   const router = useRouter();
