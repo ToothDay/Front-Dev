@@ -17,6 +17,13 @@ type postMainProps = {
     id: number;
   };
 };
+type commentDTOList = {
+  id: number;
+  content: string;
+  createDate: Date;
+  profileImageUrl: string;
+  username: string;
+};
 const PostMain = (props: postMainProps) => {
   const [imageList, setImageList] = useState<{ src: string }[]>([]);
   const { userProfile } = useUserStore();
@@ -45,7 +52,7 @@ const PostMain = (props: postMainProps) => {
   const handleLikeBtn = async () => {
     mutation.mutate(data?.postId);
   };
-
+  console.log(data);
   return (
     <main className={styles.main}>
       {isLoading && <Loading useBg={false} />}
@@ -109,69 +116,34 @@ const PostMain = (props: postMainProps) => {
           />
         </div>
         <div className={styles.comments}>
-          <div className={styles.comment}>
-            <div className={styles.commentHeader}>
-              <img
-                src="/profile.svg"
-                alt="user-profile"
-                className={styles.commentProfile}
-              />
-              <div className={styles.commentHeaderMain}>
-                <div>
-                  <span className={styles.commentNickName}>닉네임</span>
-                  <span className={styles.commentTime}>2024.07.03 18:00</span>
+          {data?.commentDTOList.map((commentInfo: commentDTOList) => {
+            return (
+              <div className={styles.comment}>
+                <div className={styles.commentHeader}>
+                  <img
+                    src="/profile.svg"
+                    alt="user-profile"
+                    className={styles.commentProfile}
+                  />
+                  <div className={styles.commentHeaderMain}>
+                    <div>
+                      <span className={styles.commentNickName}>
+                        {commentInfo?.username}
+                      </span>
+                      <span className={styles.commentTime}>
+                        {formatYYYYMMDDTIME(commentInfo.createDate)}
+                      </span>
+                    </div>
+                    {/* <span className={styles.commentLike} /> */}
+                  </div>
                 </div>
-                <span className={styles.commentLike} />
-              </div>
-            </div>
-            <div className={styles.commentContent}>
-              레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이
-              무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지 아시는
-            </div>
-            <button className={styles.commentBtn}>답글쓰기</button>
-          </div>
-          <div className={styles.comment}>
-            <div className={styles.commentHeader}>
-              <img
-                src="/profile.svg"
-                alt="user-profile"
-                className={styles.commentProfile}
-              />
-              <div className={styles.commentHeaderMain}>
-                <div>
-                  <span className={styles.commentNickName}>닉네임</span>
-                  <span className={styles.commentTime}>2024.07.03 18:00</span>
+                <div className={styles.commentContent}>
+                  {commentInfo?.content}
                 </div>
-                <span className={styles.commentLike} />
+                {/* <button className={styles.commentBtn}>답글쓰기</button> */}
               </div>
-            </div>
-            <div className={styles.commentContent}>
-              레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이
-              무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지 아시는
-            </div>
-            <button className={styles.commentBtn}>답글쓰기</button>
-          </div>
-          <div className={styles.comment}>
-            <div className={styles.commentHeader}>
-              <img
-                src="/profile.svg"
-                alt="user-profile"
-                className={styles.commentProfile}
-              />
-              <div className={styles.commentHeaderMain}>
-                <div>
-                  <span className={styles.commentNickName}>닉네임</span>
-                  <span className={styles.commentTime}>2024.07.03 18:00</span>
-                </div>
-                <span className={styles.commentLike} />
-              </div>
-            </div>
-            <div className={styles.commentContent}>
-              레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이
-              무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지 아시는
-            </div>
-            <button className={styles.commentBtn}>답글쓰기</button>
-          </div>
+            );
+          })}
         </div>
       </div>
       <Modal />
