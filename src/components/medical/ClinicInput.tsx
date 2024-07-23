@@ -68,7 +68,7 @@ const ClinicInput = ({ isClinic, setIsClinic, isModify }: PropsClinicInput) => {
   const selectClinic = (name: string, id: number) => {
     setIsClinic(false);
     setSearchName(name);
-    updateDentistId(id);
+    updateDentistId(Number(id));
   };
 
   useEffect(() => {
