@@ -3,7 +3,12 @@ import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ImageSwiper from "@/components/common/ImageSwiper";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getCommunityPost, postComment, postLike } from "@/api/communityApi";
+import {
+  delComment,
+  getCommunityPost,
+  postComment,
+  postLike
+} from "@/api/communityApi";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useEffect, useState } from "react";
 import { formatYYYYMMDDTIME } from "./../../../../util/formatDate";
@@ -24,6 +29,7 @@ type commentDTOList = {
   createDate: Date;
   profileImageUrl: string;
   username: string;
+  writtenByCurrentUser: boolean;
 };
 const PostMain = (props: postMainProps) => {
   const [imageList, setImageList] = useState<{ src: string }[]>([]);
@@ -51,9 +57,6 @@ const PostMain = (props: postMainProps) => {
     onError: (e) => console.log(e)
   });
 
-  const handleLikeBtn = async () => {
-    mutation.mutate(data?.postId);
-  };
   const mutationComment = useMutation({
     mutationFn: (postId: number) => postComment(postId, comment),
     onSuccess: () => {
@@ -62,6 +65,18 @@ const PostMain = (props: postMainProps) => {
     },
     onError: (e) => console.log(e)
   });
+
+  const mutationDelComment = useMutation({
+    mutationFn: (commentId: number) => delComment(commentId),
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (e) => console.log(e)
+  });
+
+  const handleLikeBtn = async () => {
+    mutation.mutate(data?.postId);
+  };
   const handleEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       mutationComment.mutate(data?.postId);
@@ -70,6 +85,10 @@ const PostMain = (props: postMainProps) => {
 
   const handleCommentChange = (e: { target: { value: string } }) => {
     setComment(e.target.value);
+  };
+
+  const handleDelComment = (commentId: number) => {
+    mutationDelComment.mutate(commentId);
   };
   return (
     <main className={styles.main}>
@@ -162,8 +181,13 @@ const PostMain = (props: postMainProps) => {
                   {commentInfo?.content}
                 </div>
                 {/* <button className={styles.commentBtn}>답글쓰기</button> */}
-                {commentInfo?.id == data?.user?.id ? (
-                  <button className={styles.commentBtn}>삭제하기</button>
+                {commentInfo?.writtenByCurrentUser === true ? (
+                  <button
+                    className={styles.commentBtn}
+                    onClick={() => handleDelComment(commentInfo?.id)}
+                  >
+                    삭제하기
+                  </button>
                 ) : (
                   ""
                 )}
