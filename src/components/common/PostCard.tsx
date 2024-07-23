@@ -84,7 +84,6 @@ const Comment = () => (
 );
 
 const PostCard = ({ type, data }: PropsPost) => {
-  const { userProfile } = useUserStore();
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>
@@ -102,7 +101,12 @@ const PostCard = ({ type, data }: PropsPost) => {
       {type !== "comment" && (
         <div className={styles.postFooter}>
           <span className={styles.commentNumber}>{data?.commentCount}</span>
-          <span className={[styles.likeNumber, styles.selected].join(" ")}>
+          <span
+            className={[
+              styles.likeNumber,
+              data?.likedByCurrentUser ? styles.selected : ""
+            ].join(" ")}
+          >
             {data?.likeCount}
           </span>
         </div>

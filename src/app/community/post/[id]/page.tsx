@@ -65,7 +65,12 @@ const PostMain = (props: postMainProps) => {
       <div className={styles.postFooter}>
         <div className={styles.postFooterLeft}>
           <span className={styles.commentNumber}>{data?.commentCount}</span>
-          <span className={[styles.likeNumber, styles.selected].join(" ")}>
+          <span
+            className={[
+              styles.likeNumber,
+              data.likedByCurrentUser ? styles.selected : ""
+            ].join(" ")}
+          >
             {data?.likeCount}
           </span>
         </div>
