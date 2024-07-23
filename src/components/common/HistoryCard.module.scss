@@ -56,8 +56,13 @@
   position: relative;
 }
 
-.profileIcon {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+
+
+.imageContainer {
+  .profileIcon {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+  }
 }

@@ -1,4 +1,4 @@
-import axiosServer from "./axiosApi/axiosServer";
+import axiosClient from "./axiosApi/axiosClient";
 
 export type TreatmentItem = {
   toothId: number | null;
@@ -17,7 +17,7 @@ export type VisitData = {
   visitId: number;
   userId: number;
   profileImageUrl?: string;
-  shared: boolean;
+  isShared: boolean;
 };
 
 export type VisitDetail = {
@@ -31,7 +31,7 @@ export type VisitDetail = {
   visitId?: number;
   userId?: number;
   profileImageUrl?: string;
-  shared?: boolean;
+  isShared?: boolean;
 };
 
 export type VisitMyDetail = Omit<
@@ -47,15 +47,13 @@ export type VisitMyHistory = Omit<
 export const fetchOtherMedicalDetail = async (
   visitId: string
 ): Promise<VisitDetail> => {
-  const response = await axiosServer.get<VisitDetail>(`/visit/${visitId}`);
+  const response = await axiosClient.get(`/visit/${visitId}`);
   return response.data;
 };
 
 export const fetchMyMedicalDetail = async (
   visitId: string
 ): Promise<VisitMyDetail> => {
-  const response = await axiosServer.get<VisitDetail>(
-    `/mypage/visit/${visitId}`
-  );
+  const response = await axiosClient.get(`/mypage/visit/${visitId}`);
   return response.data;
 };

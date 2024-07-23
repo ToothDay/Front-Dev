@@ -3,10 +3,10 @@ import { create } from "zustand";
 export type TreatmentList = {
   category: string;
   amount: number;
-  toothId?: number;
+  toothId?: number | null | undefined;
 };
 
-type TreatmentType = {
+export type TreatmentType = {
   id: number;
   number: number;
   name: string;
@@ -24,6 +24,19 @@ export type CostType = {
   category: string;
   amount: number;
   toothId: number;
+};
+
+type ModifyDataState = {
+  visitId: number;
+  dentistId: number;
+  dentistName: string;
+  dentistAddress: string;
+  visitDate: string;
+  isShared: boolean;
+  treatmentList: TreatmentList[];
+  totalAmount: number;
+  writtenByCurrentUser: boolean;
+  setModifyData: (data: Partial<ModifyDataState>) => void;
 };
 
 type MedicalWriteState = {
@@ -131,18 +144,36 @@ export const useCostList = create<CostTypeList>((set) => ({
   }
 }));
 
-useCostList.subscribe((state) => {
-  console.log(state);
-});
+export const useModifyData = create<ModifyDataState>((set) => ({
+  visitId: 0,
+  dentistId: 0,
+  dentistName: "",
+  dentistAddress: "",
+  visitDate: "",
+  isShared: true,
+  treatmentList: [],
+  totalAmount: 0,
+  writtenByCurrentUser: false,
+  setModifyData: (data: Partial<ModifyDataState>) =>
+    set((state) => ({ ...state, ...data }))
+}));
+
+// useCostList.subscribe((state) => {
+//   console.log(state);
+// });
 
 useTreatmentCost.subscribe((state) => {
   console.log(state);
 });
 
 useTreatmentType.subscribe((state) => {
-  console.log(state);
+  console.log("type_______", state);
 });
 
-useMedicalWriteStore.subscribe((state) => {
-  console.log(state);
-});
+// useMedicalWriteStore.subscribe((state) => {
+//   console.log(state);
+// });
+
+// useModifyData.subscribe((state) => {
+//   console.log(state);
+// });

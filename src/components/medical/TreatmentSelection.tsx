@@ -3,12 +3,24 @@ import styles from "./TreatmentSelection.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useModalStore } from "@/stores/modal";
 import TreatmentAddModal from "../modal/TreatmentAddModal";
-import { useTreatmentType } from "@/stores/medicalWrite";
+import {
+  TreatmentList,
+  TreatmentType,
+  useModifyData,
+  useTreatmentType
+} from "@/stores/medicalWrite";
+import { useEffect } from "react";
 
-const TreatmentSelection = () => {
+type TreatmentSelectionProps = {
+  isModify: boolean;
+};
+
+const TreatmentSelection = ({ isModify }: TreatmentSelectionProps) => {
   const { openModal } = useModalStore();
 
-  const { treatmentType, updateOrAddTreatmentType } = useTreatmentType();
+  const { treatmentType, updateOrAddTreatmentType, clearTreatmentType } =
+    useTreatmentType();
+  const { treatmentList } = useModifyData();
 
   const handleTreatmentClick = (id: number, name: string) => {
     if (id !== 1 && id !== 2) {
@@ -23,6 +35,41 @@ const TreatmentSelection = () => {
       }
     }
   };
+
+  const modifyInitialData = (
+    treatmentList: TreatmentList[]
+  ): TreatmentType[] => {
+    const modifyMap: { [key: string]: TreatmentType } = {};
+
+    treatmentList.forEach((treatment) => {
+      const treatmentInfo = TREATMENT_LIST.find(
+        (t) => t.name === treatment.category
+      );
+      if (treatmentInfo) {
+        if (!modifyMap[treatment.category]) {
+          modifyMap[treatment.category] = {
+            id: treatmentInfo.id,
+            name: treatment.category,
+            number: 0,
+            isClick: true
+          };
+        }
+        modifyMap[treatment.category].number += 1;
+      }
+    });
+
+    return Object.values(modifyMap);
+  };
+
+  useEffect(() => {
+    if (isModify) {
+      clearTreatmentType();
+      const modifyData = modifyInitialData(treatmentList);
+      modifyData.forEach((data) => {
+        updateOrAddTreatmentType(data.id, data.name, data.number, data.isClick);
+      });
+    }
+  }, [isModify, treatmentList]);
 
   const checkTreatment = (name: string) => {
     const treatment = treatmentType.find(
