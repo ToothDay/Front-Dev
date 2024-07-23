@@ -5,7 +5,7 @@ import "swiper/css";
 
 type PropsImage = {
   listType?: "all";
-  imageList?: { id: number; src: string }[];
+  imageList?: { id?: number; src: string }[];
   type: "read" | "write";
 };
 
@@ -19,12 +19,16 @@ const ImageSwiper = ({ listType, imageList, type }: PropsImage) => {
       className={styles.imageSwiper}
     >
       {imageList?.map((image) => (
-        <SwiperSlide key={image.id} className={[styles.imageItem].join(" ")}>
+        <SwiperSlide key={image.src} className={[styles.imageItem].join(" ")}>
           <img
             className={
               type === "write" ? styles["image-write"] : styles["image-read"]
             }
-            src={image.src}
+            src={
+              type === "write"
+                ? image.src
+                : `http://3.34.135.181:8000/upload/${image.src}`
+            }
           />
         </SwiperSlide>
       ))}

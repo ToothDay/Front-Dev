@@ -1,7 +1,33 @@
 import styles from "@/components/common/PostCard.module.scss";
+import { formatYYYYMMDDTIME } from "@/util/formatDate";
 
 type PropsPost = {
   type: "post" | "comment" | "like" | "community";
+  data?: {
+    postId: number;
+    createDate: Date;
+    title: string;
+    content: string;
+    commentCount: number;
+    likeCount: number;
+    likedByCurrentUser: boolean;
+    writtenByCurrentUser: boolean;
+    imageUrl: string[];
+    commentDTOList: [];
+    keyword: number[];
+    user: {
+      email: string;
+      id: number;
+      profileImageUrl: string;
+      username: string;
+    };
+  };
+  loginUser?: {
+    email: string;
+    id: string;
+    profileImageUrl: string;
+    username: string;
+  };
 };
 
 const TagList = () => (
@@ -12,34 +38,38 @@ const TagList = () => (
   </div>
 );
 
-const PostHeader = ({ type }: PropsPost) => (
+const PostHeader = ({ type, data }: PropsPost) => (
   <div className={styles.postHeader}>
     {type !== "post" && (
-      <img src="/profile.svg" alt="user-profile" className={styles.profile} />
+      <img
+        src={`http://3.34.135.181:8000/upload/profileImage/${data?.user?.profileImageUrl}`}
+        alt="user-profile"
+        className={styles.profile}
+      />
     )}
     <div className={styles.postInfo}>
-      <p className={styles.postTitle}>
-        레진이랑 인레이 너무 어려워요요요요요요요레진이랑 인레이 너무
-        어려워요요요요요요요ddd
-      </p>
+      <p className={styles.postTitle}>{data?.title}</p>
       <div className={styles.postSubInfo}>
-        {type !== "post" && <span className={styles.nickName}>닉네임</span>}
-        <span className={styles.time}>2024.07.03 18:00</span>
+        {type !== "post" && (
+          <span className={styles.nickName}>{data?.user?.username}</span>
+        )}
+        <span className={styles.time}>
+          {data?.createDate && formatYYYYMMDDTIME(data?.createDate)}
+        </span>
       </div>
     </div>
   </div>
 );
 
-const PostContent = ({ type }: PropsPost) => (
+const PostContent = ({ type, data }: PropsPost) => (
   <div className={styles.postContentWrapper}>
-    <p className={styles.postContent}>
-      레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지
-      아시는 레진이랑 인레이 차이점이 무엇인지 아시는 차이점이 무엇인지 아시는
-      레진이랑 인레이ddd 레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑
-      인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지 아시는
-      차이점이 무엇인지 아시는 레진이랑 인레이ddd
-    </p>
-    {type === "community" && <img src="/post-default.png" alt="post-image" />}
+    <p className={styles.postContent}>{data?.content}</p>
+    {type === "community" && data?.imageUrl && (
+      <img
+        src={`http://3.34.135.181:8000/upload/${data.imageUrl[0]}`}
+        alt="post-image"
+      />
+    )}
   </div>
 );
 
@@ -58,15 +88,15 @@ const Comment = () => (
   </div>
 );
 
-const PostCard = ({ type }: PropsPost) => {
+const PostCard = ({ type, data, loginUser }: PropsPost) => {
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>
         {type !== "community" && <TagList />}
-        <PostHeader type={type} />
+        <PostHeader type={type} data={data} />
       </div>
       <div className={styles.post}>
-        <PostContent type={type} />
+        <PostContent type={type} data={data} />
         {type !== "community" && (
           <div className={styles.postImage}>
             <img src="/image-default.png" alt="post-image" />
@@ -75,9 +105,9 @@ const PostCard = ({ type }: PropsPost) => {
       </div>
       {type !== "comment" && (
         <div className={styles.postFooter}>
-          <span className={styles.commentNumber}>10</span>
+          <span className={styles.commentNumber}>{data?.commentCount}</span>
           <span className={[styles.likeNumber, styles.selected].join(" ")}>
-            10
+            {data?.likeCount}
           </span>
         </div>
       )}

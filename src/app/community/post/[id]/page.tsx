@@ -2,57 +2,70 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ImageSwiper from "@/components/common/ImageSwiper";
+import { useQuery } from "@tanstack/react-query";
+import { getCommunityPost } from "@/api/communityApi";
+import { TREATMENT_LIST } from "@/constants/treatmentConstants";
+import { useEffect, useState } from "react";
+import { formatYYYYMMDDTIME } from "./../../../../util/formatDate";
+import Loading from "@/app/loading";
 import Modal from "@/components/modal/Modal";
 import DeleteModal from "@/components/modal/DeleteModal";
 import { useModalStore } from "@/stores/modal";
+type postMainProps = {
+  params: {
+    id: number;
+  };
+};
+const PostMain = (props: postMainProps) => {
+  const [imageList, setImageList] = useState<{ src: string }[]>([]);
 
-const PostMain = () => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["getCommunityPost"],
+    queryFn: () => getCommunityPost(props.params.id),
+    staleTime: 0
+  });
   const { openModal } = useModalStore();
-  const imageList = [
-    { id: 1, src: "/profile.svg" },
-    { id: 2, src: "/profile.svg" },
-    { id: 3, src: "/profile.svg" },
-    { id: 4, src: "/profile.svg" },
-    { id: 5, src: "/image-add.svg" }
-  ];
 
+  useEffect(() => {
+    if (data) {
+      const newImageList = data.imageUrl.map((url: string) => ({ src: url }));
+      setImageList(newImageList);
+    }
+  }, [data]);
   return (
     <main className={styles.main}>
+      {isLoading && <Loading useBg={false} />}
       <div className={styles.header}>
         <Header />
       </div>
       <div className={styles.postHeader}>
         <img src="/profile.svg" alt="user-profile" className={styles.profile} />
         <div className={styles.postInfo}>
-          <p className={styles.postTitle}>
-            레진이랑 인레이 너무 어려워요요요요요요요레진이랑 인레이 너무
-            어려워요요요요요요요dddaaaaaaaaaaaaaaaaaaaaㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
-          </p>
+          <p className={styles.postTitle}>{data?.title}</p>
           <div className={styles.postSubInfo}>
-            <span className={styles.nickName}>닉네임</span>
-            <span className={styles.time}>2024.07.03 18:00</span>
+            <span className={styles.nickName}>{data?.user?.username}</span>
+            <span className={styles.time}>
+              {formatYYYYMMDDTIME(data?.createDate)}
+            </span>
           </div>
         </div>
       </div>
       <div className={styles.postContentWrapper}>
-        <p className={styles.postContent}>
-          레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이 차이점이
-          무엇인지 아시는 레진이랑 인레이 차이점이 무엇인지 아시는 차이점이
-          무엇인지 아시는 레진이랑 인레이ddd 레진이랑 인레이 차이점이 무엇인지
-          아시는 레진이랑 인레이 차이점이 무엇인지 아시는 레진이랑 인레이
-          차이점이 무엇인지 아시는 차이점이 무엇인지 아시는 레진이랑 인레이ddd
-        </p>
+        <p className={styles.postContent}>{data?.content}</p>
       </div>
       <ImageSwiper listType="all" imageList={imageList} type="read" />
       <div className={styles.tagDiv}>
-        <div>#인레인</div>
-        <div>#레진</div>
+        {data?.keywords.map((keyword: number) => {
+          return TREATMENT_LIST.filter((v) => v.keywordId === keyword).map(
+            (v) => <div key={v.keywordId}>{`# ${v.name}`}</div>
+          );
+        })}
       </div>
       <div className={styles.postFooter}>
         <div className={styles.postFooterLeft}>
-          <span className={styles.commentNumber}>10</span>
+          <span className={styles.commentNumber}>{data?.commentCount}</span>
           <span className={[styles.likeNumber, styles.selected].join(" ")}>
-            10
+            {data?.likeCount}
           </span>
         </div>
         <span

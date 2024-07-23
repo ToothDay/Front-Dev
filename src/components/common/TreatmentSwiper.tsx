@@ -14,7 +14,7 @@ const TreatmentSwiper = ({ listType }: PropsTreatment) => {
 
   const treatmentItem: Treatment[] =
     listType === "all"
-      ? [{ id: 0, name: "전체" }, ...TREATMENT_LIST]
+      ? [{ id: 0, keywordId: 1, name: "전체" }, ...TREATMENT_LIST]
       : TREATMENT_LIST;
 
   useEffect(() => {

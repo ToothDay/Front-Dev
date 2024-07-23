@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 type PropsModal = {
   type: string;
   answer?: string;
+  to?: number;
 };
 
 type modalType = {
@@ -28,10 +29,9 @@ const MODAL_TYPE: modalType = {
   }
 };
 
-const SimpleModal = ({ type, answer }: PropsModal) => {
+const SimpleModal = ({ type, answer, to }: PropsModal) => {
   const { closeModal } = useModalStore();
   const router = useRouter();
-
   const handleClick = () => {
     closeModal();
     if (type === "medicalY") {
@@ -42,6 +42,14 @@ const SimpleModal = ({ type, answer }: PropsModal) => {
   return (
     <div className={styles.main}>
       <p className={styles.mainTitle}>{MODAL_TYPE[type].title}</p>
+<!--       <button
+        type="button"
+        className={styles.mainBtn}
+        onClick={() => {
+          closeModal();
+          router.push(`/community/post/${to}`);
+        }}
+      > -->
       <button type="button" className={styles.mainBtn} onClick={handleClick}>
         {answer}
       </button>
