@@ -18,7 +18,8 @@ const PostMain = (props: postMainProps) => {
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["getCommunityPost"],
-    queryFn: () => getCommunityPost(props.params.id)
+    queryFn: () => getCommunityPost(props.params.id),
+    staleTime: 0
   });
 
   useEffect(() => {

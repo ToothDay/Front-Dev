@@ -6,15 +6,37 @@ import PostCard from "@/components/common/PostCard";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getLoginedCommunityList } from "@/api/communityApi";
-
+import Loading from "../loading";
+import { useRouter } from "next/navigation";
+type PostDataType = {
+  postId: number;
+  createDate: Date;
+  title: string;
+  content: string;
+  commentCount: number;
+  likeCount: number;
+  likedByCurrentUser: boolean;
+  writtenByCurrentUser: boolean;
+  imageUrl: string[];
+  commentDTOList: [];
+  keyword: number[];
+  user: {
+    email: string;
+    id: number;
+    profileImageUrl: string;
+    username: string;
+  };
+};
 const Community = () => {
   const hasNotice = false; //임시데이터값
+  const router = useRouter();
   const { data, isLoading, error } = useQuery({
     queryKey: ["getCommunity"],
     queryFn: () => getLoginedCommunityList()
   });
   return (
     <main className={styles.main}>
+      {isLoading && <Loading useBg={false} />}
       <div className={styles.tab}>
         <Tab pageType="page" initialActiveTab="커뮤니티" />
         <button
@@ -44,11 +66,11 @@ const Community = () => {
         <TreatmentSwiper listType="all" />
       </div>
       {/* 데이터 맵핑 예정 */}
-      <PostCard type="community" data={data} />
-      <PostCard type="community" data={data} />
-      <PostCard type="community" data={data} />
-      <PostCard type="community" data={data} />
-      <PostCard type="community" data={data} />
+      {data?.map((v: PostDataType) => (
+        <Link key={v.postId} href={`/community/post/${v.postId}`}>
+          <PostCard type="community" data={v} />
+        </Link>
+      ))}
 
       {/* 검색종류 따라  */}
       {/* <NoSearchData searchType="post" /> */}
