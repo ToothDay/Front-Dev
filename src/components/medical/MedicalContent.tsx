@@ -33,6 +33,7 @@ const MedicalContent = ({
       setIsLoading(false);
     }
   };
+console.log('otherData', otherData) 
   return (
     <>
       {isLoading && <Loading />}

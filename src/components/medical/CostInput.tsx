@@ -1,17 +1,28 @@
+"use client";
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./CostInput.module.scss";
 import {
+  TreatmentList,
   useCostList,
+  useMedicalWriteStore,
+  useModifyData,
   useTreatmentCost,
   useTreatmentType
 } from "@/stores/medicalWrite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CostList, CostType } from "@/stores/medicalWrite";
+import { transformData } from "@/util/formatData";
 
-const CostInput = () => {
+type CostInputProps = {
+  isModify: boolean;
+};
+
+const CostInput = ({ isModify }: CostInputProps) => {
   const { treatmentType } = useTreatmentType();
   const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
   const { selectedCost, updateSelectedCost } = useCostList();
+  const { treatmentList, setModifyData } = useModifyData();
+  const [isSetValue, setIsSetValue] = useState<boolean>(false);
 
   const checkTreatmentCost = () => {
     const newCostList: CostList[] = [];
@@ -33,16 +44,27 @@ const CostInput = () => {
     updateTreatmentCost(newCostList);
   };
 
+  const updateData = () => {
+    const transformedData = transformData(treatmentCostList, treatmentList);
+    updateTreatmentCost(transformedData);
+    setIsSetValue(true);
+  };
+
   useEffect(() => {
     checkTreatmentCost();
   }, [treatmentType]);
 
+
   useEffect(() => {
-    const newSelectedCost = selectedCost.filter((selected) => {
-      return treatmentCostList.some((cost) => cost.id === selected.id);
-    });
-    updateSelectedCost(newSelectedCost);
-  }, [treatmentCostList]);
+    if (!isModify) {
+      const newSelectedCost = selectedCost.filter((selected) => {
+        return treatmentCostList.some((cost) => cost.id === selected.id);
+      });
+      updateSelectedCost(newSelectedCost);
+    } else if (!isSetValue && isModify && treatmentCostList.length > 0) {
+      updateData();
+    }
+  }, [treatmentCostList, isSetValue]);
 
   const updateSelectedCostList = (
     newCostList: CostList[],
@@ -68,7 +90,6 @@ const CostInput = () => {
     updateTreatmentCost(newCostList);
 
     const selectedCostList = updateSelectedCostList(newCostList, selectedCost);
-    console.log("123", selectedCostList);
     updateSelectedCost(selectedCostList);
   };
 
@@ -134,9 +155,6 @@ const CostInput = () => {
             </motion.div>
           ))}
         </AnimatePresence>
-        {/* <span className={styles.errorText}>
-          각 치료의 비용을 입력해 주세요.
-        </span> */}
       </div>
     </motion.div>
   );

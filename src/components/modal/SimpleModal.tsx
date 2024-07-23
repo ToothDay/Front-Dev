@@ -1,3 +1,4 @@
+"use client";
 import styles from "@/components/modal/SimpleModal.module.scss";
 import { useModalStore } from "@/stores/modal";
 import { useRouter } from "next/navigation";
@@ -18,24 +19,38 @@ type modalType = {
 const MODAL_TYPE: modalType = {
   writeY: {
     title: "작성 완료되었습니다."
+  },
+  medicalY: {
+    title: (
+      <>
+        진료기록이 <br /> 삭제되었습니다.
+      </>
+    )
   }
 };
 
 const SimpleModal = ({ type, answer, to }: PropsModal) => {
   const { closeModal } = useModalStore();
   const router = useRouter();
+  const handleClick = () => {
+    closeModal();
+    if (type === "medicalY") {
+      router.push("/medical");
+    }
+  };
 
   return (
     <div className={styles.main}>
       <p className={styles.mainTitle}>{MODAL_TYPE[type].title}</p>
-      <button
+<!--       <button
         type="button"
         className={styles.mainBtn}
         onClick={() => {
           closeModal();
           router.push(`/community/post/${to}`);
         }}
-      >
+      > -->
+      <button type="button" className={styles.mainBtn} onClick={handleClick}>
         {answer}
       </button>
     </div>

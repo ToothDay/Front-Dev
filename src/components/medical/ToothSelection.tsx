@@ -1,20 +1,35 @@
-import { useEffect, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ToothWriteModal from "../modal/ToothWriteModal";
 import styles from "./ToothSelection.module.scss";
 import {
+  CostList,
+  CostType,
   useCostList,
   useMedicalWriteStore,
+  useModifyData,
   useTreatmentCost,
   useTreatmentType
 } from "../../stores/medicalWrite";
 import { useModalStore } from "@/stores/modal";
 import { ToothType } from "@/constants/toothConstants";
 import ToothSelectSection from "../tooth/ToothSelectSection";
+import { useToothStore } from "@/stores/tooth";
+import { TreatmentItem } from "@/api/medical";
 
-const ToothSelection = () => {
+interface ToothSelectionProps {
+  setIsDisplay: Dispatch<React.SetStateAction<boolean>>;
+  isDisplay: boolean;
+  isModify: boolean;
+}
+
+const ToothSelection = ({
+  isDisplay,
+  setIsDisplay,
+  isModify
+}: ToothSelectionProps) => {
   const { treatmentType } = useTreatmentType();
-  const [isDisplay, setIsDisplay] = useState<boolean>(false);
+
   const [isDisplayModal, setIsDisplayModal] = useState<boolean>(false);
   const [selectedTooth, setSelectedTooth] = useState<ToothType>({
     toothId: 0,
@@ -22,10 +37,12 @@ const ToothSelection = () => {
     number: 0,
     icon: ""
   });
-  const { selectedCost } = useCostList();
+  const { selectedCost, updateSelectedCost } = useCostList();
   const { updateTreatmentList } = useMedicalWriteStore();
   const { treatmentCostList } = useTreatmentCost();
   const { openModal } = useModalStore();
+  const { treatmentList } = useModifyData();
+  const { setSaveTooth } = useToothStore();
 
   useEffect(() => {
     const notHasToothId = treatmentCostList
@@ -47,10 +64,13 @@ const ToothSelection = () => {
   }, [selectedCost, treatmentCostList]);
 
   useEffect(() => {
-    const shouldDisplay = !treatmentType.every(
-      (treatment) => treatment.name === "스케일링" || treatment.name === "잇몸"
-    );
-    setIsDisplay(shouldDisplay);
+    if (!isModify) {
+      const shouldDisplay = !treatmentType.every(
+        (treatment) =>
+          treatment.name === "스케일링" || treatment.name === "잇몸"
+      );
+      setIsDisplay((prev) => shouldDisplay);
+    }
   }, [treatmentType]);
 
   useEffect(() => {
@@ -65,6 +85,59 @@ const ToothSelection = () => {
       setIsDisplayModal(false);
     }
   }, [isDisplayModal, openModal]);
+
+  useEffect(() => {
+    if (isModify) {
+      const toothList = treatmentList
+        .map((item) => item.toothId)
+        .filter((id): id is number => id !== null && id !== undefined);
+      setSaveTooth(toothList);
+
+      const validTreatmentList: TreatmentItem[] = treatmentList
+        .filter(
+          (item): item is TreatmentItem =>
+            item.toothId !== null && item.toothId !== undefined
+        )
+        .map((item) => ({
+          toothId: item.toothId,
+          category: item.category,
+          amount: item.amount
+        }));
+      const costList = mapToothId(treatmentCostList, validTreatmentList);
+      updateSelectedCost(costList);
+    }
+  }, [treatmentList, treatmentCostList]);
+
+  const mapToothId = (
+    costList: CostList[],
+    treatmentList: TreatmentItem[]
+  ): CostType[] => {
+    const result: CostType[] = [];
+    const remainingTreatments = [...treatmentList]; // 남은 항목을 추적할 배열
+
+    costList.forEach((cost) => {
+      const treatmentIndex = remainingTreatments.findIndex(
+        (treatment) =>
+          treatment.category === cost.name &&
+          String(treatment.amount) === cost.value
+      );
+
+      if (treatmentIndex !== -1) {
+        const treatment = remainingTreatments[treatmentIndex];
+        if (treatment.toothId !== null) {
+          result.push({
+            id: cost.id,
+            category: cost.name,
+            amount: Number(cost.value),
+            toothId: treatment.toothId
+          });
+          remainingTreatments.splice(treatmentIndex, 1); // 매핑된 항목은 제거
+        }
+      }
+    });
+
+    return result;
+  };
 
   return (
     <>

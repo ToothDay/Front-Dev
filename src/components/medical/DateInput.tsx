@@ -3,11 +3,12 @@ import styles from "./DateInput.module.scss";
 import CustomCalendar from "../common/CustomCalendar";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { formatIsoDate, formatKoreaDate } from "@/util/formatDate";
-import { useMedicalWriteStore } from "@/stores/medicalWrite";
+import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 
 type PropsDateInput = {
   isCalendar: boolean;
   setIsCalendar: (value: boolean) => void;
+  isModify?: boolean;
 };
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -18,15 +19,16 @@ const slideInVariants = {
   exit: { opacity: 0, x: -100 }
 };
 
-const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
+const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [value, setValue] = useState<Value>(null);
   const { updateVisitDate } = useMedicalWriteStore();
+  const { visitDate } = useModifyData();
 
   const formattedDate = useMemo(() => {
-    if (value instanceof Date) {
+    if (value instanceof Date)  {
       return formatKoreaDate(value);
     }
     return "";
@@ -71,6 +73,12 @@ const DateInput = ({ isCalendar, setIsCalendar }: PropsDateInput) => {
     }
     setIsCalendar(!isCalendar);
   };
+
+  useEffect(() => {
+    if (visitDate && isModify) {
+      setSelectedValue(visitDate);
+    }
+  }, [visitDate,isModify]);
 
   return (
     <motion.div

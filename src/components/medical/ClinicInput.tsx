@@ -7,19 +7,21 @@ import { useQuery } from "@tanstack/react-query";
 import { searchDentist } from "@/api/medicalRecord";
 import Loading from "@/app/loading";
 import Highlight from "../common/Highlight";
-import { useMedicalWriteStore } from "@/stores/medicalWrite";
+import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 
 type PropsClinicInput = {
   isClinic: boolean;
   setIsClinic: (value: boolean) => void;
+  isModify?: boolean;
 };
 
-const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
+const ClinicInput = ({ isClinic, setIsClinic, isModify }: PropsClinicInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const [searchName, setSearchName] = useState<string>("");
   const [debouncedQuery, setDebouncedQuery] = useState<string>("");
   const { updateDentistId } = useMedicalWriteStore();
+  const { dentistName } = useModifyData();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,8 +68,14 @@ const ClinicInput = ({ isClinic, setIsClinic }: PropsClinicInput) => {
   const selectClinic = (name: string, id: number) => {
     setIsClinic(false);
     setSearchName(name);
-    updateDentistId(id);
+    updateDentistId(Number(id));
   };
+
+  useEffect(() => {
+    if (dentistName && isModify) {
+      setSearchName(dentistName);
+    }
+  }, [dentistName,isModify]);
 
   return (
     <motion.div
