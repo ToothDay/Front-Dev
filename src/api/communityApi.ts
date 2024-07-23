@@ -60,3 +60,7 @@ export const postComment = async (postId: number, content: string) => {
 export const delComment = async (commentId: number) => {
   const response = await axiosClient.get(`/api/community/post/${commentId}`);
 };
+
+export const delPost = async (postId: number) => {
+  const response = await axiosClient.delete(`/api/community/${postId}`);
+};
