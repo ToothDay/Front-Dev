@@ -76,6 +76,11 @@ const MedicalWrite = () => {
       setModifyId(Number(id));
       setClickTreatment(true);
       setIsDisplay(true);
+    } else {
+      setModifyId(0);
+      setClickTreatment(false);
+      setIsDisplay(false);
+      setModifyData({});
     }
   }, []);
 

@@ -54,9 +54,6 @@ const CostInput = ({ isModify }: CostInputProps) => {
     checkTreatmentCost();
   }, [treatmentType]);
 
-  useEffect(() => {
-    updateData();
-  }, [treatmentList]);
 
   useEffect(() => {
     if (!isModify) {
