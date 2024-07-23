@@ -67,6 +67,7 @@ const PostContent = ({ type, data }: PropsPost) => (
     <p className={styles.postContent}>{data?.content}</p>
     {type === "community" && data?.imageUrl && (
       <img
+        className={styles.postContentImg}
         src={`http://3.34.135.181:8000/upload/${data.imageUrl[0]}`}
         alt="post-image"
       />
