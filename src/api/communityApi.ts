@@ -42,3 +42,17 @@ export const getCommunityPost = async (postId: number) => {
 export const postLike = async (postId: number) => {
   const response = await axiosClient.post(`/api/community/${postId}/like`);
 };
+
+export const postComment = async (postId: number, content: string) => {
+  const params = new URLSearchParams();
+  params.append("content", content);
+  const response = await axiosClient.post(
+    `/api/community/${postId}/comment`,
+    params,
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+  );
+};

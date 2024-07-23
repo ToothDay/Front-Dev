@@ -3,7 +3,7 @@ import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ImageSwiper from "@/components/common/ImageSwiper";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getCommunityPost, postLike } from "@/api/communityApi";
+import { getCommunityPost, postComment, postLike } from "@/api/communityApi";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useEffect, useState } from "react";
 import { formatYYYYMMDDTIME } from "./../../../../util/formatDate";
@@ -12,6 +12,7 @@ import Modal from "@/components/modal/Modal";
 import DeleteModal from "@/components/modal/DeleteModal";
 import { useModalStore } from "@/stores/modal";
 import { useUserStore } from "@/stores/user";
+import { debounce } from "lodash";
 type postMainProps = {
   params: {
     id: number;
@@ -26,6 +27,7 @@ type commentDTOList = {
 };
 const PostMain = (props: postMainProps) => {
   const [imageList, setImageList] = useState<{ src: string }[]>([]);
+  const [comment, setComment] = useState("");
   const { userProfile } = useUserStore();
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["getCommunityPost"],
@@ -52,7 +54,23 @@ const PostMain = (props: postMainProps) => {
   const handleLikeBtn = async () => {
     mutation.mutate(data?.postId);
   };
-  console.log(data);
+  const mutationComment = useMutation({
+    mutationFn: (postId: number) => postComment(postId, comment),
+    onSuccess: () => {
+      refetch();
+      setComment("");
+    },
+    onError: (e) => console.log(e)
+  });
+  const handleEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      mutationComment.mutate(data?.postId);
+    }
+  };
+
+  const handleCommentChange = (e: { target: { value: string } }) => {
+    setComment(e.target.value);
+  };
   return (
     <main className={styles.main}>
       {isLoading && <Loading useBg={false} />}
@@ -113,12 +131,15 @@ const PostMain = (props: postMainProps) => {
           <input
             className={styles.commentinput}
             placeholder="댓글을 작성해 주세요."
+            onKeyDown={handleEnterComment}
+            onChange={handleCommentChange}
+            value={comment}
           />
         </div>
         <div className={styles.comments}>
           {data?.commentDTOList.map((commentInfo: commentDTOList) => {
             return (
-              <div className={styles.comment}>
+              <div className={styles.comment} key={commentInfo?.id}>
                 <div className={styles.commentHeader}>
                   <img
                     src="/profile.svg"
@@ -141,6 +162,11 @@ const PostMain = (props: postMainProps) => {
                   {commentInfo?.content}
                 </div>
                 {/* <button className={styles.commentBtn}>답글쓰기</button> */}
+                {commentInfo?.id == data?.user?.id ? (
+                  <button className={styles.commentBtn}>삭제하기</button>
+                ) : (
+                  ""
+                )}
               </div>
             );
           })}
