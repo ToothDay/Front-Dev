@@ -2,8 +2,8 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import ImageSwiper from "@/components/common/ImageSwiper";
-import { useQuery } from "@tanstack/react-query";
-import { getCommunityPost } from "@/api/communityApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getCommunityPost, postLike } from "@/api/communityApi";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useEffect, useState } from "react";
 import { formatYYYYMMDDTIME } from "./../../../../util/formatDate";
@@ -20,7 +20,7 @@ type postMainProps = {
 const PostMain = (props: postMainProps) => {
   const [imageList, setImageList] = useState<{ src: string }[]>([]);
   const { userProfile } = useUserStore();
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["getCommunityPost"],
     queryFn: () => getCommunityPost(props.params.id),
     staleTime: 0
@@ -33,6 +33,19 @@ const PostMain = (props: postMainProps) => {
       setImageList(newImageList);
     }
   }, [data]);
+
+  const mutation = useMutation({
+    mutationFn: (postId: number) => postLike(postId),
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (e) => console.log(e)
+  });
+
+  const handleLikeBtn = async () => {
+    mutation.mutate(data?.postId);
+  };
+
   return (
     <main className={styles.main}>
       {isLoading && <Loading useBg={false} />}
@@ -68,8 +81,9 @@ const PostMain = (props: postMainProps) => {
           <span
             className={[
               styles.likeNumber,
-              data.likedByCurrentUser ? styles.selected : ""
+              data?.likedByCurrentUser ? styles.selected : ""
             ].join(" ")}
+            onClick={handleLikeBtn}
           >
             {data?.likeCount}
           </span>
