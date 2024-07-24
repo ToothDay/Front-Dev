@@ -6,37 +6,87 @@ import TreatmentSwiper from "@/components/common/TreatmentSwiper";
 import UserWelcome from "@/components/medical/UserWelcome";
 import { VisitData } from "../../api/medical";
 import ScrollToTop from "@/components/common/ScrollToTop";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import NoSearchData from "../noData/NoSearchData";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Loading from "@/app/loading";
+import { fetchOtherVisitData } from "@/api/medicalRecord";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 type MedicalContentProps = {
   myData: VisitData[];
-  otherData: VisitData[];
   hasMyData: boolean;
 };
 
-const MedicalContent = ({
-  myData,
-  otherData,
-  hasMyData
-}: MedicalContentProps) => {
+const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
   const mainRef = useRef<HTMLDivElement>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingTime, setIsLoadingTime] = useState<boolean>(false);
+  const [selectedKeyword, setSelectedKeyword] = useState<number>(1);
+  const searchParams = useSearchParams();
 
   const handleViewAll = () => {
     if (myData.length !== 0) {
-      setIsLoading(true);
+      setIsLoadingTime(true);
       router.push(`/my-page/history`);
-      setIsLoading(false);
+      setIsLoadingTime(false);
     }
   };
-console.log('otherData', otherData) 
+
+  const handleKeyword = (keyword: number) => {
+    setSelectedKeyword(keyword);
+    router.push(`?type=${keyword}`);
+  };
+
+  useEffect(() => {
+    if (selectedKeyword !== Number(searchParams.get("type"))) {
+      router.push(`?type=${selectedKeyword}`);
+    }
+  }, [selectedKeyword, searchParams, router]);
+
+  const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteQuery({
+      queryKey: ["medicalOtherHistory", selectedKeyword],
+      queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
+        fetchOtherVisitData(pageParam, selectedKeyword),
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.length < 10) return undefined;
+        return pages.length * 10;
+      },
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
+      staleTime: 0,
+      initialPageParam: 0
+    });
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const target = entries[0];
+      if (target.isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    },
+    [fetchNextPage, hasNextPage]
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: "20px",
+      threshold: 1.0
+    });
+
+    if (loadMoreRef.current) observer.observe(loadMoreRef.current);
+
+    return () => {
+      if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
+    };
+  }, [handleObserver]);
+
   return (
     <>
-      {isLoading && <Loading />}
+      {isLoadingTime && <Loading />}
       <main className={styles.main} ref={mainRef}>
         <Tab pageType="page" initialActiveTab="진료기록" />
         <UserWelcome hasMyData={hasMyData} />
@@ -62,15 +112,22 @@ console.log('otherData', otherData)
               다른 사용자들의 진료 기록
             </span>
           </div>
-          <TreatmentSwiper listType="all" />
+          <TreatmentSwiper listType="all" showSelected={handleKeyword} />
           <div className={styles.otherCard}>
             <div className={styles.cardList}>
-              {otherData.length === 0 ? (
-                <NoSearchData searchType="record" />
-              ) : (
-                <HistoryCard cardType="otherHistory" userData={otherData} />
-              )}
+              {data?.pages.flatMap((page, index) => (
+                <HistoryCard
+                  key={index}
+                  cardType="otherHistory"
+                  userData={page}
+                />
+              ))}
+              {isFetchingNextPage && <Loading useBg={true} />}
+              <div ref={loadMoreRef} />
             </div>
+            {data?.pages.flatMap((page) => page).length === 0 && !isLoading && (
+              <NoSearchData searchType="record" />
+            )}
           </div>
         </section>
       </main>

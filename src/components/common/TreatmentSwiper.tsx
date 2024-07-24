@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 type PropsTreatment = {
   listType?: "all";
-  showSelected?: (keyword: number) => void;
+  showSelected: (keyword: number) => void;
 };
 
 const TreatmentSwiper = ({ listType, showSelected }: PropsTreatment) => {
@@ -38,9 +38,8 @@ const TreatmentSwiper = ({ listType, showSelected }: PropsTreatment) => {
           ].join(" ")}
           onClick={() => {
             setSelected(treatment.keywordId);
-            if (showSelected) {
-              showSelected(treatment.keywordId);
-            }
+            showSelected(treatment.keywordId);
+            console.log(treatment.keywordId);
           }}
         >
           {treatment.name}
