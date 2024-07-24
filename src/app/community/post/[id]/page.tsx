@@ -89,7 +89,7 @@ const PostMain = (props: postMainProps) => {
     mutation.mutate(data?.postId);
   };
   const handleEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.repeat) {
       mutationComment.mutate(data?.postId);
     }
   };
