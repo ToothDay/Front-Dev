@@ -1,6 +1,7 @@
+import { postLike } from "@/api/communityApi";
 import styles from "@/components/common/PostCard.module.scss";
-import { useUserStore } from "@/stores/user";
 import { formatYYYYMMDDTIME } from "@/util/formatDate";
+import { useMutation } from "@tanstack/react-query";
 
 type PropsPost = {
   type: "post" | "comment" | "like" | "community";
@@ -23,6 +24,7 @@ type PropsPost = {
       username: string;
     };
   };
+  refetch?: any;
 };
 
 const TagList = () => (
@@ -42,7 +44,7 @@ const PostHeader = ({ type, data }: PropsPost) => (
             ? data?.user?.profileImageUrl.includes("http")
               ? `${data?.user?.profileImageUrl}`
               : `http://3.34.135.181:8000/upload/profileImage/${data?.user?.profileImageUrl}`
-            : `/image-default.png`
+            : `/profile.svg`
         }
         alt="user-profile"
         className={styles.profile}
@@ -67,6 +69,7 @@ const PostContent = ({ type, data }: PropsPost) => (
     <p className={styles.postContent}>{data?.content}</p>
     {type === "community" && data?.imageUrl && (
       <img
+        className={styles.postContentImg}
         src={`http://3.34.135.181:8000/upload/${data.imageUrl[0]}`}
         alt="post-image"
       />
@@ -89,7 +92,18 @@ const Comment = () => (
   </div>
 );
 
-const PostCard = ({ type, data }: PropsPost) => {
+const PostCard = ({ type, data, refetch }: PropsPost) => {
+  const mutation = useMutation({
+    mutationFn: (postId: number) => postLike(postId),
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (e) => console.log(e)
+  });
+  const handleLikeBtn = async () => {
+    if (!data) return;
+    mutation.mutate(data.postId);
+  };
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>
@@ -112,6 +126,10 @@ const PostCard = ({ type, data }: PropsPost) => {
               styles.likeNumber,
               data?.likedByCurrentUser ? styles.selected : ""
             ].join(" ")}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLikeBtn();
+            }}
           >
             {data?.likeCount}
           </span>
