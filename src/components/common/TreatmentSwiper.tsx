@@ -51,7 +51,6 @@ const TreatmentSwiper = ({
           onClick={() => {
             setSelected(treatment.keywordId);
             showSelected(treatment.keywordId);
-            console.log(treatment.keywordId);
           }}
         >
           {treatment.name}
