@@ -26,6 +26,13 @@ const MODAL_TYPE: modalType = {
         진료기록이 <br /> 삭제되었습니다.
       </>
     )
+  },
+  delPostY: {
+    title: (
+      <>
+        게시물이 <br /> 삭제되었습니다.
+      </>
+    )
   }
 };
 
@@ -36,20 +43,16 @@ const SimpleModal = ({ type, answer, to }: PropsModal) => {
     closeModal();
     if (type === "medicalY") {
       router.push("/medical");
+    } else if (type === "delPostY") {
+      router.push("/community");
+    } else if (type === "writeY") {
+      router.push(`/community/post/${to}`);
     }
   };
 
   return (
     <div className={styles.main}>
       <p className={styles.mainTitle}>{MODAL_TYPE[type].title}</p>
-<!--       <button
-        type="button"
-        className={styles.mainBtn}
-        onClick={() => {
-          closeModal();
-          router.push(`/community/post/${to}`);
-        }}
-      > -->
       <button type="button" className={styles.mainBtn} onClick={handleClick}>
         {answer}
       </button>
