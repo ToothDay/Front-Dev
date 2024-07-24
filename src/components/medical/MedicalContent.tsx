@@ -23,8 +23,10 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isLoadingTime, setIsLoadingTime] = useState<boolean>(false);
-  const [selectedKeyword, setSelectedKeyword] = useState<number>(1);
   const searchParams = useSearchParams();
+  const initialKeyword = Number(searchParams.get("type")) || 1;
+  const [selectedKeyword, setSelectedKeyword] =
+    useState<number>(initialKeyword);
 
   const handleViewAll = () => {
     if (myData.length !== 0) {
@@ -40,10 +42,10 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
   };
 
   useEffect(() => {
-    if (selectedKeyword !== Number(searchParams.get("type"))) {
-      router.push(`?type=${selectedKeyword}`);
+    if (initialKeyword !== selectedKeyword) {
+      setSelectedKeyword(initialKeyword);
     }
-  }, [selectedKeyword, searchParams, router]);
+  }, [initialKeyword, selectedKeyword]);
 
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
@@ -60,6 +62,7 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
       staleTime: 0,
       initialPageParam: 0
     });
+
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const target = entries[0];
@@ -112,7 +115,11 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
               다른 사용자들의 진료 기록
             </span>
           </div>
-          <TreatmentSwiper listType="all" showSelected={handleKeyword} />
+          <TreatmentSwiper
+            listType="all"
+            showSelected={handleKeyword}
+            selectedKeyWord={selectedKeyword}
+          />
           <div className={styles.otherCard}>
             <div className={styles.cardList}>
               {data?.pages.flatMap((page, index) => (

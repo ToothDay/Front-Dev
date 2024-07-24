@@ -8,10 +8,15 @@ import { useEffect, useState } from "react";
 type PropsTreatment = {
   listType?: "all";
   showSelected: (keyword: number) => void;
+  selectedKeyWord?: number;
 };
 
-const TreatmentSwiper = ({ listType, showSelected }: PropsTreatment) => {
-  const [selected, setSelected] = useState<number>(0);
+const TreatmentSwiper = ({
+  listType,
+  showSelected,
+  selectedKeyWord
+}: PropsTreatment) => {
+  const [selected, setSelected] = useState<number>(selectedKeyWord || 1);
 
   const treatmentItem: Treatment[] =
     listType === "all"
@@ -21,6 +26,13 @@ const TreatmentSwiper = ({ listType, showSelected }: PropsTreatment) => {
   useEffect(() => {
     setSelected(treatmentItem[0].keywordId);
   }, [listType]);
+
+  useEffect(() => {
+    if (selectedKeyWord) {
+      setSelected(selectedKeyWord);
+    }
+  }, [selectedKeyWord]);
+
   return (
     <Swiper
       slidesPerView={"auto"}

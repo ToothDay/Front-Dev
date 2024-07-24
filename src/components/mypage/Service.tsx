@@ -2,7 +2,7 @@
 import styles from "./Service.module.scss";
 import { useModalStore } from "@/stores/modal";
 import { useRouter } from "next/navigation";
-import AccountActionModal from "../modal/\bAccountActionModal";
+import AccountActionModal from "../modal/AccountActionModal";
 
 const Service = () => {
   const router = useRouter();
