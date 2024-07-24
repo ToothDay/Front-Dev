@@ -4,6 +4,9 @@ import styles from "./AccountActionModal.module.scss";
 import { removeToken } from "@/api/auth";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/Auth";
+import { useMutation } from "@tanstack/react-query";
+import { fetchUserDelete } from "@/api/authService";
+import SimpleModal from "./SimpleModal";
 
 type PropsAccountModal = {
   accountType: string;
@@ -33,7 +36,7 @@ const ACCOUNT_TYPE: AccountType = {
 };
 
 const AccountActionModal = ({ accountType }: PropsAccountModal) => {
-  const { closeModal } = useModalStore();
+  const { closeModal, openModal } = useModalStore();
   const { setToken } = useAuthStore();
   const router = useRouter();
 
@@ -48,10 +51,23 @@ const AccountActionModal = ({ accountType }: PropsAccountModal) => {
       closeModal();
       router.push("/welcome/login");
     } else {
-      console.log("회원탈퇴 로직");
+      mutation.mutate();
       closeModal();
     }
   };
+
+  const mutation = useMutation({
+    mutationFn: fetchUserDelete,
+    onSuccess: (res) => {
+      removeToken();
+      setToken("");
+      router.push("/");
+    },
+    onError: (error) => {
+      closeModal();
+      openModal(<SimpleModal type={"deleteN"} answer={"확인"} />);
+    }
+  });
 
   return (
     <div className={styles.account}>

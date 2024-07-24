@@ -45,3 +45,8 @@ export const fetchUserProfile = async (): Promise<UserProfile> => {
   const response = await axiosClient.get("/api/user/profile");
   return response.data;
 };
+
+export const fetchUserDelete = async () => {
+  const response = await axiosClient.delete("/api/user/profile");
+  return response.data;
+};
