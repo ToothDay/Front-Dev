@@ -3,13 +3,9 @@ import styles from "./TreatmentSelection.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useModalStore } from "@/stores/modal";
 import TreatmentAddModal from "../modal/TreatmentAddModal";
-import {
-  TreatmentList,
-  TreatmentType,
-  useModifyData,
-  useTreatmentType
-} from "@/stores/medicalWrite";
+import { useModifyData, useTreatmentType } from "@/stores/medicalWrite";
 import { useEffect } from "react";
+import { modifyInitialData } from "@/util/findTooth";
 
 type TreatmentSelectionProps = {
   isModify: boolean;
@@ -34,31 +30,6 @@ const TreatmentSelection = ({ isModify }: TreatmentSelectionProps) => {
         updateOrAddTreatmentType(id, name, 1, true);
       }
     }
-  };
-
-  const modifyInitialData = (
-    treatmentList: TreatmentList[]
-  ): TreatmentType[] => {
-    const modifyMap: { [key: string]: TreatmentType } = {};
-
-    treatmentList.forEach((treatment) => {
-      const treatmentInfo = TREATMENT_LIST.find(
-        (t) => t.name === treatment.category
-      );
-      if (treatmentInfo) {
-        if (!modifyMap[treatment.category]) {
-          modifyMap[treatment.category] = {
-            id: treatmentInfo.id,
-            name: treatment.category,
-            number: 0,
-            isClick: true
-          };
-        }
-        modifyMap[treatment.category].number += 1;
-      }
-    });
-
-    return Object.values(modifyMap);
   };
 
   useEffect(() => {

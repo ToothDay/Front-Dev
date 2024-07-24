@@ -41,15 +41,6 @@ const Tooth = ({
     setSelectedTooth && setSelectedTooth({ toothId, name, number, icon });
   };
 
-  const { selectedCost } = useCostList();
-
-  useEffect(() => {
-    if (selectedCost.length > 0) {
-      const updateSelectedTooth = selectedCost.map((cost) => cost.toothId);
-      setSaveTooth(updateSelectedTooth);
-    }
-  }, [selectedCost]);
-
   const findToothIcon = (toothId: number) => {
     return saveTooth.includes(toothId);
   };

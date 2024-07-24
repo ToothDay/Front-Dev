@@ -4,7 +4,6 @@ import styles from "./ToothSelectSection.module.scss";
 import Tooth from "./Tooth";
 import { ToothType } from "@/constants/toothConstants";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useToothStore } from "@/stores/tooth";
 
 type ToothSide = {
   value: "left" | "right";
@@ -33,15 +32,6 @@ const ToothSelectSection = ({
       name: "오른쪽"
     }
   ];
-  const { setSaveTooth } = useToothStore();
-
-  useEffect(() => {
-    if (treatmentToothList) {
-      setSaveTooth(treatmentToothList);
-    } else {
-      setSaveTooth([]);
-    }
-  }, [toothSelect]);
 
   return (
     <div className={styles.toothItem}>
