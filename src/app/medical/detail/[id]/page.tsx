@@ -22,7 +22,6 @@ import {
   useTreatmentCost,
   useTreatmentType
 } from "@/stores/medicalWrite";
-import { update } from "lodash";
 
 type CategoryList = {
   category: string;
@@ -75,15 +74,19 @@ const MedicalDetail = () => {
     updateVisitDate("");
     updateIsShared(true);
     clearTreatmentType();
+    setSaveTooth([]);
   }, []);
 
   useEffect(() => {
-    const TreatmentTooth =
+    const treatmentTooth =
       data &&
       data.treatmentList
         .map((item) => item.toothId)
         .filter((toothId): toothId is number => toothId !== null);
-    if (TreatmentTooth) setSaveTooth(TreatmentTooth);
+    const filterTreatmentCostList = Array.from(new Set(treatmentTooth));
+    if (treatmentTooth) {
+      setSaveTooth(filterTreatmentCostList);
+    }
     if (data) {
       setModifyData(data);
       data.isShared && updateIsShared(data.isShared);

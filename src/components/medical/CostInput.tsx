@@ -2,9 +2,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./CostInput.module.scss";
 import {
-  TreatmentList,
   useCostList,
-  useMedicalWriteStore,
   useModifyData,
   useTreatmentCost,
   useTreatmentType
@@ -12,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { CostList, CostType } from "@/stores/medicalWrite";
 import { transformData } from "@/util/formatData";
+import { modifyInitialData } from "@/util/findTooth";
 
 type CostInputProps = {
   isModify: boolean;
@@ -21,23 +20,30 @@ const CostInput = ({ isModify }: CostInputProps) => {
   const { treatmentType } = useTreatmentType();
   const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
   const { selectedCost, updateSelectedCost } = useCostList();
-  const { treatmentList, setModifyData } = useModifyData();
+  const { treatmentList } = useModifyData();
   const [isSetValue, setIsSetValue] = useState<boolean>(false);
 
   const checkTreatmentCost = () => {
     const newCostList: CostList[] = [];
-    treatmentType.forEach((item, index) => {
+    treatmentType.forEach((item) => {
       if (item.number > 0) {
-        for (let i = 0; i < item.number; i++) {
-          const isExist = treatmentCostList.find(
-            (cost) => cost.name === item.name && cost.id === newCostList.length
-          );
+        let count = 0;
+        treatmentList.forEach((treatment) => {
+          if (treatment.category === item.name && count < item.number) {
+            newCostList.push({
+              id: newCostList.length,
+              name: item.name,
+              value: String(treatment.amount)
+            });
+            count++;
+          }
+        });
+        for (let i = count; i < item.number; i++) {
           newCostList.push({
             id: newCostList.length,
             name: item.name,
-            value: isExist ? isExist.value : ""
+            value: ""
           });
-          updateTreatmentCost(newCostList);
         }
       }
     });
@@ -50,10 +56,20 @@ const CostInput = ({ isModify }: CostInputProps) => {
     setIsSetValue(true);
   };
 
+  const { updateOrAddTreatmentType } = useTreatmentType();
+
   useEffect(() => {
     checkTreatmentCost();
   }, [treatmentType]);
 
+  useEffect(() => {
+    if (isModify) {
+      const modifyData = modifyInitialData(treatmentList);
+      modifyData.forEach((data) => {
+        updateOrAddTreatmentType(data.id, data.name, data.number, data.isClick);
+      });
+    }
+  }, [treatmentList]);
 
   useEffect(() => {
     if (!isModify) {

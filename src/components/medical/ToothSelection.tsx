@@ -113,7 +113,7 @@ const ToothSelection = ({
     treatmentList: TreatmentItem[]
   ): CostType[] => {
     const result: CostType[] = [];
-    const remainingTreatments = [...treatmentList]; // 남은 항목을 추적할 배열
+    const remainingTreatments = [...treatmentList];
 
     costList.forEach((cost) => {
       const treatmentIndex = remainingTreatments.findIndex(
@@ -131,7 +131,7 @@ const ToothSelection = ({
             amount: Number(cost.value),
             toothId: treatment.toothId
           });
-          remainingTreatments.splice(treatmentIndex, 1); // 매핑된 항목은 제거
+          remainingTreatments.splice(treatmentIndex, 1);
         }
       }
     });

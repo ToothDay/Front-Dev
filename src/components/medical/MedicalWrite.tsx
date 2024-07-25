@@ -13,7 +13,6 @@ import {
   TreatmentList,
   useMedicalWriteStore,
   useModifyData,
-  useTreatmentCost,
   useTreatmentType
 } from "@/stores/medicalWrite";
 import Modal from "../modal/Modal";
@@ -66,7 +65,6 @@ const MedicalWrite = () => {
   });
 
   const [modifyId, setModifyId] = useState<number>(0);
-  const { treatmentCostList } = useTreatmentCost();
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -127,9 +125,6 @@ const MedicalWrite = () => {
     staleTime: 0
   });
 
-  console.log("modifyId____", modifyId);
-  console.log("data____", data);
-
   const modifyMutation: UseMutationResult<
     SaveMyDentistResponse,
     Error,
@@ -153,7 +148,6 @@ const MedicalWrite = () => {
       updateDentistId(data.dentistId);
       updateTreatmentList(data.treatmentList);
       updateVisitDate(data.visitDate);
-
     }
   }, [data]);
 
@@ -172,8 +166,16 @@ const MedicalWrite = () => {
     <>
       {isLoading && <Loading />}
       <form className={styles.writeForm}>
-        <ClinicInput isClinic={isClinic} setIsClinic={setIsClinic}  isModify={modifyId > 0} />
-        <DateInput isCalendar={isCalendar} setIsCalendar={setIsCalendar}  isModify={modifyId > 0}/>
+        <ClinicInput
+          isClinic={isClinic}
+          setIsClinic={setIsClinic}
+          isModify={modifyId > 0}
+        />
+        <DateInput
+          isCalendar={isCalendar}
+          setIsCalendar={setIsCalendar}
+          isModify={modifyId > 0}
+        />
         <TreatmentSelection isModify={modifyId > 0} />
         <AnimatePresence>
           {(clickTreatment || modifyId) && (

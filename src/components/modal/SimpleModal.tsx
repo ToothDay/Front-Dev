@@ -27,6 +27,13 @@ const MODAL_TYPE: modalType = {
       </>
     )
   },
+  deleteN: {
+    title: (
+      <>
+        회원탈퇴를 <br /> 실패하였습니다. <br /> 다시 시도해주세요.
+      </>
+      )
+  },
   delPostY: {
     title: (
       <>

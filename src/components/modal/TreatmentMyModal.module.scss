@@ -16,6 +16,12 @@
   text-align: center;
 }
 
+.treatmentBox {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .teethInfo {
   display: flex;
   align-items: flex-start;
@@ -28,11 +34,6 @@
   & + & {
     margin-top: 14px;
   }
-}
-.treatmentBox {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
 }
 
 .info {

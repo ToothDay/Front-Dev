@@ -4,6 +4,7 @@ export type TreatmentItem = {
   toothId: number | null;
   category: string;
   amount: number;
+  visitDate?: string;
 };
 
 export type VisitData = {

@@ -18,6 +18,27 @@ export type SaveMyDentistResponse = {
   totalAmount: number;
   writtenByCurrentUser: boolean;
 };
+type Treatment = {
+  toothId: number;
+  category: string;
+  amount: number;
+};
+
+type VisitToothDetail = {
+  visitId: number;
+  dentistId: number;
+  dentistName: string;
+  dentistAddress: string;
+  visitDate: string;
+  isShared: boolean;
+  treatmentList: Treatment[];
+  totalAmount: number;
+  writtenByCurrentUser: boolean;
+};
+
+export type VisitsByToothId = {
+  [key: number]: VisitToothDetail[];
+};
 
 export const searchDentist = async (query: string) => {
   const response = await axiosClient.get(`/dentists/search?query=${query}`);
@@ -39,8 +60,13 @@ export const modifyMyDentist = async (
   return response.data;
 };
 
-export const fetchVisitData = async (): Promise<VisitData[]> => {
-  const response = await axiosClient.get(`/visit`);
+export const fetchVisitData = async (
+  offset: number = 0,
+  limit: number = 10
+): Promise<VisitData[]> => {
+  const response = await axiosClient.get(
+    `/visit?offset=${offset}&limit=${limit}`
+  );
   return response.data;
 };
 export const fetchVisitMyData = async () => {
@@ -50,5 +76,24 @@ export const fetchVisitMyData = async () => {
 
 export const deleteMyData = async (visitId: string) => {
   const response = await axiosClient.delete(`/visit/${visitId}`);
+  return response.data;
+};
+
+export const fetchMyToothList = async () => {
+  const response = await axiosClient.get(`/mypage/treatment`);
+  return response.data;
+};
+
+export const fetchOtherVisitData = async (
+  pageParam: number = 0,
+  category: number = 1
+): Promise<VisitData[]> => {
+  const limit = 10;
+  const response = await axiosClient.get(`/visit/category/${category}`, {
+    params: {
+      offset: pageParam,
+      limit: limit
+    }
+  });
   return response.data;
 };
