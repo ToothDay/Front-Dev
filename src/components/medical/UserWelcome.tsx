@@ -17,7 +17,9 @@ const UserWelcome = ({ hasMyData }: UserWelcomeProps) => {
   const handleButtonClick = () => {
     setIsLoading(true);
     router.push("/medical/write");
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
