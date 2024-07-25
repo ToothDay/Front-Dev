@@ -75,7 +75,7 @@ const ClinicInput = ({ isClinic, setIsClinic, isModify }: PropsClinicInput) => {
     if (dentistName && isModify) {
       setSearchName(dentistName);
     }
-  }, [dentistName,isModify]);
+  }, [dentistName, isModify]);
 
   return (
     <motion.div
@@ -119,7 +119,7 @@ const ClinicInput = ({ isClinic, setIsClinic, isModify }: PropsClinicInput) => {
             >
               {isLoading && (
                 <li className={styles.loadingItem}>
-                  <Loading useBg={false} />
+                  <img src="/spinner.gif" alt="loading" />
                 </li>
               )}
 
