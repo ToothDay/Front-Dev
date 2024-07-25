@@ -131,7 +131,6 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
                   userData={page}
                 />
               ))}
-              {isFetchingNextPage && <Loading useBg={true} />}
               <div ref={loadMoreRef} />
             </div>
             {data?.pages.flatMap((page) => page).length === 0 && !isLoading && (
