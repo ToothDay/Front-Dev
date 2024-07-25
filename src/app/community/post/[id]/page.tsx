@@ -5,6 +5,7 @@ import ImageSwiper from "@/components/common/ImageSwiper";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   delComment,
+  delPost,
   getCommunityPost,
   postComment,
   postLike
@@ -17,7 +18,8 @@ import Modal from "@/components/modal/Modal";
 import DeleteModal from "@/components/modal/DeleteModal";
 import { useModalStore } from "@/stores/modal";
 import { useUserStore } from "@/stores/user";
-import { debounce } from "lodash";
+import SimpleModal from "@/components/modal/SimpleModal";
+
 type postMainProps = {
   params: {
     id: number;
@@ -74,11 +76,20 @@ const PostMain = (props: postMainProps) => {
     onError: (e) => console.log(e)
   });
 
+  const mutationDelPost = useMutation({
+    mutationFn: (commentId: number) => delPost(commentId),
+    onSuccess: () => {
+      refetch();
+      openModal(<SimpleModal type={"delPostY"} answer={"확인"} />);
+    },
+    onError: (e) => console.log(e)
+  });
+
   const handleLikeBtn = async () => {
     mutation.mutate(data?.postId);
   };
   const handleEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.repeat) {
       mutationComment.mutate(data?.postId);
     }
   };
@@ -89,6 +100,10 @@ const PostMain = (props: postMainProps) => {
 
   const handleDelComment = (commentId: number) => {
     mutationDelComment.mutate(commentId);
+  };
+
+  const handleDelPost = (postId: number) => {
+    mutationDelPost.mutate(postId);
   };
   return (
     <main className={styles.main}>
@@ -135,7 +150,14 @@ const PostMain = (props: postMainProps) => {
         {data?.user?.id == userProfile?.id && (
           <span
             className={styles.postFooterRight}
-            onClick={() => openModal(<DeleteModal deleteType="post" />)}
+            onClick={() =>
+              openModal(
+                <DeleteModal
+                  deleteType="post"
+                  onConfirm={() => handleDelPost(data?.postId)}
+                />
+              )
+            }
           />
         )}
       </div>

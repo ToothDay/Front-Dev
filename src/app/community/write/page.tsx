@@ -12,6 +12,7 @@ import DeleteModal from "@/components/modal/DeleteModal";
 import SimpleModal from "@/components/modal/SimpleModal";
 import { useMutation } from "@tanstack/react-query";
 import { PostCommunity } from "@/api/communityApi";
+import { useRouter } from "next/navigation";
 
 const CommunityWritePage = () => {
   const [title, setTitle] = useState("");
@@ -22,6 +23,7 @@ const CommunityWritePage = () => {
     { id: number; src: string; file: File }[]
   >([]);
   const { openModal } = useModalStore();
+  const router = useRouter();
 
   const debouncedSetTitle = debounce((value: string) => setTitle(value), 300);
 
@@ -96,6 +98,11 @@ const CommunityWritePage = () => {
       }
     }
   };
+
+  const handleCancelPost = () => {
+    console.log("test");
+    router.push("/community");
+  };
   return (
     <main className={styles.main}>
       <div className={styles.header}>
@@ -103,7 +110,11 @@ const CommunityWritePage = () => {
           title="게시글 작성하기"
           openModal={() =>
             openModal(
-              <DeleteModal deleteType={"write"} commentY={"네 취소할게요"} />
+              <DeleteModal
+                deleteType={"write"}
+                commentY={"네 취소할게요"}
+                onConfirm={handleCancelPost}
+              />
             )
           }
         />

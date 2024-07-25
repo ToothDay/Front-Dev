@@ -102,7 +102,7 @@ const Community = () => {
       {data?.pages.map((page) =>
         page.posts.map((v: PostDataType) => (
           <Link key={v.postId} href={`/community/post/${v.postId}`}>
-            <PostCard type="community" data={v} />
+            <PostCard type="community" data={v} refetch={refetch} />
           </Link>
         ))
       )}

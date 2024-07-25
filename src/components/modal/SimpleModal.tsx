@@ -32,6 +32,13 @@ const MODAL_TYPE: modalType = {
       <>
         회원탈퇴를 <br /> 실패하였습니다. <br /> 다시 시도해주세요.
       </>
+      )
+  },
+  delPostY: {
+    title: (
+      <>
+        게시물이 <br /> 삭제되었습니다.
+      </>
     )
   }
 };
@@ -43,6 +50,8 @@ const SimpleModal = ({ type, answer, to }: PropsModal) => {
     closeModal();
     if (type === "medicalY") {
       router.push("/medical");
+    } else if (type === "delPostY") {
+      router.push("/community");
     } else if (type === "writeY") {
       router.push(`/community/post/${to}`);
     }

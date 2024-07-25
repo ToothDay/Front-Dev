@@ -18,8 +18,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 7px 16px;
-  border: 1px solid #d9d9d9;
+  border: none solid #d9d9d9;
   border-radius: 8px;
   @include font-style($body2);
 }
@@ -31,4 +30,5 @@
 .image-read {
   width: 200px;
   height: 200px;
+  border-radius: 8px;
 }
