@@ -1,6 +1,8 @@
 "use client";
 import { VisitData } from "@/api/medical";
+import Loading from "@/app/loading";
 import styles from "@/components/common/HistoryCard.module.scss";
+import { is } from "date-fns/locale";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,13 +17,13 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
   const [isImageError, setIsImageError] = useState<{ [key: number]: boolean }>(
     {}
   );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleImageError = (visitId: number) => {
     if (!isImageError[visitId]) {
       setIsImageError((prev) => ({ ...prev, [visitId]: true }));
     }
   };
-
 
   useEffect(() => {
     const initialLoadingState = userData.reduce(
@@ -36,15 +38,20 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
   }, [userData]);
 
   const handleViewAll = (visitId: string) => {
+    setIsLoading(true);
     if (cardType === "myHistory") {
       router.push(`/medical/detail/${visitId}?type=my`);
     } else {
       router.push(`/medical/detail/${visitId}?type=other`);
     }
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
     <>
+      {isLoading && <Loading />}
       {userData.map((data) => (
         <div key={data.visitId} className={styles.card}>
           <div className={styles.dentistInfo}>
@@ -74,21 +81,21 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
               <p>총 가격: {data.totalAmount.toLocaleString()}원</p>
               {cardType === "otherHistory" && (
                 <div className={styles.imageContainer}>
-                    <Image
-                      src={
-                        data.profileImageUrl && !isImageError[data.visitId]
-                          ? data.profileImageUrl
-                          : "/profile.svg"
-                      }
-                      alt="tooth"
-                      width={42}
-                      height={42}
-                      className={styles.profileIcon}
-                      loading="lazy"
-                      blurDataURL="/profile.svg"
-                      placeholder="blur"
-                      onError={() => handleImageError(data.visitId)}
-                    />
+                  <Image
+                    src={
+                      data.profileImageUrl && !isImageError[data.visitId]
+                        ? data.profileImageUrl
+                        : "/profile.svg"
+                    }
+                    alt="tooth"
+                    width={42}
+                    height={42}
+                    className={styles.profileIcon}
+                    loading="lazy"
+                    blurDataURL="/profile.svg"
+                    placeholder="blur"
+                    onError={() => handleImageError(data.visitId)}
+                  />
                 </div>
               )}
             </div>

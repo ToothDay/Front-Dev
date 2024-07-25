@@ -32,7 +32,9 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
     if (myData.length !== 0) {
       setIsLoadingTime(true);
       router.push(`/my-page/history`);
-      setIsLoadingTime(false);
+      setTimeout(() => {
+        setIsLoadingTime(false);
+      }, 1000);
     }
   };
 
