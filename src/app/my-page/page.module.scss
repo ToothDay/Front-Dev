@@ -2,7 +2,7 @@
 
 .main {
   background-color: $white;
-  height: 100%;
+  height: 100vh;
 }
 
 .profile {
@@ -39,6 +39,7 @@
 .community {
   margin-top: 37px;
   padding: 0 24px;
+  background-color: $white;
 
   .communityTitle {
     @include font-style($subtitle1);
