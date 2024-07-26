@@ -44,6 +44,7 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
     onSuccess: (data) => {
       setLikedByCurrentUser((prev) => !prev);
       setLikeCount(data.likeCount);
+      refetch();
     }
   });
 

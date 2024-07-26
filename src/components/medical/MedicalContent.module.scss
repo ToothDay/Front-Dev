@@ -34,6 +34,7 @@
 }
 
 .otherCard {
+  position: relative;
   margin-top: 14px;
 }
 
@@ -43,4 +44,10 @@
   justify-content: center;
   gap: 10px;
   flex-direction: column;
+}
+
+.loading {
+  margin-top: 30px;
+  width: 60px;
+  height: 60px;
 }

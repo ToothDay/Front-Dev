@@ -34,7 +34,7 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
       router.push(`/my-page/history`);
       setTimeout(() => {
         setIsLoadingTime(false);
-      }, 1000);
+      }, 5000);
     }
   };
 
@@ -81,10 +81,7 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
           <section className={styles.medicalRecentlySection}>
             <div className={styles.titleWrapper}>
               <span className={styles.wrapperTitle}>최근 진료 기록</span>
-              <button
-                className={styles.allButton}
-                onClick={() => handleViewAll()}
-              >
+              <button className={styles.allButton} onClick={handleViewAll}>
                 전체보기
               </button>
             </div>
@@ -106,13 +103,21 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
           />
           <div className={styles.otherCard}>
             <div className={styles.cardList}>
-              {data?.pages.flatMap((page, index) => (
-                <HistoryCard
-                  key={index}
-                  cardType="otherHistory"
-                  userData={page}
+              {isLoading ? (
+                <img
+                  src="/spinner.gif"
+                  alt="loading"
+                  className={styles.loading}
                 />
-              ))}
+              ) : (
+                data?.pages.flatMap((page, index) => (
+                  <HistoryCard
+                    key={index}
+                    cardType="otherHistory"
+                    userData={page}
+                  />
+                ))
+              )}
               <div ref={loadMoreRef} />
             </div>
             {data?.pages.flatMap((page) => page).length === 0 && !isLoading && (
