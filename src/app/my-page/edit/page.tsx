@@ -17,7 +17,7 @@ const ProfileEdit = () => {
   const { userProfile, setUserProfile } = useUserStore();
   const [nickname, setNickname] = useState(userProfile.username);
   const [imageUrl, setImageUrl] = useState(
-    `http://3.34.135.181:8000/upload${userProfile.profileImageUrl}`
+    `${process.env.IMAGE_PATH}${userProfile.profileImageUrl}`
   );
   const [defaultImage, setDefaultImage] = useState(false);
   const { openModal } = useModalStore();
@@ -32,7 +32,7 @@ const ProfileEdit = () => {
     staleTime: 0
   });
   useEffect(() => {
-    setImageUrl(`http://3.34.135.181:8000/upload${data?.profileImageUrl}`);
+    setImageUrl(`${process.env.IMAGE_PATH}${data?.profileImageUrl}`);
   }, [data]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

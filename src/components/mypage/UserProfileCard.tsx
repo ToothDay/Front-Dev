@@ -16,9 +16,9 @@ const UserProfileCard = () => {
     queryFn: () => getProfile(),
     staleTime: 0
   });
-  
+
   useEffect(() => {
-    setProfileImage(`http://3.34.135.181:8000/upload${data?.profileImageUrl}`);
+    setProfileImage(`${process.env.IMAGE_PATH}${data?.profileImageUrl}`);
   }, [data]);
 
   return (
