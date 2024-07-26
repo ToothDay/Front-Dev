@@ -2,16 +2,16 @@
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
 import NoData from "@/components/common/NoData";
-import { useMutation, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   fetchCommentPostData,
   fetchLikePostData,
   fetchMyPostData
 } from "@/api/myPage";
-import { useEffect, useState } from "react";
-import { PostData } from "../../../api/myPage";
 import MyPostCard from "@/components/common/MyPostCard";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import useInfiniteScroll from "@/hook/useInfiniteScroll";
+import { useRef } from "react";
 
 type ActivityType = "post" | "like" | "comment";
 
@@ -31,108 +31,62 @@ const HEADER_TITLE: HeaderTitleType = {
   comment: "내가 댓글 단 글"
 };
 
+const fetchActivityData = async (page: number, type: ActivityType) => {
+  switch (type) {
+    case "post":
+      return fetchMyPostData(page);
+    case "like":
+      return fetchLikePostData(page);
+    case "comment":
+      return fetchCommentPostData(page);
+    default:
+      throw new Error("유효하지 않은 type 입니다.");
+  }
+};
+
 const MyActivity = ({ params }: PropsPage) => {
-  const [myPost, setMyPost] = useState<PostData[]>([]);
-  const [isFetched, setIsFetched] = useState(false);
+  const { type } = params;
 
-  const postMutation = useMutation({
-    mutationFn: fetchMyPostData,
-    onSuccess: (data) => {
-      console.log("data____", data);
-      setMyPost(data);
-      setIsFetched(true);
-    },
-    onError: (error) => {
-      setIsFetched(true);
-    }
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["activityData", type],
+      queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
+        fetchActivityData(pageParam, type),
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.length < 10) return undefined;
+        return pages.length;
+      },
+      staleTime: 0,
+      initialPageParam: 0
+    });
+
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isLoading: isFetchingNextPage
   });
 
-  const likePostMutation = useMutation({
-    mutationFn: fetchLikePostData,
-    onSuccess: (data) => {
-      console.log("data_____", data);
-      setMyPost(data);
-      setIsFetched(true);
-    },
-    onError: (error) => {
-      setIsFetched(true);
-    }
-  });
-
-  const commentPostMutation = useMutation({
-    mutationFn: fetchCommentPostData,
-    onSuccess: (data) => {
-      console.log("data_____", data);
-      setMyPost(data);
-      setIsFetched(true);
-    },
-    onError: (error) => {
-      setIsFetched(true);
-    }
-  });
-
-  const getMyPost = () => {
-    try {
-      postMutation.mutate();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getLikePost = () => {
-    try {
-      likePostMutation.mutate();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getCommentPost = () => {
-    try {
-      commentPostMutation.mutate();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (params.type === "like") {
-      getLikePost();
-      console.log(myPost);
-    }
-    if (params.type === "post") {
-      getMyPost();
-    }
-    if (params.type === "comment") {
-      getCommentPost();
-    }
-  }, []);
+  const mainRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
-      {postMutation.isPending ? (
-        <LoadingSpinner />
-      ) : (
-        <main className={styles.main}>
-          <div className={styles.header}>
-            <Header title={HEADER_TITLE[params.type]} />
-          </div>
-          {!isFetched && <LoadingSpinner />}
-          <div className={styles.postList}>
-            {!postMutation.isPending && isFetched && myPost.length === 0 ? (
-              <NoData type={params.type} />
-            ) : (
-              myPost.map((post) => (
-                <MyPostCard
-                  key={post.postId}
-                  type={params.type}
-                  listData={post}
-                />
-              ))
-            )}
-          </div>
-        </main>
-      )}
+      {isLoading && <LoadingSpinner />}
+      <main className={styles.main} ref={mainRef}>
+        <div className={styles.header}>
+          <Header title={HEADER_TITLE[type]} />
+        </div>
+        <div className={styles.postList}>
+          {data?.pages.flatMap((page, index) =>
+            page.map((post, index) => (
+              <MyPostCard key={index} type={type} listData={post} />
+            ))
+          )}
+          <div ref={loadMoreRef} />
+          {!isLoading && data?.pages.flatMap((page) => page).length === 0 && (
+            <NoData type={type} />
+          )}
+        </div>
+      </main>
     </>
   );
 };

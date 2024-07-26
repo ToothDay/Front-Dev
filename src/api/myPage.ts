@@ -19,17 +19,41 @@ export type PostData = {
   myComment?: string;
 };
 
-export const fetchMyPostData = async (): Promise<PostData[]> => {
-  const response = await axiosClient.get("/mypage/community/post");
+export const fetchMyPostData = async (
+  pageParam: number = 0
+): Promise<PostData[]> => {
+  const limit = 10;
+  const response = await axiosClient.get("/mypage/community/post", {
+    params: {
+      offset: pageParam,
+      limit: limit
+    }
+  });
   return response.data;
 };
 
-export const fetchLikePostData = async (): Promise<PostData[]> => {
-  const response = await axiosClient.get("/mypage/community/likePost");
+export const fetchLikePostData = async (
+  pageParam: number = 0
+): Promise<PostData[]> => {
+  const limit = 10;
+  const response = await axiosClient.get("/mypage/community/likePost", {
+    params: {
+      offset: pageParam,
+      limit: limit
+    }
+  });
   return response.data;
 };
 
-export const fetchCommentPostData = async (): Promise<PostData[]> => {
-  const response = await axiosClient.get("/mypage/community/commentPost");
+export const fetchCommentPostData = async (
+  pageParam: number = 0
+): Promise<PostData[]> => {
+  const limit = 10;
+  const response = await axiosClient.get("/mypage/community/commentPost", {
+    params: {
+      offset: pageParam,
+      limit: limit
+    }
+  });
   return response.data;
 };
