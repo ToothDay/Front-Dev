@@ -6,11 +6,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchVisitMyData } from "@/api/medicalRecord";
 import Loading from "@/app/loading";
 import ScrollToTop from "@/components/common/ScrollToTop";
-import { useCallback, useEffect, useRef } from "react";
+import { useRef } from "react";
+import useInfiniteScroll from "@/hook/useInfiniteScroll";
 
 const MyHistory = () => {
-  const loadMoreRef = useRef<HTMLDivElement>(null);
-
   const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["visitMyData"],
     queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
@@ -22,30 +21,11 @@ const MyHistory = () => {
     staleTime: 0,
     initialPageParam: 0
   });
-
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (target.isIntersecting && hasNextPage) {
-        fetchNextPage();
-      }
-    },
-    [fetchNextPage, hasNextPage]
-  );
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0
-    });
-
-    if (loadMoreRef.current) observer.observe(loadMoreRef.current);
-
-    return () => {
-      if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
-    };
-  }, [handleObserver]);
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isLoading
+  });
 
   const mainRef = useRef<HTMLDivElement>(null);
   return (
