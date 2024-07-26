@@ -19,7 +19,7 @@ const UserWelcome = ({ hasMyData }: UserWelcomeProps) => {
     router.push("/medical/write");
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 5000);
   };
 
   return (
