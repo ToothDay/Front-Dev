@@ -2,12 +2,7 @@
 
 import Header from "@/components/common/Header";
 import styles from "./page.module.scss";
-import {
-  useMutation,
-  useQuery,
-  QueryClient,
-  useQueryClient
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { NoticeData, fetchNotice, fetchNoticeData } from "@/api/myPage";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
