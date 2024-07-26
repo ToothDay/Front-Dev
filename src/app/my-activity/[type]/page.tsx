@@ -54,7 +54,8 @@ const MyActivity = ({ params }: PropsPage) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch
+    refetch,
+    isError
   } = useInfiniteQuery({
     queryKey: ["activityData", type],
     queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
@@ -100,6 +101,7 @@ const MyActivity = ({ params }: PropsPage) => {
           {!isLoading && data?.pages.flatMap((page) => page).length === 0 && (
             <NoData type={type} />
           )}
+          {isError && <NoData type={type} />}
         </div>
       </main>
       <ScrollToTop mainRef={mainRef} />
