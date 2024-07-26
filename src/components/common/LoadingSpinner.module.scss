@@ -1,0 +1,19 @@
+@import "@/styles/common.scss";
+
+.loadingSpinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+}
