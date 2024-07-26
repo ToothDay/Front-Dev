@@ -12,6 +12,7 @@ import MyPostCard from "@/components/common/MyPostCard";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import useInfiniteScroll from "@/hook/useInfiniteScroll";
 import { useRef } from "react";
+import ScrollToTop from "@/components/common/ScrollToTop";
 
 type ActivityType = "post" | "like" | "comment";
 
@@ -87,6 +88,7 @@ const MyActivity = ({ params }: PropsPage) => {
           )}
         </div>
       </main>
+      <ScrollToTop mainRef={mainRef} />
     </>
   );
 };
