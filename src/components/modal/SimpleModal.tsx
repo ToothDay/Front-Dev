@@ -40,6 +40,13 @@ const MODAL_TYPE: modalType = {
         게시물이 <br /> 삭제되었습니다.
       </>
     )
+  },
+  profileY: {
+    title: (
+      <>
+        프로필 수정이 <br /> 완료되었습니다.
+      </>
+    )
   }
 };
 

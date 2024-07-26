@@ -39,6 +39,9 @@
   width: 100%;
   margin-top: 12px;
 }
+.profileImage {
+  border-radius: 83px;
+}
 
 .imgBtnDiv {
   width: 100%;
@@ -162,4 +165,8 @@
   height: 52px;
   border: 1px solid #d9d9d9;
   border-radius: 16px;
+}
+
+.fileInput {
+  display: none;
 }
