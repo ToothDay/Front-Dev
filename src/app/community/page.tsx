@@ -79,6 +79,7 @@ const Community = () => {
           알림
         </button>
       </div>
+      {/* 추후 검색 기능 구현
       <div className={styles.searchWrapper}>
         <img
           src="/search-icon.svg"
@@ -90,11 +91,13 @@ const Community = () => {
           className={styles.search}
           placeholder="검색어를 입력해 주세요."
         />
-        {/* 삭제버튼 기능 추후 구현 */}
+        {/* 삭제버튼 기능 추후 구현 * /}
         <button type="button" className={styles.deleteButton}>
           삭제
         </button>
       </div>
+    */}
+
       <div className={styles.treatmentWrapper}>
         <TreatmentSwiper listType="all" showSelected={handleKeyowrd} />
       </div>
