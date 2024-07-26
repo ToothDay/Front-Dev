@@ -101,9 +101,7 @@ const MedicalWrite = () => {
   const router = useRouter();
 
   useEffect(() => {
-    treatmentType.filter((treatment) => {
-      return treatment.isClick;
-    }).length > 0
+    treatmentType.filter((treatment) => treatment.isClick).length > 0
       ? setClickTreatment(true)
       : setClickTreatment(false);
   }, [treatmentType]);
@@ -142,15 +140,21 @@ const MedicalWrite = () => {
       }
     });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["fetchModifyData"],
     queryFn: () => fetchMyMedicalDetail(String(modifyId)),
-    enabled: !!modifyId && modifyId > 0,
+    enabled: false,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
     staleTime: 0
   });
+
+  useEffect(() => {
+    if (modifyId > 0) {
+      refetch();
+    }
+  }, [modifyId]);
 
   const modifyMutation: UseMutationResult<
     SaveMyDentistResponse,
@@ -185,14 +189,14 @@ const MedicalWrite = () => {
       (treatment) => treatment.name !== "스케일링"
     ).length;
     const isToothValid = validateSelectTooth(saveTooth, selectedToothCount);
-    const isToothCost = validateToothCost(treatmentList);
+    const isToothCostValid = validateToothCost(treatmentList);
 
     setNoClinic(!isDentistValid);
     setNoDate(!isDateValid);
     setNoTooth(!isToothValid);
-    setNoCost(!isToothCost);
+    setNoCost(!isToothCostValid);
 
-    return isDentistValid && isDateValid && isToothValid && isToothCost;
+    return isDentistValid && isDateValid && isToothValid && isToothCostValid;
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -200,7 +204,7 @@ const MedicalWrite = () => {
 
     const isValid = validateForm();
 
-    if (isValid && isFill) {
+    if (isValid) {
       if (modifyId > 0) {
         modifyMutation.mutate({ visitId: String(modifyId), params });
       } else {
@@ -218,23 +222,30 @@ const MedicalWrite = () => {
           setIsClinic={setIsClinic}
           isModify={modifyId > 0}
           noClinic={noClinic}
+          setNoClinic={setNoClinic}
         />
         <DateInput
           isCalendar={isCalendar}
           setIsCalendar={setIsCalendar}
           isModify={modifyId > 0}
           noDate={noDate}
+          setNoDate={setNoDate}
         />
         <TreatmentSelection isModify={modifyId > 0} />
         <AnimatePresence>
           {(clickTreatment || modifyId) && (
             <>
-              <CostInput isModify={modifyId > 0} noCost={noCost} />
+              <CostInput
+                isModify={modifyId > 0}
+                noCost={noCost}
+                setNoCost={setNoCost}
+              />
               <ToothSelection
                 isDisplay={isDisplay}
                 isModify={modifyId > 0}
                 setIsDisplay={setIsDisplay}
                 noTooth={noTooth}
+                setNoTooth={setNoTooth}
               />
               <ShareOption isShare={isShare} setIsShare={setIsShare} />
               <div onClick={handleClick}>

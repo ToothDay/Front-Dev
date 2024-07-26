@@ -2,7 +2,7 @@
 import { useRef, useEffect, useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ClinicInput.module.scss";
-import _ from "lodash";
+import _, { set } from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { searchDentist } from "@/api/medicalRecord";
 import Highlight from "../common/Highlight";
@@ -13,13 +13,15 @@ type PropsClinicInput = {
   setIsClinic: (value: boolean) => void;
   isModify?: boolean;
   noClinic: boolean;
+  setNoClinic: (value: boolean) => void;
 };
 
 const ClinicInput = ({
   isClinic,
   setIsClinic,
   isModify,
-  noClinic
+  noClinic,
+  setNoClinic
 }: PropsClinicInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -107,7 +109,7 @@ const ClinicInput = ({
           <input
             type="text"
             className={styles.searchClinic}
-            placeholder="치과명으로 찾아주세요."
+            placeholder="치과를 검색해 주세요."
             onChange={handleInputChange}
             value={searchName}
             ref={searchRef}

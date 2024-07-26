@@ -15,9 +15,10 @@ import { modifyInitialData } from "@/util/findTooth";
 type CostInputProps = {
   isModify: boolean;
   noCost: boolean;
+  setNoCost: (value: boolean) => void;
 };
 
-const CostInput = ({ isModify, noCost }: CostInputProps) => {
+const CostInput = ({ isModify, noCost, setNoCost }: CostInputProps) => {
   const { treatmentType } = useTreatmentType();
   const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
   const { selectedCost, updateSelectedCost } = useCostList();

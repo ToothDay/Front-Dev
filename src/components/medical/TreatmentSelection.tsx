@@ -3,7 +3,11 @@ import styles from "./TreatmentSelection.module.scss";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
 import { useModalStore } from "@/stores/modal";
 import TreatmentAddModal from "../modal/TreatmentAddModal";
-import { useModifyData, useTreatmentType } from "@/stores/medicalWrite";
+import {
+  useMedicalWriteStore,
+  useModifyData,
+  useTreatmentType
+} from "@/stores/medicalWrite";
 import { useEffect } from "react";
 import { modifyInitialData } from "@/util/findTooth";
 
@@ -13,7 +17,12 @@ type TreatmentSelectionProps = {
 
 const TreatmentSelection = ({ isModify }: TreatmentSelectionProps) => {
   const { openModal } = useModalStore();
-
+  const {
+    updateIsShared,
+    updateDentistId,
+    updateTreatmentList,
+    updateVisitDate
+  } = useMedicalWriteStore();
   const { treatmentType, updateOrAddTreatmentType, clearTreatmentType } =
     useTreatmentType();
   const { treatmentList } = useModifyData();
@@ -39,6 +48,11 @@ const TreatmentSelection = ({ isModify }: TreatmentSelectionProps) => {
       modifyData.forEach((data) => {
         updateOrAddTreatmentType(data.id, data.name, data.number, data.isClick);
       });
+    } else {
+      updateIsShared(true);
+      updateDentistId(0);
+      updateTreatmentList([]);
+      updateVisitDate("");
     }
   }, [isModify, treatmentList]);
 

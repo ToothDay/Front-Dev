@@ -1,8 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import styles from "./DateInput.module.scss";
 import CustomCalendar from "../common/CustomCalendar";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { formatIsoDate, formatKoreaDate } from "@/util/formatDate";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
+import { formatKoreaDate } from "@/util/formatDate";
 import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 
 type PropsDateInput = {
@@ -10,6 +17,7 @@ type PropsDateInput = {
   setIsCalendar: (value: boolean) => void;
   isModify?: boolean;
   noDate: boolean;
+  setNoDate: Dispatch<SetStateAction<boolean>>;
 };
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -24,7 +32,8 @@ const DateInput = ({
   isCalendar,
   setIsCalendar,
   isModify,
-  noDate
+  noDate,
+  setNoDate
 }: PropsDateInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -92,6 +101,12 @@ const DateInput = ({
       setSelectedValue(visitDate);
     }
   }, [visitDate, isModify]);
+
+  useEffect(() => {
+    if (selectedValue.length > 0) {
+      setNoDate(false);
+    }
+  }, [selectedValue]);
 
   return (
     <motion.div

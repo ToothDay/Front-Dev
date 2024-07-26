@@ -22,13 +22,15 @@ interface ToothSelectionProps {
   isDisplay: boolean;
   isModify: boolean;
   noTooth: boolean;
+  setNoTooth: Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ToothSelection = ({
   isDisplay,
   setIsDisplay,
   isModify,
-  noTooth
+  noTooth,
+  setNoTooth
 }: ToothSelectionProps) => {
   const { treatmentType } = useTreatmentType();
 
@@ -45,10 +47,6 @@ const ToothSelection = ({
   const { openModal } = useModalStore();
   const { treatmentList } = useModifyData();
   const { setSaveTooth } = useToothStore();
-
-  useEffect(() => {
-    console.log("noTooth", noTooth);
-  }, [noTooth]);
 
   useEffect(() => {
     const notHasToothId = treatmentCostList
