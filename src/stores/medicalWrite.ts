@@ -158,22 +158,22 @@ export const useModifyData = create<ModifyDataState>((set) => ({
     set((state) => ({ ...state, ...data }))
 }));
 
-useCostList.subscribe((state) => {
-  console.log("cost__", state);
-});
+// useCostList.subscribe((state) => {
+//   console.log("cost__", state);
+// });
 
-useTreatmentCost.subscribe((state) => {
-  console.log("treat__", state);
-});
+// useTreatmentCost.subscribe((state) => {
+//   console.log("treat__", state);
+// });
 
-useTreatmentType.subscribe((state) => {
-  console.log("type_______", state);
-});
+// useTreatmentType.subscribe((state) => {
+//   console.log("type_______", state);
+// });
 
-useMedicalWriteStore.subscribe((state) => {
-  console.log("write", state);
-});
+// useMedicalWriteStore.subscribe((state) => {
+//   console.log("write", state);
+// });
 
-useModifyData.subscribe((state) => {
-  console.log("modify", state);
-});
+// useModifyData.subscribe((state) => {
+//   console.log("modify", state);
+// });
