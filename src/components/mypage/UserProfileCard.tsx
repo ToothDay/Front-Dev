@@ -21,8 +21,6 @@ const UserProfileCard = () => {
     setProfileImage(
       `${process.env.NEXT_PUBLIC_IMAGE_PATH}${data?.profileImageUrl}`
     );
-    console.log(process.env.NEXT_PUBLIC_IMAGE_PATH);
-    console.log(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
   }, [data]);
 
   return (
