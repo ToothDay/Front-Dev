@@ -9,6 +9,7 @@ type PropsDateInput = {
   isCalendar: boolean;
   setIsCalendar: (value: boolean) => void;
   isModify?: boolean;
+  noDate: boolean;
 };
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -19,7 +20,12 @@ const slideInVariants = {
   exit: { opacity: 0, x: -100 }
 };
 
-const DateInput = ({ isCalendar, setIsCalendar, isModify }: PropsDateInput) => {
+const DateInput = ({
+  isCalendar,
+  setIsCalendar,
+  isModify,
+  noDate
+}: PropsDateInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
 
@@ -130,7 +136,9 @@ const DateInput = ({ isCalendar, setIsCalendar, isModify }: PropsDateInput) => {
           )}
         </AnimatePresence>
       </div>
-      {/* <span className={styles.errorText}>날짜를 선택해 주세요.</span> */}
+      {noDate && (
+        <span className={styles.errorText}>날짜를 선택해 주세요.</span>
+      )}
     </motion.div>
   );
 };

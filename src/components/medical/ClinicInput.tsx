@@ -5,7 +5,6 @@ import styles from "./ClinicInput.module.scss";
 import _ from "lodash";
 import { useQuery } from "@tanstack/react-query";
 import { searchDentist } from "@/api/medicalRecord";
-import Loading from "@/app/loading";
 import Highlight from "../common/Highlight";
 import { useMedicalWriteStore, useModifyData } from "@/stores/medicalWrite";
 
@@ -13,9 +12,15 @@ type PropsClinicInput = {
   isClinic: boolean;
   setIsClinic: (value: boolean) => void;
   isModify?: boolean;
+  noClinic: boolean;
 };
 
-const ClinicInput = ({ isClinic, setIsClinic, isModify }: PropsClinicInput) => {
+const ClinicInput = ({
+  isClinic,
+  setIsClinic,
+  isModify,
+  noClinic
+}: PropsClinicInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const [searchName, setSearchName] = useState<string>("");
@@ -163,7 +168,9 @@ const ClinicInput = ({ isClinic, setIsClinic, isModify }: PropsClinicInput) => {
         </AnimatePresence>
         <img src="/search-icon.svg" alt="search" className={styles.inputIcon} />
       </div>
-      {/* <span className={styles.errorText}>치과명을 입력해 주세요.</span> */}
+      {noClinic && (
+        <span className={styles.errorText}>치과명을 입력해 주세요.</span>
+      )}
     </motion.div>
   );
 };

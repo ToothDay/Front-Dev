@@ -21,12 +21,14 @@ interface ToothSelectionProps {
   setIsDisplay: Dispatch<React.SetStateAction<boolean>>;
   isDisplay: boolean;
   isModify: boolean;
+  noTooth: boolean;
 }
 
 const ToothSelection = ({
   isDisplay,
   setIsDisplay,
-  isModify
+  isModify,
+  noTooth
 }: ToothSelectionProps) => {
   const { treatmentType } = useTreatmentType();
 
@@ -43,6 +45,10 @@ const ToothSelection = ({
   const { openModal } = useModalStore();
   const { treatmentList } = useModifyData();
   const { setSaveTooth } = useToothStore();
+
+  useEffect(() => {
+    console.log("noTooth", noTooth);
+  }, [noTooth]);
 
   useEffect(() => {
     const notHasToothId = treatmentCostList
@@ -159,6 +165,11 @@ const ToothSelection = ({
             setSelectedTooth={setSelectedTooth}
             setIsDisplayModal={setIsDisplayModal}
           />
+          {noTooth && (
+            <span className={styles.errorText}>
+              치아를 눌러 치료를 기록해 주세요.
+            </span>
+          )}
         </motion.div>
       )}
     </>

@@ -14,9 +14,10 @@ import { modifyInitialData } from "@/util/findTooth";
 
 type CostInputProps = {
   isModify: boolean;
+  noCost: boolean;
 };
 
-const CostInput = ({ isModify }: CostInputProps) => {
+const CostInput = ({ isModify, noCost }: CostInputProps) => {
   const { treatmentType } = useTreatmentType();
   const { treatmentCostList, updateTreatmentCost } = useTreatmentCost();
   const { selectedCost, updateSelectedCost } = useCostList();
@@ -183,6 +184,11 @@ const CostInput = ({ isModify }: CostInputProps) => {
           ))}
         </AnimatePresence>
       </div>
+      {noCost && (
+        <span className={styles.errorText}>
+          각 치료의 비용을 입력해 주세요.
+        </span>
+      )}
     </motion.div>
   );
 };

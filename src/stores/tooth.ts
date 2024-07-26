@@ -10,4 +10,4 @@ export const useToothStore = create<ToothState>((set) => ({
   setSaveTooth: (saveTooth: number[]) => set({ saveTooth })
 }));
 
-useToothStore.subscribe((state) => console.log("New state", state));
+useToothStore.subscribe((state) => console.log("치아 저장", state));
