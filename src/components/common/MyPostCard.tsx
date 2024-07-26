@@ -23,6 +23,9 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
   const [isImageError, setIsImageError] = useState<{ [key: number]: boolean }>(
     {}
   );
+  const [isPostImageError, setIsPostImageError] = useState<{
+    [key: number]: boolean;
+  }>({});
 
   useEffect(() => {
     if (listData.keywords.length > 0) {
@@ -47,6 +50,11 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
   const handleImageError = (postId: number) => {
     if (!isImageError[postId]) {
       setIsImageError((prev) => ({ ...prev, [postId]: true }));
+    }
+  };
+  const handlePostImageError = (postId: number) => {
+    if (!isPostImageError[postId]) {
+      setIsPostImageError((prev) => ({ ...prev, [postId]: true }));
     }
   };
 
@@ -107,12 +115,18 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
               width={70}
               height={70}
               key={index}
-              src={process.env.IMAGE_PATH + url ?? "/profile.svg"}
+              src={
+                process.env.IMAGE_PATH + url &&
+                !isPostImageError[listData.postId]
+                  ? process.env.IMAGE_PATH + url
+                  : "/image-default.png"
+              }
               alt="post-image"
               className={styles.image}
-              blurDataURL="/profile.svg"
+              blurDataURL="/image-default.png"
               placeholder="blur"
               loading="lazy"
+              onError={() => handlePostImageError(listData.postId)}
             />
           ))}
         </div>
