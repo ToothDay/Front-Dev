@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={styles.body}>
       <body className={styles.root}>
         <Providers>
           <UserProfileProvider>{children}</UserProfileProvider>

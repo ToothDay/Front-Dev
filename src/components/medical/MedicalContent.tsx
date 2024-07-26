@@ -6,12 +6,13 @@ import TreatmentSwiper from "@/components/common/TreatmentSwiper";
 import UserWelcome from "@/components/medical/UserWelcome";
 import { VisitData } from "../../api/medical";
 import ScrollToTop from "@/components/common/ScrollToTop";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import NoSearchData from "../noData/NoSearchData";
 import { useRouter, useSearchParams } from "next/navigation";
 import Loading from "@/app/loading";
 import { fetchOtherVisitData } from "@/api/medicalRecord";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import useInfiniteScroll from "@/hook/useInfiniteScroll";
 
 type MedicalContentProps = {
   myData: VisitData[];
@@ -20,7 +21,6 @@ type MedicalContentProps = {
 
 const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
   const mainRef = useRef<HTMLDivElement>(null);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [isLoadingTime, setIsLoadingTime] = useState<boolean>(false);
   const searchParams = useSearchParams();
@@ -32,7 +32,9 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
     if (myData.length !== 0) {
       setIsLoadingTime(true);
       router.push(`/my-page/history`);
-      setIsLoadingTime(false);
+      setTimeout(() => {
+        setIsLoadingTime(false);
+      }, 1000);
     }
   };
 
@@ -63,29 +65,11 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
       initialPageParam: 0
     });
 
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (target.isIntersecting && hasNextPage) {
-        fetchNextPage();
-      }
-    },
-    [fetchNextPage, hasNextPage]
-  );
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, {
-      root: null,
-      rootMargin: "20px",
-      threshold: 1.0
-    });
-
-    if (loadMoreRef.current) observer.observe(loadMoreRef.current);
-
-    return () => {
-      if (loadMoreRef.current) observer.unobserve(loadMoreRef.current);
-    };
-  }, [handleObserver]);
+  const loadMoreRef = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isLoading: isFetchingNextPage
+  });
 
   return (
     <>
@@ -129,7 +113,6 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
                   userData={page}
                 />
               ))}
-              {isFetchingNextPage && <Loading useBg={true} />}
               <div ref={loadMoreRef} />
             </div>
             {data?.pages.flatMap((page) => page).length === 0 && !isLoading && (

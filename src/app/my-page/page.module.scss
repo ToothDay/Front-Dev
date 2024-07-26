@@ -39,6 +39,7 @@
 .community {
   margin-top: 37px;
   padding: 0 24px;
+  background-color: $white;
 
   .communityTitle {
     @include font-style($subtitle1);

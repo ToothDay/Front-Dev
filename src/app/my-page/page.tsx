@@ -1,9 +1,12 @@
+"use client";
 import styles from "@/app/my-page/page.module.scss";
 import Tab from "@/components/common/Tab";
 import Service from "@/components/mypage/Service";
 import Link from "next/link";
 import UserProfileCard from "@/components/mypage/UserProfileCard";
 import Modal from "@/components/modal/Modal";
+import { useState } from "react";
+import Loading from "../loading";
 
 type CommunityList = {
   title: string;
@@ -18,56 +21,66 @@ const COMMUNITY_LIST: CommunityList[] = [
 ];
 
 const MyPage = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const handleLoading = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
   return (
-    <main className={styles.main}>
-      <section className={styles.profile}>
-        <div className={styles.tab}>
-          <Tab pageType="myPage" initialActiveTab="MY" />
-        </div>
-        <UserProfileCard />
-        <article className={styles.info}>
-          <Link href="/my-page/history">
-            <div className={styles.infoBox}>
-              <span className={styles.infoTitle}>진료기록</span>
-              <img
-                className={styles.myIcon}
-                src="/record-icon.png"
-                alt="record-icon"
-              />
-            </div>
-          </Link>
-          <Link href="/my-page/tooth">
-            <div className={styles.infoBox}>
-              <span className={styles.infoTitle}>나의 치아</span>
-              <img
-                className={styles.myIcon}
-                src="/tooth-icon.png"
-                alt="my-tooth"
-              />
-            </div>
-          </Link>
-        </article>
-      </section>
-      <section className={styles.community}>
-        <h2 className={styles.communityTitle}>커뮤니티</h2>
-        {COMMUNITY_LIST.map((list: CommunityList) => (
-          <Link href={list.link} key={list.icon}>
-            <article className={styles.communityList}>
-              <p className={[styles.listTitle, styles[list.icon]].join(" ")}>
-                {list.title}
-              </p>
-              <button type="button" className={styles.moreButton}>
-                더보기
-              </button>
-            </article>
-          </Link>
-        ))}
-      </section>
-      <section className={styles.serviceUse}>
-        <Service />
-      </section>
-      <Modal />
-    </main>
+    <>
+      {isLoading && <Loading />}
+      <main className={styles.main}>
+        <section className={styles.profile}>
+          <div className={styles.tab}>
+            <Tab pageType="myPage" initialActiveTab="MY" />
+          </div>
+          <UserProfileCard />
+          <article className={styles.info}>
+            <Link href="/my-page/history">
+              <div className={styles.infoBox} onClick={handleLoading}>
+                <span className={styles.infoTitle}>진료기록</span>
+                <img
+                  className={styles.myIcon}
+                  src="/record-icon.png"
+                  alt="record-icon"
+                />
+              </div>
+            </Link>
+            <Link href="/my-page/tooth">
+              <div className={styles.infoBox} onClick={handleLoading}>
+                <span className={styles.infoTitle}>나의 치아</span>
+                <img
+                  className={styles.myIcon}
+                  src="/tooth-icon.png"
+                  alt="my-tooth"
+                />
+              </div>
+            </Link>
+          </article>
+        </section>
+        <section className={styles.community}>
+          <h2 className={styles.communityTitle}>커뮤니티</h2>
+          {COMMUNITY_LIST.map((list: CommunityList) => (
+            <Link href={list.link} key={list.icon}>
+              <article className={styles.communityList} onClick={handleLoading}>
+                <p className={[styles.listTitle, styles[list.icon]].join(" ")}>
+                  {list.title}
+                </p>
+                <button type="button" className={styles.moreButton}>
+                  더보기
+                </button>
+              </article>
+            </Link>
+          ))}
+        </section>
+        <section className={styles.serviceUse}>
+          <Service />
+        </section>
+        <Modal />
+      </main>
+    </>
   );
 };
 

@@ -134,3 +134,15 @@
 .highlight {
   font-weight: 600;
 }
+
+.loadingItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 10px 20px;
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}

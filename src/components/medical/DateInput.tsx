@@ -19,8 +19,9 @@ const slideInVariants = {
   exit: { opacity: 0, x: -100 }
 };
 
-const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
+const DateInput = ({ isCalendar, setIsCalendar, isModify }: PropsDateInput) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [value, setValue] = useState<Value>(null);
@@ -28,7 +29,7 @@ const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
   const { visitDate } = useModifyData();
 
   const formattedDate = useMemo(() => {
-    if (value instanceof Date)  {
+    if (value instanceof Date) {
       return formatKoreaDate(value);
     }
     return "";
@@ -48,7 +49,9 @@ const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
+        !wrapperRef.current.contains(event.target as Node) &&
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target as Node)
       ) {
         setIsCalendar(false);
       }
@@ -58,10 +61,14 @@ const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [wrapperRef]);
+  }, [wrapperRef, calendarRef]);
 
-  const handleCalenderClick = () => {
-    if (selectedValue !== "") {
+  const handleCalenderClick = (event: React.MouseEvent) => {
+    if (
+      selectedValue !== "" &&
+      calendarRef.current &&
+      !calendarRef.current.contains(event.target as Node)
+    ) {
       setIsCalendar(false);
     }
   };
@@ -78,7 +85,7 @@ const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
     if (visitDate && isModify) {
       setSelectedValue(visitDate);
     }
-  }, [visitDate,isModify]);
+  }, [visitDate, isModify]);
 
   return (
     <motion.div
@@ -111,6 +118,7 @@ const DateInput = ({ isCalendar, setIsCalendar,isModify }: PropsDateInput) => {
           {isCalendar && (
             <motion.div
               className={styles.calendar}
+              ref={calendarRef}
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}

@@ -28,25 +28,36 @@ const CostInput = ({ isModify }: CostInputProps) => {
     treatmentType.forEach((item) => {
       if (item.number > 0) {
         let count = 0;
-        treatmentList.forEach((treatment) => {
-          if (treatment.category === item.name && count < item.number) {
+        if (isModify) {
+          treatmentList.forEach((treatment) => {
+            if (treatment.category === item.name && count < item.number) {
+              newCostList.push({
+                id: newCostList.length,
+                name: item.name,
+                value: String(treatment.amount)
+              });
+              count++;
+            }
+          });
+          for (let i = count; i < item.number; i++) {
             newCostList.push({
               id: newCostList.length,
               name: item.name,
-              value: String(treatment.amount)
+              value: ""
             });
-            count++;
           }
-        });
-        for (let i = count; i < item.number; i++) {
-          newCostList.push({
-            id: newCostList.length,
-            name: item.name,
-            value: ""
-          });
+        } else {
+          for (let i = 0; i < item.number; i++) {
+            newCostList.push({
+              id: newCostList.length,
+              name: item.name,
+              value: ""
+            });
+          }
         }
       }
     });
+
     updateTreatmentCost(newCostList);
   };
 

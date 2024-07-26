@@ -69,8 +69,16 @@ export const fetchVisitData = async (
   );
   return response.data;
 };
-export const fetchVisitMyData = async () => {
-  const response = await axiosClient.get(`/mypage/visit`);
+export const fetchVisitMyData = async (
+  pageParam: number = 0
+): Promise<VisitData[]> => {
+  const limit = 10;
+  const response = await axiosClient.get(`/mypage/visit`, {
+    params: {
+      offset: pageParam,
+      limit: limit
+    }
+  });
   return response.data;
 };
 

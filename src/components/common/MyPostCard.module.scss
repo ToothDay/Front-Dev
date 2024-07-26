@@ -1,0 +1,167 @@
+@import "@/styles/common.scss";
+
+.postWrapper {
+  border-bottom: 1px solid #e0e0e0;
+}
+.post {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.profileIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+}
+
+.postImage {
+  img {
+    width: 70px;
+    height: 70px;
+    border-radius: 15px;
+  }
+}
+.postCard {
+  width: 100%;
+}
+
+.tagList {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  .tag {
+    @include font-style($body2);
+    color: $deepblue;
+  }
+}
+
+.postHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+  .profile {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+.postInfo {
+  display: flex;
+  flex-direction: column;
+  .postTitle {
+    @include font-style($semi-body1);
+    color: $black;
+    @include ellipsis-text(2);
+  }
+  .time {
+    @include font-style($body2);
+    color: $black;
+  }
+}
+
+.postContent {
+  width: 100%;
+  @include font-style($body2);
+  color: $black;
+  @include ellipsis-text(3);
+  margin-bottom: 4px;
+}
+
+.postContentImg {
+  width: 340px !important;
+  height: 135px !important;
+  object-fit: cover;
+}
+.postFooter {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  @include font-style($semi-caption1);
+  margin-bottom: 19px;
+}
+
+.commentNumber {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #fadd79;
+  &::before {
+    @include icon("/comment-icon.svg", 24px, 24px);
+  }
+}
+
+.likeNumber {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #ff85ce;
+  cursor: pointer;
+  &::before {
+    @include icon("/like-icon.svg", 24px, 24px);
+  }
+
+  &.selected {
+    &::before {
+      @include icon("/like-icon-selected.svg", 24px, 24px);
+    }
+  }
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 19px;
+  background-color: #fafbff;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 19px;
+  .commentTitle {
+    @include font-style($semi-caption1);
+    color: $black;
+  }
+  .commentText {
+    @include font-style($body2);
+    color: $black;
+    @include ellipsis-text(2);
+  }
+}
+
+.postSubInfo {
+  display: flex;
+  align-items: center;
+  @include font-style($body2);
+  color: $black;
+}
+
+.nickName {
+  position: relative;
+
+  &::after {
+    content: "|";
+    margin: 0 3px;
+  }
+}
+
+.postWrapper {
+  &.communityType {
+    margin-top: 12px;
+    .post {
+      padding-left: 42px;
+    }
+    .postContentWrapper {
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .postFooter {
+      padding-left: 42px;
+    }
+  }
+}
