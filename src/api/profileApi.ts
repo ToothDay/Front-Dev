@@ -8,3 +8,8 @@ export const putProfile = async (formData: any) => {
   });
   return response.data;
 };
+
+export const getProfile = async () => {
+  const response = await axiosClient.get(`/api/user/profile`);
+  return response.data;
+};

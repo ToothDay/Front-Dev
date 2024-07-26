@@ -4,21 +4,37 @@ import BtnBottom from "@/components/common/BtnBottom";
 import Header from "@/components/common/Header";
 import { useEffect, useRef, useState } from "react";
 import { useUserStore } from "@/stores/user";
-import { useMutation } from "@tanstack/react-query";
-import { putProfile } from "@/api/profileApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getProfile, putProfile } from "@/api/profileApi";
 import SimpleModal from "@/components/modal/SimpleModal";
 import { useModalStore } from "@/stores/modal";
+import Image from "next/image";
+import Modal from "@/components/modal/Modal";
 
 const ProfileEdit = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | string>();
   const { userProfile, setUserProfile } = useUserStore();
   const [nickname, setNickname] = useState(userProfile.username);
+  const [imageUrl, setImageUrl] = useState(
+    `http://3.34.135.181:8000/upload${userProfile.profileImageUrl}`
+  );
+  const [defaultImage, setDefaultImage] = useState(false);
   const { openModal } = useModalStore();
 
   useEffect(() => {
     setNickname(userProfile.username);
-  }, [userProfile.username]);
+  }, [userProfile]);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["getProfile"],
+    queryFn: () => getProfile(),
+    staleTime: 0
+  });
+  useEffect(() => {
+    setImageUrl(`http://3.34.135.181:8000/upload${data?.profileImageUrl}`);
+  }, [data]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setUserProfile({
@@ -28,16 +44,13 @@ const ProfileEdit = () => {
         username: userProfile.username
       });
       setFile(e.target.files[0]);
+      setImageUrl(URL.createObjectURL(e.target.files[0]));
+      setDefaultImage(false);
     }
   };
   const handleDefaultImage = () => {
-    setUserProfile({
-      id: userProfile.id,
-      email: userProfile.email,
-      profileImageUrl: "/profile.svg",
-      username: nickname
-    });
-    setFile("");
+    setImageUrl("");
+    setDefaultImage(true);
   };
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -48,7 +61,8 @@ const ProfileEdit = () => {
     if (nickname.length > 0 && nickname.length <= 10) {
       const formData = new FormData();
       const postForm = {
-        username: nickname
+        username: nickname,
+        defaultY: defaultImage
       };
       formData.append(
         "request",
@@ -70,12 +84,10 @@ const ProfileEdit = () => {
       setUserProfile({
         id: userProfile.id,
         email: userProfile.email,
-        profileImageUrl: userProfile.profileImageUrl,
+        profileImageUrl: imageUrl,
         username: nickname
       });
-      //모달 안뜨는 문제 有 => 뒤로가기 누르면 뜨는현상
-      // openModal(<SimpleModal type="profileY" answer="확인" />);
-      alert("저장완료");
+      openModal(<SimpleModal type="profileY" answer="확인" />);
     },
     onError: (error) => {
       console.log(error);
@@ -90,9 +102,14 @@ const ProfileEdit = () => {
         <article className={styles.user}>
           <div className={styles.title}>프로필 사진</div>
           <div className={styles.imgDiv}>
-            <img
-              src={`${userProfile.profileImageUrl}`}
+            <Image
+              src={imageUrl}
               alt="user-profile"
+              width={83}
+              height={83}
+              onError={(e) => {
+                setImageUrl("/profile.svg");
+              }}
               className={styles.profileImage}
             />
             <div className={styles.imgBtnDiv}>
@@ -145,6 +162,7 @@ const ProfileEdit = () => {
           />
         </div>
       </section>
+      <Modal />
     </main>
   );
 };

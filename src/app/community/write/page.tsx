@@ -100,7 +100,6 @@ const CommunityWritePage = () => {
   };
 
   const handleCancelPost = () => {
-    console.log("test");
     router.push("/community");
   };
   return (
