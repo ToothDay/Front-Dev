@@ -17,7 +17,7 @@ const ProfileEdit = () => {
   const { userProfile, setUserProfile } = useUserStore();
   const [nickname, setNickname] = useState(userProfile.username);
   const [imageUrl, setImageUrl] = useState(
-    `${process.env.IMAGE_PATH}${userProfile.profileImageUrl}`
+    `${process.env.NEXT_PUBLIC_IMAGE_PATH}${userProfile.profileImageUrl}`
   );
   const [defaultImage, setDefaultImage] = useState(false);
   const { openModal } = useModalStore();
@@ -32,7 +32,9 @@ const ProfileEdit = () => {
     staleTime: 0
   });
   useEffect(() => {
-    setImageUrl(`${process.env.IMAGE_PATH}${data?.profileImageUrl}`);
+    setImageUrl(
+      `${process.env.NEXT_PUBLIC_IMAGE_PATH}${data?.profileImageUrl}`
+    );
   }, [data]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

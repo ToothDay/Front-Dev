@@ -43,7 +43,7 @@ const PostHeader = ({ type, data }: PropsPost) => (
           data?.user?.profileImageUrl
             ? data?.user?.profileImageUrl.includes("http")
               ? `${data?.user?.profileImageUrl}`
-              : `${process.env.IMAGE_PATH}/profileImage/${data?.user?.profileImageUrl}`
+              : `${process.env.NEXT_PUBLIC_IMAGE_PATH}/profileImage/${data?.user?.profileImageUrl}`
             : `/profile.svg`
         }
         alt="user-profile"
@@ -70,7 +70,7 @@ const PostContent = ({ type, data }: PropsPost) => (
     {type === "community" && data?.imageUrl && (
       <img
         className={styles.postContentImg}
-        src={`${process.env.IMAGE_PATH}/${data.imageUrl[0]}`}
+        src={`${process.env.NEXT_PUBLIC_IMAGE_PATH}/${data.imageUrl[0]}`}
         alt="post-image"
       />
     )}
