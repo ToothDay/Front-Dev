@@ -64,3 +64,12 @@ export const delComment = async (commentId: number) => {
 export const delPost = async (postId: number) => {
   const response = await axiosClient.delete(`/api/community/${postId}`);
 };
+
+export const updatePost = async ({ formData, postId }: any) => {
+  const response = await axiosClient.put(`/api/community/${postId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+  return response.data;
+};

@@ -19,6 +19,7 @@ import DeleteModal from "@/components/modal/DeleteModal";
 import { useModalStore } from "@/stores/modal";
 import { useUserStore } from "@/stores/user";
 import SimpleModal from "@/components/modal/SimpleModal";
+import Link from "next/link";
 
 type postMainProps = {
   params: {
@@ -122,6 +123,26 @@ const PostMain = (props: postMainProps) => {
             </span>
           </div>
         </div>
+        {data?.writtenByCurrentUser === true ? (
+          <div className={styles.updateBtn}>
+            <Link
+              href={{
+                pathname: "/community/write",
+                query: {
+                  title: data.title,
+                  content: data.content,
+                  imageUrl: JSON.stringify(data.imageUrl),
+                  keywords: JSON.stringify(data.keywords),
+                  postId: data.postId
+                }
+              }}
+            >
+              수정
+            </Link>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className={styles.postContentWrapper}>
         <p className={styles.postContent}>{data?.content}</p>

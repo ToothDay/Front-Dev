@@ -6,7 +6,7 @@ import "swiper/css";
 type PropsImage = {
   listType?: "all";
   imageList?: { id?: number; src: string }[];
-  type: "read" | "write";
+  type: "read" | "write" | "update";
 };
 
 const ImageSwiper = ({ listType, imageList, type }: PropsImage) => {
