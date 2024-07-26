@@ -2,8 +2,7 @@
 import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
 import HistoryCard from "@/components/common/HistoryCard";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { VisitData } from "../../../api/medical";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchVisitMyData } from "@/api/medicalRecord";
 import Loading from "@/app/loading";
 import ScrollToTop from "@/components/common/ScrollToTop";
@@ -17,8 +16,8 @@ const MyHistory = () => {
     queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
       fetchVisitMyData(pageParam),
     getNextPageParam: (lastPage, pages) => {
-      if (lastPage.length === 0) return undefined;
-      return pages.length;
+      if (lastPage.length < 10) return undefined;
+      return pages.length * 10;
     },
     staleTime: 0,
     initialPageParam: 0

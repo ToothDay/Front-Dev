@@ -2,10 +2,9 @@
 import { VisitData } from "@/api/medical";
 import Loading from "@/app/loading";
 import styles from "@/components/common/HistoryCard.module.scss";
-import { is } from "date-fns/locale";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type PropsCard = {
   cardType: "myHistory" | "otherHistory";
@@ -24,18 +23,6 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
       setIsImageError((prev) => ({ ...prev, [visitId]: true }));
     }
   };
-
-  useEffect(() => {
-    const initialLoadingState = userData.reduce(
-      (acc, data) => {
-        acc[data.visitId] = true;
-        return acc;
-      },
-      {} as { [key: number]: boolean }
-    );
-
-    setIsImageError({});
-  }, [userData]);
 
   const handleViewAll = (visitId: string) => {
     setIsLoading(true);
