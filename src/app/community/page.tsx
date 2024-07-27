@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import { UserProfile } from "@/api/authService";
 import { useRouter } from "next/navigation";
 import { NoticeData, fetchNoticeData } from "@/api/myPage";
+import NoSearchData from "@/components/noData/NoSearchData";
 
 type PostDataType = {
   postId: number;
@@ -148,6 +149,9 @@ const Community = () => {
         ))
       )}
       <div ref={loadMoreRef} className={styles.scrollDiv} />
+      {data?.pages.flatMap((page) => page.posts).length === 0 && (
+        <NoSearchData searchType="post" />
+      )}
 
       {/* 검색종류 따라  */}
       {/* <NoSearchData searchType="post" /> */}
