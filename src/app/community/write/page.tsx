@@ -4,38 +4,62 @@ import styles from "./page.module.scss";
 import Header from "@/components/common/Header";
 import ImageSwiper from "@/components/common/ImageSwiper";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash";
 import { useModalStore } from "@/stores/modal";
 import Modal from "@/components/modal/Modal";
 import DeleteModal from "@/components/modal/DeleteModal";
 import SimpleModal from "@/components/modal/SimpleModal";
 import { useMutation } from "@tanstack/react-query";
-import { PostCommunity } from "@/api/communityApi";
-import { useRouter } from "next/navigation";
+import { PostCommunity, updatePost } from "@/api/communityApi";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const CommunityWritePage = () => {
   const [title, setTitle] = useState("");
   const [mainText, setMainText] = useState("");
   const [selected, setSelected] = useState<number[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [mode, setMode] = useState<"write" | "update" | "read">("write");
   const [imageList, setImageList] = useState<
     { id: number; src: string; file: File }[]
   >([]);
   const { openModal } = useModalStore();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const title = searchParams.get("title");
+    const content = searchParams.get("content");
+    const imageUrl = searchParams.get("imageUrl");
+    const keywords = searchParams.get("keywords");
+    if (searchParams.size > 0) {
+      setMode("update");
+    }
+    if (title) setTitle(title);
+    if (content) setMainText(content);
+    if (imageUrl) {
+      setImageList(
+        JSON.parse(imageUrl).map((src: string, index: number) => ({
+          id: index,
+          src,
+          file: null
+        }))
+      );
+    }
+    if (keywords) setSelected(JSON.parse(keywords));
+  }, [searchParams]);
+  //const debouncedSetTitle = debounce((value: string) => setTitle(value), 300);
 
-  const debouncedSetTitle = debounce((value: string) => setTitle(value), 300);
-
-  const debouncedSetMainText = debounce(
-    (value: string) => setMainText(value),
-    300
-  );
+  // const debouncedSetMainText = debounce(
+  //   (value: string) => setMainText(value),
+  //   300
+  // );
   const handleTitleChange = (e: { target: { value: string } }) => {
-    debouncedSetTitle(e.target.value);
+    setTitle(e.target.value);
+    //debouncedSetTitle(e.target.value);
   };
   const handleMainTextChange = (e: { target: { value: string } }) => {
-    debouncedSetMainText(e.target.value);
+    setMainText(e.target.value);
+    //debouncedSetMainText(e.target.value);
   };
   const handleKeywordClick = (id: number) => {
     setSelected((prevSelected) =>
@@ -74,25 +98,55 @@ const CommunityWritePage = () => {
       );
     }
   });
+  const mutationUpdate = useMutation({
+    mutationFn: updatePost,
+    onSuccess: (res) => {
+      openModal(
+        <SimpleModal type={"writeY"} answer={"보러가기"} to={res.postId} />
+      );
+    },
+    onError: (error) => {
+      console.error(error);
+      openModal(
+        <DeleteModal
+          deleteType={"update"}
+          commentY={"다시 시도하기"}
+          commentN={"뒤로가기"}
+        />
+      );
+    }
+  });
   const handleSubmit = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (title.length > 0 && mainText.length > 0) {
       const formData = new FormData();
+      console.log(selected);
       const postForm = {
         title,
         content: mainText,
         keywords: selected
       };
+      console.log(JSON.stringify(postForm));
       formData.append(
         "postForm",
         new Blob([JSON.stringify(postForm)], { type: "application/json" })
       );
       imageList.forEach((image) => {
-        formData.append("files", image.file);
+        if (image.file) {
+          formData.append("files", image.file);
+        }
       });
 
       try {
-        mutation.mutate(formData);
+        if (mode === "write") {
+          mutation.mutate(formData);
+        } else if (mode === "update") {
+          console.log(formData, searchParams.get("postId"));
+          mutationUpdate.mutate({
+            formData,
+            postId: searchParams.get("postId")
+          });
+        }
       } catch (error) {
         console.error("FormData error:", error);
       }
@@ -100,13 +154,13 @@ const CommunityWritePage = () => {
   };
 
   const handleCancelPost = () => {
-    router.push("/community");
+    router.replace("/community");
   };
   return (
     <main className={styles.main}>
       <div className={styles.header}>
         <Header
-          title="게시글 작성하기"
+          title={mode == "update" ? "게시글 수정하기" : "게시글 작성하기"}
           openModal={() =>
             openModal(
               <DeleteModal
@@ -126,6 +180,7 @@ const CommunityWritePage = () => {
             maxLength={70}
             placeholder={"최대 70자 이내로 제목을 적어주세요."}
             onChange={handleTitleChange}
+            value={title}
           />
         </article>
         <article className={styles.textDiv}>
@@ -136,8 +191,9 @@ const CommunityWritePage = () => {
               "치아, 치과, 구강 건강 등 다양한 내용을 자유롭게 작성해주세요."
             }
             onChange={handleMainTextChange}
+            value={mainText}
           ></textarea>
-          <ImageSwiper listType="all" imageList={imageList} type="write" />
+          <ImageSwiper listType="all" imageList={imageList} type={mode} />
           <div
             className={styles.imageDiv}
             onClick={() => fileInputRef?.current?.click()}
@@ -186,7 +242,7 @@ const CommunityWritePage = () => {
         >
           <BtnBottom
             btnType={title.length > 0 && mainText.length > 0 ? true : false}
-            title="작성 완료"
+            title={mode == "update" ? "수정 완료" : "작성 완료"}
           />
         </div>
       </section>

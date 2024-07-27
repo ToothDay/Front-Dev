@@ -5,9 +5,13 @@ import Tab from "@/components/common/Tab";
 import PostCard from "@/components/common/PostCard";
 import Link from "next/link";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getLoginedKeywordCommunityList } from "@/api/communityApi";
+import {
+  getKeywordCommunityList,
+  getLoginedKeywordCommunityList
+} from "@/api/communityApi";
 import Loading from "../loading";
 import { useEffect, useRef, useState } from "react";
+import { UserProfile } from "@/api/authService";
 
 type PostDataType = {
   postId: number;
@@ -32,11 +36,14 @@ type PostDataType = {
 const Community = () => {
   const hasNotice = false; //임시데이터값
   const [selectedKeyword, setSelectedKeyword] = useState(1);
+  // const {UserProfile}
   const { data, fetchNextPage, hasNextPage, isLoading, error, refetch } =
     useInfiniteQuery({
       queryKey: ["getCommunity", selectedKeyword],
-      queryFn: ({ pageParam = 0 }) =>
-        getLoginedKeywordCommunityList({ pageParam }, selectedKeyword),
+      queryFn: ({ pageParam = 0 }) => {
+        return getLoginedKeywordCommunityList({ pageParam }, selectedKeyword);
+        // getKeywordCommunityList({ pageParam }, selectedKeyword)
+      },
       getNextPageParam: (lastPage) => lastPage.nextOffset ?? false,
       initialPageParam: 0,
       staleTime: 0
@@ -79,6 +86,7 @@ const Community = () => {
           알림
         </button>
       </div>
+      {/* 추후 검색 기능 구현
       <div className={styles.searchWrapper}>
         <img
           src="/search-icon.svg"
@@ -90,11 +98,13 @@ const Community = () => {
           className={styles.search}
           placeholder="검색어를 입력해 주세요."
         />
-        {/* 삭제버튼 기능 추후 구현 */}
+        {/* 삭제버튼 기능 추후 구현 * /}
         <button type="button" className={styles.deleteButton}>
           삭제
         </button>
       </div>
+    */}
+
       <div className={styles.treatmentWrapper}>
         <TreatmentSwiper listType="all" showSelected={handleKeyowrd} />
       </div>

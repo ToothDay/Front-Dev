@@ -11,5 +11,8 @@ export const formatIsoDate = (date: Date): string => {
 
 export const formatYYYYMMDDTIME = (date: Date): string => {
   if (!date) return "null";
-  return format(date, "yyyy.MM.dd HH:mm", { locale: ko });
+  const utcDate = new Date(date).getTime();
+  const timeZoneOffset = 9 * 60 * 60 * 1000; // Korea is UTC+9
+  const seoulDate = new Date(utcDate + timeZoneOffset);
+  return format(seoulDate, "yyyy.MM.dd HH:mm", { locale: ko });
 };

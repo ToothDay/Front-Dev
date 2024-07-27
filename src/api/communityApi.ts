@@ -25,6 +25,20 @@ export const getLoginedKeywordCommunityList = async (
   return { posts: response.data, nextOffset: pageParam + limit };
 };
 
+export const getKeywordCommunityList = async (
+  { pageParam = 0 },
+  keyword: number
+) => {
+  const limit = 10;
+  const response = await axiosClient.get(`community/search/${keyword}`, {
+    params: {
+      offset: pageParam,
+      limit: limit
+    }
+  });
+  return { posts: response.data, nextOffset: pageParam + limit };
+};
+
 export const PostCommunity = async (formData: any) => {
   const response = await axiosClient.post(`/community/upload`, formData, {
     headers: {
@@ -64,4 +78,13 @@ export const delComment = async (commentId: number) => {
 
 export const delPost = async (postId: number) => {
   const response = await axiosClient.delete(`/api/community/${postId}`);
+};
+
+export const updatePost = async ({ formData, postId }: any) => {
+  const response = await axiosClient.put(`/api/community/${postId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+  return response.data;
 };

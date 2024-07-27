@@ -2,14 +2,17 @@
 import styles from "@/components/common/imageSwiper.module.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import Image from "next/image";
+import { useState } from "react";
 
 type PropsImage = {
   listType?: "all";
   imageList?: { id?: number; src: string }[];
-  type: "read" | "write";
+  type: "read" | "write" | "update";
 };
 
 const ImageSwiper = ({ listType, imageList, type }: PropsImage) => {
+  const [imageUrl, setImageUrl] = useState("");
   return (
     <Swiper
       slidesPerView={"auto"}
@@ -29,6 +32,10 @@ const ImageSwiper = ({ listType, imageList, type }: PropsImage) => {
                 ? image.src
                 : `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${image.src}`
             }
+            onError={(e) => {
+              e.currentTarget.src = "/default-postin.png";
+              console.error("Image fetch error:", e);
+            }}
           />
         </SwiperSlide>
       ))}

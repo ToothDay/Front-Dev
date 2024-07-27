@@ -70,7 +70,10 @@ const DeleteModal = ({
       <button
         type="button"
         className={styles.deleteButton}
-        onClick={handleConfirm}
+        onClick={() => {
+          handleConfirm();
+          closeModal();
+        }}
       >
         {commentY ? commentY : "네 삭제할게요"}
       </button>

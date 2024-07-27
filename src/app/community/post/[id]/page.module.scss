@@ -20,11 +20,19 @@
     width: 44px;
     height: 44px;
   }
+  &.myPost {
+    justify-content: space-between;
+  }
+}
+
+.headerDiv {
+  display: flex;
 }
 
 .postInfo {
   display: flex;
   flex-direction: column;
+  margin-left: 16px;
   .postTitle {
     @include font-style($semi-body1);
     color: $black;
@@ -168,6 +176,7 @@
   width: 34px;
   height: 34px;
   margin-right: 8px;
+  border-radius: 60px;
 }
 
 .comments {
@@ -212,7 +221,11 @@
 
 .commentBtn {
   margin: 3px 0px 0px 42px;
-  @include font-style($caption1);
+  color: #9b9b9b;
+  // @include font-style($caption1);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 19px;
 }
 
 .noneComment {
@@ -230,4 +243,20 @@
     margin-top: 5px;
     @include font-style($caption1);
   }
+}
+
+.updateBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 58px;
+  height: 36px;
+  margin-left: 10px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  @include font-style($body2);
+}
+
+.nextImage {
+  border-radius: 60px;
 }
