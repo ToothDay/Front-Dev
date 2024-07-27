@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { TREATMENT_LIST } from "@/constants/treatmentConstants";
+import { useRouter } from "next/navigation";
 
 type PropsPost = {
   type: "post" | "comment" | "like";
@@ -26,6 +27,7 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
   const [isPostImageError, setIsPostImageError] = useState<{
     [key: number]: boolean;
   }>({});
+  const router = useRouter();
 
   useEffect(() => {
     if (listData.keywords.length > 0) {
@@ -59,8 +61,15 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
     }
   };
 
+  const handlePost = (postId: number) => {
+    router.push(`/community/post/${postId}`);
+  };
+
   return (
-    <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
+    <div
+      className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}
+      onClick={() => handlePost(listData.postId)}
+    >
       <div className={styles.postCard}>
         <div className={styles.tagList}>
           {tagList.map((tag, index) => (
