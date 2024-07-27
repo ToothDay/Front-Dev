@@ -71,7 +71,7 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
                   <Image
                     src={
                       data.profileImageUrl && !isImageError[data.visitId]
-                        ? data.profileImageUrl
+                        ? `${process.env.IMAGE_PATH}${data.profileImageUrl}`
                         : "/profile.svg"
                     }
                     alt="tooth"

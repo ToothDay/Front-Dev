@@ -74,7 +74,7 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
             <Image
               src={
                 listData.user?.profileImageUrl && !isImageError[listData.postId]
-                  ? listData.user?.profileImageUrl
+                  ? `${process.env.IMAGE_PATH}${listData.user?.profileImageUrl}`
                   : "/profile.svg"
               }
               alt="tooth"
