@@ -13,6 +13,7 @@
   @include font-style($headline);
   color: $black;
   margin-bottom: 9px;
+  text-align: center;
 
   &::before {
     content: "";

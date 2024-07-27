@@ -1,12 +1,12 @@
 import styles from "@/components/common/NoData.module.scss";
 
 type PropsNoData = {
-  type: "post" | "like" | "comment";
+  type: "post" | "like" | "comment" | "recode";
 };
 
 type NoDataType = {
   [key in PropsNoData["type"]]: {
-    title: string;
+    title: string | JSX.Element;
     content: string | JSX.Element;
   };
 };
@@ -35,6 +35,20 @@ const NO_DATA: NoDataType = {
     content: (
       <>
         커뮤니티 게시된 글에 댓글을 달면 <br />
+        여기에 저장됩니다.
+      </>
+    )
+  },
+  recode: {
+    title: (
+      <>
+        아직 작성한 <br />
+        진료기록이 없습니다.
+      </>
+    ),
+    content: (
+      <>
+        진료기록을 작성하시면 <br />
         여기에 저장됩니다.
       </>
     )

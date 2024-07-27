@@ -8,6 +8,7 @@ import Loading from "@/app/loading";
 import ScrollToTop from "@/components/common/ScrollToTop";
 import { useRef } from "react";
 import useInfiniteScroll from "@/hook/useInfiniteScroll";
+import NoData from "@/components/common/NoData";
 
 const MyHistory = () => {
   const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery({
@@ -40,6 +41,9 @@ const MyHistory = () => {
             <HistoryCard cardType="myHistory" userData={page} />
           ))}
           <div ref={loadMoreRef} />
+          {!isLoading && data?.pages.flatMap((page) => page).length === 0 && (
+            <NoData type="recode" />
+          )}
         </div>
       </main>
       <ScrollToTop mainRef={mainRef} />
