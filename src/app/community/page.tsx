@@ -39,6 +39,7 @@ type PostDataType = {
 const Community = () => {
   const router = useRouter();
   const [selectedKeyword, setSelectedKeyword] = useState(1);
+  const [isPagingLoading, setIsPagingLoading] = useState(false);
 
   const { data, fetchNextPage, hasNextPage, isLoading, error, refetch } =
     useInfiniteQuery({
@@ -77,12 +78,24 @@ const Community = () => {
     };
   }, [fetchNextPage, hasNextPage]);
 
-  const handleKeyowrd = (keyword: number) => {
+  const handleKeyword = (keyword: number) => {
     setSelectedKeyword(keyword);
   };
 
   const handleAlarm = () => {
+    setIsPagingLoading(true);
     router.push("/community/notice");
+    setTimeout(() => {
+      setIsPagingLoading(false);
+    }, 5000);
+  };
+
+  const handleLoading = (id: number) => {
+    setIsPagingLoading(true);
+    router.push(`/community/post/${id}`);
+    setTimeout(() => {
+      setIsPagingLoading(false);
+    }, 3000);
   };
 
   const [hasNotice, setHasNotice] = useState(false);
@@ -110,19 +123,21 @@ const Community = () => {
   }, [noticeData]);
 
   return (
-    <main className={styles.main}>
-      {isLoading && <Loading useBg={false} />}
-      <div className={styles.tab}>
-        <Tab pageType="page" initialActiveTab="커뮤니티" />
-        <button
-          type="button"
-          className={hasNotice ? styles.newNotice : styles.notice}
-          onClick={handleAlarm}
-        >
-          알림
-        </button>
-      </div>
-      {/* 추후 검색 기능 구현
+    <>
+      {isPagingLoading && <Loading />}
+      <main className={styles.main}>
+        {isLoading && <Loading />}
+        <div className={styles.tab}>
+          <Tab pageType="page" initialActiveTab="커뮤니티" />
+          <button
+            type="button"
+            className={hasNotice ? styles.newNotice : styles.notice}
+            onClick={handleAlarm}
+          >
+            알림
+          </button>
+        </div>
+        {/* 추후 검색 기능 구현
       <div className={styles.searchWrapper}>
         <img
           src="/search-icon.svg"
@@ -141,31 +156,37 @@ const Community = () => {
       </div>
     */}
 
-      <div className={styles.treatmentWrapper}>
-        <TreatmentSwiper listType="all" showSelected={handleKeyowrd} />
-      </div>
-      {/* 데이터 맵핑 예정 */}
-      {data?.pages.map((page) =>
-        page.posts.map((v: PostDataType) => (
-          <Link key={v.postId} href={`/community/post/${v.postId}`}>
-            <PostCard type="community" data={v} refetch={refetch} />
-          </Link>
-        ))
-      )}
-      <div ref={loadMoreRef} className={styles.scrollDiv} />
-      {data?.pages.flatMap((page) => page.posts).length === 0 && (
-        <NoSearchData searchType="post" />
-      )}
-
-      {/* 검색종류 따라  */}
-      {/* <NoSearchData searchType="post" /> */}
-      {/* <NoSearchData searchType="word" /> */}
-      <Link href={"/community/write"}>
-        <div className={styles.writeBtnDiv}>
-          <button className={styles.writeBtn} />
+        <div className={styles.treatmentWrapper}>
+          <TreatmentSwiper listType="all" showSelected={handleKeyword} />
         </div>
-      </Link>
-    </main>
+        {/* 데이터 맵핑 예정 */}
+        {data?.pages.map((page) =>
+          page.posts.map((v: PostDataType) => (
+            <div
+              onClick={() => {
+                handleLoading(v.postId);
+              }}
+              key={v.postId}
+            >
+              <PostCard type="community" data={v} refetch={refetch} />
+            </div>
+          ))
+        )}
+        <div ref={loadMoreRef} className={styles.scrollDiv} />
+        {data?.pages.flatMap((page) => page.posts).length === 0 && (
+          <NoSearchData searchType="post" />
+        )}
+
+        {/* 검색종류 따라  */}
+        {/* <NoSearchData searchType="post" /> */}
+        {/* <NoSearchData searchType="word" /> */}
+        <Link href={"/community/write"}>
+          <div className={styles.writeBtnDiv}>
+            <button className={styles.writeBtn} />
+          </div>
+        </Link>
+      </main>
+    </>
   );
 };
 
