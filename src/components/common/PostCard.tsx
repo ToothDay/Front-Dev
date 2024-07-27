@@ -93,7 +93,11 @@ const PostContent = ({ type, data }: PropsPost) => {
             height={135}
             loading="lazy"
             layout="fixed"
-            objectFit="cover"
+            style={{
+              borderRadius: "10px",
+              objectFit: "cover",
+              objectPosition: "center"
+            }}
             onError={(e) => {
               setImageUrl("/default-post.png");
               console.error(e + "image fetch error");
