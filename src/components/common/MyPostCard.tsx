@@ -151,6 +151,7 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
             ].join(" ")}
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               likeMutation.mutate(listData.postId);
             }}
           >
