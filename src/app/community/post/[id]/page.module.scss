@@ -13,7 +13,6 @@
 
 .postHeader {
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
   margin-bottom: 16px;
@@ -21,11 +20,19 @@
     width: 44px;
     height: 44px;
   }
+  &.myPost {
+    justify-content: space-between;
+  }
+}
+
+.headerDiv {
+  display: flex;
 }
 
 .postInfo {
   display: flex;
   flex-direction: column;
+  margin-left: 16px;
   .postTitle {
     @include font-style($semi-body1);
     color: $black;
@@ -169,6 +176,7 @@
   width: 34px;
   height: 34px;
   margin-right: 8px;
+  border-radius: 60px;
 }
 
 .comments {
@@ -247,4 +255,8 @@
   border-radius: 8px;
   border: 1px solid #d9d9d9;
   @include font-style($body2);
+}
+
+.nextImage {
+  border-radius: 60px;
 }

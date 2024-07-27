@@ -47,9 +47,6 @@ const CommunityWritePage = () => {
     }
     if (keywords) setSelected(JSON.parse(keywords));
   }, [searchParams]);
-  useEffect(() => {
-    console.log(title);
-  }, [title]);
   //const debouncedSetTitle = debounce((value: string) => setTitle(value), 300);
 
   // const debouncedSetMainText = debounce(
@@ -128,12 +125,15 @@ const CommunityWritePage = () => {
         content: mainText,
         keywords: selected
       };
+      console.log(postForm);
       formData.append(
         "postForm",
         new Blob([JSON.stringify(postForm)], { type: "application/json" })
       );
       imageList.forEach((image) => {
-        formData.append("files", image.file);
+        if (image.file) {
+          formData.append("files", image.file);
+        }
       });
 
       try {

@@ -2,6 +2,8 @@ import { postLike } from "@/api/communityApi";
 import styles from "@/components/common/PostCard.module.scss";
 import { formatYYYYMMDDTIME } from "@/util/formatDate";
 import { useMutation } from "@tanstack/react-query";
+import Image from "next/image";
+import { useState } from "react";
 
 type PropsPost = {
   type: "post" | "comment" | "like" | "community";
@@ -35,47 +37,73 @@ const TagList = () => (
   </div>
 );
 
-const PostHeader = ({ type, data }: PropsPost) => (
-  <div className={styles.postHeader}>
-    {type !== "post" && (
-      <img
-        src={
-          data?.user?.profileImageUrl
-            ? data?.user?.profileImageUrl.includes("http")
-              ? `${data?.user?.profileImageUrl}`
-              : `http://3.34.135.181:8000/upload/profileImage/${data?.user?.profileImageUrl}`
-            : `/profile.svg`
-        }
-        alt="user-profile"
-        className={styles.profile}
-      />
-    )}
-    <div className={styles.postInfo}>
-      <p className={styles.postTitle}>{data?.title}</p>
-      <div className={styles.postSubInfo}>
-        {type !== "post" && (
-          <span className={styles.nickName}>{data?.user?.username}</span>
-        )}
-        <span className={styles.time}>
-          {data?.createDate && formatYYYYMMDDTIME(data?.createDate)}
-        </span>
+const PostHeader = ({ type, data }: PropsPost) => {
+  const [imageUrl, setImageUrl] = useState(
+    data?.user?.profileImageUrl
+      ? data?.user?.profileImageUrl.includes("http")
+        ? `${data?.user?.profileImageUrl}`
+        : `http://3.34.135.181:8000/upload${data?.user?.profileImageUrl}`
+      : `/profile.svg`
+  );
+  return (
+    <div className={styles.postHeader}>
+      {type !== "post" && (
+        <Image
+          src={imageUrl}
+          alt="user-profile"
+          className={styles.nextImage}
+          width={34}
+          height={34}
+          onError={(e) => {
+            setImageUrl("/profile.svg");
+            console.error(e + "image fetch error");
+          }}
+        />
+      )}
+      <div className={styles.postInfo}>
+        <p className={styles.postTitle}>{data?.title}</p>
+        <div className={styles.postSubInfo}>
+          {type !== "post" && (
+            <span className={styles.nickName}>{data?.user?.username}</span>
+          )}
+          <span className={styles.time}>
+            {data?.createDate && formatYYYYMMDDTIME(data?.createDate)}
+          </span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-const PostContent = ({ type, data }: PropsPost) => (
-  <div className={styles.postContentWrapper}>
-    <p className={styles.postContent}>{data?.content}</p>
-    {type === "community" && data?.imageUrl && (
-      <img
-        className={styles.postContentImg}
-        src={`http://3.34.135.181:8000/upload/${data.imageUrl[0]}`}
-        alt="post-image"
-      />
-    )}
-  </div>
-);
+const PostContent = ({ type, data }: PropsPost) => {
+  const [imageUrl, setImageUrl] = useState(
+    data?.imageUrl[0]
+      ? `http://3.34.135.181:8000/upload/${data?.imageUrl[0]}`
+      : `/default-post.png`
+  );
+  return (
+    <div className={styles.postContentWrapper}>
+      <p className={styles.postContent}>{data?.content}</p>
+      {type === "community" && data?.imageUrl && data.imageUrl.length > 0 && (
+        <div className={styles.postContentImg}>
+          <Image
+            src={imageUrl}
+            alt="post-profile"
+            width={340}
+            height={135}
+            loading="lazy"
+            layout="fixed"
+            objectFit="cover"
+            onError={(e) => {
+              setImageUrl("/default-post.png");
+              console.error(e + "image fetch error");
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Comment = () => (
   <div className={styles.comment}>

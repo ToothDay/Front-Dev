@@ -20,6 +20,7 @@ import { useModalStore } from "@/stores/modal";
 import { useUserStore } from "@/stores/user";
 import SimpleModal from "@/components/modal/SimpleModal";
 import Link from "next/link";
+import Image from "next/image";
 
 type postMainProps = {
   params: {
@@ -44,12 +45,33 @@ const PostMain = (props: postMainProps) => {
     staleTime: 0
   });
   const { openModal } = useModalStore();
+  const [imageUrl, setImageUrl] = useState(
+    data?.user?.profileImageUrl
+      ? data?.user?.profileImageUrl.includes("http")
+        ? `${data?.user?.profileImageUrl}`
+        : `http://3.34.135.181:8000/upload${data?.user?.profileImageUrl}`
+      : `/profile.svg`
+  );
+  const [myImageUrl, setMyImageUrl] = useState(
+    userProfile?.profileImageUrl
+      ? userProfile?.profileImageUrl.includes("http")
+        ? `${userProfile?.profileImageUrl}`
+        : `http://3.34.135.181:8000/upload${userProfile?.profileImageUrl}`
+      : `/profile.svg`
+  );
 
   useEffect(() => {
     if (data) {
       const newImageList = data.imageUrl.map((url: string) => ({ src: url }));
       setImageList(newImageList);
     }
+    setImageUrl(
+      data?.user?.profileImageUrl
+        ? data?.user?.profileImageUrl.includes("http")
+          ? `${data?.user?.profileImageUrl}`
+          : `http://3.34.135.181:8000/upload${data?.user?.profileImageUrl}`
+        : `/profile.svg`
+    );
   }, [data]);
 
   const mutation = useMutation({
@@ -112,15 +134,32 @@ const PostMain = (props: postMainProps) => {
       <div className={styles.header}>
         <Header />
       </div>
-      <div className={styles.postHeader}>
-        <img src="/profile.svg" alt="user-profile" className={styles.profile} />
-        <div className={styles.postInfo}>
-          <p className={styles.postTitle}>{data?.title}</p>
-          <div className={styles.postSubInfo}>
-            <span className={styles.nickName}>{data?.user?.username}</span>
-            <span className={styles.time}>
-              {formatYYYYMMDDTIME(data?.createDate)}
-            </span>
+      <div
+        className={[
+          styles.postHeader,
+          data?.writtenByCurrentUser === true ? styles.myPost : ""
+        ].join(" ")}
+      >
+        <div className={styles.headerDiv}>
+          <Image
+            src={imageUrl}
+            alt="user-profile"
+            width={34}
+            height={34}
+            className={styles.nextImage}
+            onError={(e) => {
+              setImageUrl("/profile.svg");
+              console.error(e + "image fetch error");
+            }}
+          />
+          <div className={styles.postInfo}>
+            <p className={styles.postTitle}>{data?.title}</p>
+            <div className={styles.postSubInfo}>
+              <span className={styles.nickName}>{data?.user?.username}</span>
+              <span className={styles.time}>
+                {formatYYYYMMDDTIME(data?.createDate)}
+              </span>
+            </div>
           </div>
         </div>
         {data?.writtenByCurrentUser === true ? (
@@ -141,7 +180,7 @@ const PostMain = (props: postMainProps) => {
             </Link>
           </div>
         ) : (
-          ""
+          <div></div>
         )}
       </div>
       <div className={styles.postContentWrapper}>
@@ -185,10 +224,21 @@ const PostMain = (props: postMainProps) => {
       <div className={styles.commentMain}>
         <div className={styles.commentTitle}>답글</div>
         <div className={styles.commentDiv}>
-          <img
+          {/* <img
             src="/profile.svg"
             alt="user-profile"
             className={styles.profile}
+          /> */}
+          <Image
+            src={myImageUrl}
+            alt="user-profile"
+            width={34}
+            height={34}
+            className={styles.nextImage}
+            onError={(e) => {
+              setMyImageUrl("/profile.svg");
+              console.error(e + "image fetch error");
+            }}
           />
           <input
             className={styles.commentinput}
@@ -204,9 +254,19 @@ const PostMain = (props: postMainProps) => {
               <div className={styles.comment} key={commentInfo?.id}>
                 <div className={styles.commentHeader}>
                   <img
-                    src="/profile.svg"
+                    src={
+                      data?.user?.profileImageUrl
+                        ? data?.user?.profileImageUrl.includes("http")
+                          ? `${data?.user?.profileImageUrl}`
+                          : `http://3.34.135.181:8000/upload${data?.user?.profileImageUrl}`
+                        : `/profile.svg`
+                    }
                     alt="user-profile"
                     className={styles.commentProfile}
+                    onError={(e) => {
+                      e.currentTarget.src = "/profile.svg";
+                      console.error("Image fetch error:", e);
+                    }}
                   />
                   <div className={styles.commentHeaderMain}>
                     <div>

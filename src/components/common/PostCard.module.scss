@@ -65,8 +65,8 @@
 }
 
 .postContentImg {
-  width: 340px !important;
-  height: 135px !important;
+  width: 340px;
+  height: 135px;
   object-fit: cover;
 }
 .postFooter {
@@ -155,4 +155,8 @@
       padding-left: 42px;
     }
   }
+}
+
+.nextImage {
+  border-radius: 60px;
 }
