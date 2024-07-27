@@ -68,6 +68,12 @@ const Notice = () => {
             </li>
           ))}
         </ul>
+        {noticeData.length === 0 && (
+          <div className={styles.noNotice}>
+            <img src="/alarm.png" alt="no-notice" />
+            <p className={styles.noticeTitle}>알림이 없습니다.</p>
+          </div>
+        )}
       </main>
       {isError && <Error errorType="error" />}
     </>

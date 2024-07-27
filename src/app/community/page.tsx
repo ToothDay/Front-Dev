@@ -12,6 +12,7 @@ import {
 import Loading from "../loading";
 import { useEffect, useRef, useState } from "react";
 import { UserProfile } from "@/api/authService";
+import { useRouter } from "next/navigation";
 
 type PostDataType = {
   postId: number;
@@ -34,6 +35,7 @@ type PostDataType = {
 };
 
 const Community = () => {
+  const router = useRouter();
   const hasNotice = false; //임시데이터값
   const [selectedKeyword, setSelectedKeyword] = useState(1);
   // const {UserProfile}
@@ -74,6 +76,10 @@ const Community = () => {
     setSelectedKeyword(keyword);
   };
 
+  const handleAlarm = () => {
+    router.push("/community/notice");
+  };
+
   return (
     <main className={styles.main}>
       {isLoading && <Loading useBg={false} />}
@@ -82,6 +88,7 @@ const Community = () => {
         <button
           type="button"
           className={hasNotice ? styles.newNotice : styles.notice}
+          onClick={handleAlarm}
         >
           알림
         </button>
