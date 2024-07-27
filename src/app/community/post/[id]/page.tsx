@@ -113,6 +113,9 @@ const PostMain = (props: postMainProps) => {
   };
   const handleEnterComment = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.repeat) {
+      if (e.nativeEvent.isComposing) {
+        return;
+      }
       mutationComment.mutate(data?.postId);
     }
   };
