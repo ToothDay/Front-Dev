@@ -58,7 +58,6 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
       setIsPostImageError((prev) => ({ ...prev, [postId]: true }));
     }
   };
-
   return (
     <div className={[styles.postWrapper, styles[`${type}Type`]].join(" ")}>
       <div className={styles.postCard}>
@@ -74,7 +73,10 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
             <Image
               src={
                 listData.user?.profileImageUrl && !isImageError[listData.postId]
-                  ? `${process.env.IMAGE_PATH}${listData.user?.profileImageUrl}`
+                  ? listData.user?.profileImageUrl.startsWith("http://") ||
+                    listData.user?.profileImageUrl.startsWith("https://")
+                    ? `${listData.user?.profileImageUrl}`
+                    : `${process.env.IMAGE_PATH}${listData.user?.profileImageUrl}`
                   : "/profile.svg"
               }
               alt="tooth"
