@@ -91,7 +91,7 @@ const CommunityWritePage = () => {
       console.log(error);
       openModal(
         <DeleteModal
-          deleteType={"write"}
+          deleteType={"writeFail"}
           commentY={"다시 시도하기"}
           commentN={"뒤로가기"}
         />

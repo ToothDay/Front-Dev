@@ -15,10 +15,10 @@ const ProfileEdit = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | string>();
   const { userProfile, setUserProfile } = useUserStore();
+  const { profileImageUrl } = userProfile;
   const [nickname, setNickname] = useState(userProfile.username);
-  const [imageUrl, setImageUrl] = useState(
-    `${process.env.NEXT_PUBLIC_IMAGE_PATH}${userProfile.profileImageUrl}`
-  );
+  const defaultProfile = "/profile.svg";
+  const [imageUrl, setImageUrl] = useState<string>(defaultProfile);
   const [defaultImage, setDefaultImage] = useState(false);
   const { openModal } = useModalStore();
 
@@ -26,32 +26,30 @@ const ProfileEdit = () => {
     setNickname(userProfile.username);
   }, [userProfile]);
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["getProfile"],
-    queryFn: () => getProfile(),
-    staleTime: 0
-  });
   useEffect(() => {
-    setImageUrl(
-      `${process.env.NEXT_PUBLIC_IMAGE_PATH}${data?.profileImageUrl}`
-    );
-  }, [data]);
+    if (!profileImageUrl) {
+      setImageUrl(defaultProfile);
+    } else {
+      const isFullUrl =
+        profileImageUrl.startsWith("http://") ||
+        profileImageUrl.startsWith("https://");
+      setImageUrl(
+        isFullUrl
+          ? profileImageUrl
+          : `${process.env.IMAGE_PATH}${profileImageUrl}`
+      );
+    }
+  }, [profileImageUrl]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setUserProfile({
-        id: userProfile.id,
-        email: userProfile.email,
-        profileImageUrl: URL.createObjectURL(e.target.files[0]),
-        username: userProfile.username
-      });
       setFile(e.target.files[0]);
       setImageUrl(URL.createObjectURL(e.target.files[0]));
       setDefaultImage(false);
     }
   };
   const handleDefaultImage = () => {
-    setImageUrl("");
+    setImageUrl(defaultProfile);
     setDefaultImage(true);
   };
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,11 +80,11 @@ const ProfileEdit = () => {
   };
   const mutation = useMutation({
     mutationFn: putProfile,
-    onSuccess: () => {
+    onSuccess: (res) => {
       setUserProfile({
         id: userProfile.id,
         email: userProfile.email,
-        profileImageUrl: imageUrl,
+        profileImageUrl: res.profileImageUrl,
         username: nickname
       });
       openModal(<SimpleModal type="profileY" answer="확인" />);

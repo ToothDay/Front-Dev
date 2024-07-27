@@ -3,12 +3,29 @@ import Link from "next/link";
 import styles from "./UserProfileCard.module.scss";
 import { useUserStore } from "@/stores/user";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const UserProfileCard = () => {
   const { userProfile } = useUserStore();
   const { username, profileImageUrl } = userProfile;
-  const [profileImage, setProfileImage] = useState<string>(profileImageUrl);
+  const defaultImage = "/profile.svg";
+  const [profileImage, setProfileImage] = useState<string>(defaultImage);
+
+  useEffect(() => {
+    if (!profileImageUrl) {
+      setProfileImage(defaultImage);
+    } else {
+      const isFullUrl =
+        profileImageUrl.startsWith("http://") ||
+        profileImageUrl.startsWith("https://");
+      setProfileImage(
+        isFullUrl
+          ? profileImageUrl
+          : `${process.env.IMAGE_PATH}${profileImageUrl}`
+      );
+    }
+  }, [profileImageUrl]);
+
   return (
     <article className={styles.user}>
       <Image
