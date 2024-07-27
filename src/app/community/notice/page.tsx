@@ -71,7 +71,9 @@ const Notice = () => {
             >
               <p className={styles.noticeTitle}>
                 {notice.username}님이{" "}
-                {notice.type === "LIKE" ? "좋아요를" : "댓글을"} 눌렀습니다.
+                {notice.type === "LIKE"
+                  ? "좋아요를 눌렀습니다."
+                  : "댓글을 입력했습니다."}
               </p>
               <span className={styles.noticeText}>
                 게시글: {notice.postTitle}
