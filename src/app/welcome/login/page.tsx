@@ -40,13 +40,13 @@ const LoginPage = ({ searchParams }: PropsPage) => {
           <ScaleButton>
             <Login hasToken={!!token?.value} />
           </ScaleButton>
-          <ScaleButton>
+          {/* <ScaleButton>
             <Link href="/community">
               <p className={[styles.loginBtn, styles.noLogin].join(" ")}>
                 로그인 없이 시작하기
               </p>
             </Link>
-          </ScaleButton>
+          </ScaleButton> */}
         </div>
       </section>
     </main>
