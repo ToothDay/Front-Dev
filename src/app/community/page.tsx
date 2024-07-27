@@ -5,9 +5,13 @@ import Tab from "@/components/common/Tab";
 import PostCard from "@/components/common/PostCard";
 import Link from "next/link";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getLoginedKeywordCommunityList } from "@/api/communityApi";
+import {
+  getKeywordCommunityList,
+  getLoginedKeywordCommunityList
+} from "@/api/communityApi";
 import Loading from "../loading";
 import { useEffect, useRef, useState } from "react";
+import { UserProfile } from "@/api/authService";
 
 type PostDataType = {
   postId: number;
@@ -32,11 +36,14 @@ type PostDataType = {
 const Community = () => {
   const hasNotice = false; //임시데이터값
   const [selectedKeyword, setSelectedKeyword] = useState(1);
+  // const {UserProfile}
   const { data, fetchNextPage, hasNextPage, isLoading, error, refetch } =
     useInfiniteQuery({
       queryKey: ["getCommunity", selectedKeyword],
-      queryFn: ({ pageParam = 0 }) =>
-        getLoginedKeywordCommunityList({ pageParam }, selectedKeyword),
+      queryFn: ({ pageParam = 0 }) => {
+        return getLoginedKeywordCommunityList({ pageParam }, selectedKeyword);
+        // getKeywordCommunityList({ pageParam }, selectedKeyword)
+      },
       getNextPageParam: (lastPage) => lastPage.nextOffset ?? false,
       initialPageParam: 0,
       staleTime: 0

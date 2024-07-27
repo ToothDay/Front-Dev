@@ -162,7 +162,9 @@ const PostMain = (props: postMainProps) => {
             </div>
           </div>
         </div>
-        {data?.writtenByCurrentUser === true ? (
+
+        {/*수정기능 보류
+          {data?.writtenByCurrentUser === true ? (
           <div className={styles.updateBtn}>
             <Link
               href={{
@@ -181,7 +183,7 @@ const PostMain = (props: postMainProps) => {
           </div>
         ) : (
           <div></div>
-        )}
+        )} */}
       </div>
       <div className={styles.postContentWrapper}>
         <p className={styles.postContent}>{data?.content}</p>

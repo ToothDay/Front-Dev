@@ -109,7 +109,7 @@ const CommunityWritePage = () => {
       console.error(error);
       openModal(
         <DeleteModal
-          deleteType={"write"}
+          deleteType={"update"}
           commentY={"다시 시도하기"}
           commentN={"뒤로가기"}
         />
@@ -120,12 +120,13 @@ const CommunityWritePage = () => {
     e.preventDefault();
     if (title.length > 0 && mainText.length > 0) {
       const formData = new FormData();
+      console.log(selected);
       const postForm = {
         title,
         content: mainText,
         keywords: selected
       };
-
+      console.log(JSON.stringify(postForm));
       formData.append(
         "postForm",
         new Blob([JSON.stringify(postForm)], { type: "application/json" })
@@ -140,6 +141,7 @@ const CommunityWritePage = () => {
         if (mode === "write") {
           mutation.mutate(formData);
         } else if (mode === "update") {
+          console.log(formData, searchParams.get("postId"));
           mutationUpdate.mutate({
             formData,
             postId: searchParams.get("postId")
@@ -152,7 +154,7 @@ const CommunityWritePage = () => {
   };
 
   const handleCancelPost = () => {
-    router.push("/community");
+    router.replace("/community");
   };
   return (
     <main className={styles.main}>
