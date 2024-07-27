@@ -117,9 +117,9 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
               height={70}
               key={index}
               src={
-                process.env.IMAGE_PATH + url &&
+                process.env.IMAGE_PATH + "/" + url &&
                 !isPostImageError[listData.postId]
-                  ? process.env.IMAGE_PATH + url
+                  ? process.env.IMAGE_PATH + "/" + url
                   : "/image-default.png"
               }
               alt="post-image"
