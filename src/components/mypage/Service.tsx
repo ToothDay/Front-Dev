@@ -4,7 +4,6 @@ import { useModalStore } from "@/stores/modal";
 import { useRouter } from "next/navigation";
 import AccountActionModal from "../modal/AccountActionModal";
 import { useState } from "react";
-import { is } from "date-fns/locale";
 import Loading from "@/app/loading";
 
 const Service = () => {
@@ -19,7 +18,9 @@ const Service = () => {
   const goTermsOfService = () => {
     setIsLoading(true);
     router.push("/my-page/terms");
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
   };
 
   const logout = () => {
@@ -28,7 +29,7 @@ const Service = () => {
 
   return (
     <>
-      {isLoading && <Loading useBg={true} />}
+      {isLoading && <Loading />}
       <div className={styles.serviceUse}>
         <div className={styles.serviceBox}>
           <h3 className={styles.serviceTitle}>서비스 이용 </h3>

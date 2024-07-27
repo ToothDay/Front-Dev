@@ -41,9 +41,10 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
   const likeMutation = useMutation({
     mutationFn: (postId: number) => postLike(postId),
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       setLikedByCurrentUser((prev) => !prev);
-      setLikeCount((prev) => (likedByCurrentUser ? prev - 1 : prev + 1));
+      setLikeCount(data.likeCount);
+      refetch();
     }
   });
 

@@ -1,0 +1,51 @@
+@import "@/styles/common.scss";
+
+.main {
+  height: 100vh;
+  background-color: $white;
+  padding: 28px 24px;
+  overflow: auto;
+}
+
+.allButton {
+  position: absolute;
+  top: 28px;
+  right: 24px;
+  padding: 7px 16px;
+  border: 1px solid $grey5;
+  @include font-style($body2);
+  color: $black;
+  border-radius: 8px;
+  @include button-hover;
+}
+
+.noticeList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-top: 25px;
+}
+
+.noticeItem {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 20px;
+  padding: 21px;
+  border: 1px solid #fdbaba;
+  &.read {
+    border: 1px solid $grey5;
+  }
+}
+
+.noticeTitle {
+  @include font-style($body3);
+  color: $black;
+}
+
+.noticeText {
+  @include font-style($caption1);
+  color: $black;
+}

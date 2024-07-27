@@ -48,18 +48,28 @@ const fetchActivityData = async (page: number, type: ActivityType) => {
 const MyActivity = ({ params }: PropsPage) => {
   const { type } = params;
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["activityData", type],
-      queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
-        fetchActivityData(pageParam, type),
-      getNextPageParam: (lastPage, pages) => {
-        if (lastPage.length < 10) return undefined;
-        return pages.length;
-      },
-      staleTime: 0,
-      initialPageParam: 0
-    });
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch,
+    isError
+  } = useInfiniteQuery({
+    queryKey: ["activityData", type],
+    queryFn: ({ pageParam = 0 }: { pageParam: number }) =>
+      fetchActivityData(pageParam, type),
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.length < 10) return undefined;
+      return pages.length;
+    },
+    staleTime: 0,
+    initialPageParam: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true
+  });
 
   const loadMoreRef = useInfiniteScroll({
     fetchNextPage,
@@ -79,13 +89,19 @@ const MyActivity = ({ params }: PropsPage) => {
         <div className={styles.postList}>
           {data?.pages.flatMap((page, index) =>
             page.map((post, index) => (
-              <MyPostCard key={index} type={type} listData={post} />
+              <MyPostCard
+                key={index}
+                type={type}
+                listData={post}
+                refetch={refetch}
+              />
             ))
           )}
           <div ref={loadMoreRef} />
           {!isLoading && data?.pages.flatMap((page) => page).length === 0 && (
             <NoData type={type} />
           )}
+          {isError && <NoData type={type} />}
         </div>
       </main>
       <ScrollToTop mainRef={mainRef} />

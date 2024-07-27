@@ -33,7 +33,7 @@ const HistoryCard = ({ cardType, userData }: PropsCard) => {
     }
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 5000);
   };
 
   return (

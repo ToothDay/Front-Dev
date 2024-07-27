@@ -159,11 +159,11 @@ export const useModifyData = create<ModifyDataState>((set) => ({
 }));
 
 // useCostList.subscribe((state) => {
-//   console.log(state);
+//   console.log("cost__", state);
 // });
 
 // useTreatmentCost.subscribe((state) => {
-//   console.log(state);
+//   console.log("treat__", state);
 // });
 
 // useTreatmentType.subscribe((state) => {
@@ -171,9 +171,9 @@ export const useModifyData = create<ModifyDataState>((set) => ({
 // });
 
 // useMedicalWriteStore.subscribe((state) => {
-//   console.log(state);
+//   console.log("write", state);
 // });
 
 // useModifyData.subscribe((state) => {
-//   console.log(state);
+//   console.log("modify", state);
 // });

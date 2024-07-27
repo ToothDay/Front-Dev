@@ -13,6 +13,7 @@ import {
   TreatmentList,
   useMedicalWriteStore,
   useModifyData,
+  useTreatmentCost,
   useTreatmentType
 } from "@/stores/medicalWrite";
 import Modal from "../modal/Modal";
@@ -30,6 +31,13 @@ import { useRouter } from "next/navigation";
 import Error from "../error/Error";
 import Loading from "@/app/loading";
 import { fetchMyMedicalDetail } from "@/api/medical";
+import { useToothStore } from "@/stores/tooth";
+import {
+  validateDate,
+  validateDentistId,
+  validateSelectTooth,
+  validateToothCost
+} from "@/util/validation";
 
 export type SaveParams = {
   dentistId: number;
@@ -56,6 +64,7 @@ const MedicalWrite = () => {
     updateVisitDate
   } = useMedicalWriteStore();
   const [isFill, setIsFill] = useState<boolean>(false);
+  const { treatmentCostList } = useTreatmentCost();
 
   const [params, setParams] = useState<SaveParams>({
     dentistId: 0,
@@ -65,6 +74,13 @@ const MedicalWrite = () => {
   });
 
   const [modifyId, setModifyId] = useState<number>(0);
+  const { saveTooth } = useToothStore();
+
+  const [hasCost, setHasCost] = useState<boolean>(false);
+  const [noClinic, setNoClinic] = useState<boolean>(false);
+  const [noDate, setNoDate] = useState<boolean>(false);
+  const [noTooth, setNoTooth] = useState<boolean>(false);
+  const [noCost, setNoCost] = useState<boolean>(false);
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -85,9 +101,7 @@ const MedicalWrite = () => {
   const router = useRouter();
 
   useEffect(() => {
-    treatmentType.filter((treatment) => {
-      return treatment.isClick;
-    }).length > 0
+    treatmentType.filter((treatment) => treatment.isClick).length > 0
       ? setClickTreatment(true)
       : setClickTreatment(false);
   }, [treatmentType]);
@@ -99,10 +113,21 @@ const MedicalWrite = () => {
       treatmentList,
       isShared
     });
-    if (dentistId && visitDate && treatmentList.length > 0) {
-      setIsFill(true);
+    if (treatmentList.length > 0) {
+      const noCost = treatmentList.some((treatment) => treatment.amount === 0);
+      if (noCost) {
+        setHasCost(false);
+      } else {
+        setHasCost(true);
+      }
     }
-  }, [dentistId, visitDate, treatmentList, isShared]);
+
+    if (dentistId && visitDate && hasCost) {
+      setIsFill(true);
+    } else {
+      setIsFill(false);
+    }
+  }, [dentistId, visitDate, treatmentList, isShared, saveTooth]);
 
   const mutation: UseMutationResult<SaveMyDentistResponse, Error, SaveParams> =
     useMutation({
@@ -115,15 +140,21 @@ const MedicalWrite = () => {
       }
     });
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["fetchModifyData"],
     queryFn: () => fetchMyMedicalDetail(String(modifyId)),
-    enabled: !!modifyId && modifyId > 0,
+    enabled: false,
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     refetchOnReconnect: true,
     staleTime: 0
   });
+
+  useEffect(() => {
+    if (modifyId > 0) {
+      refetch();
+    }
+  }, [modifyId]);
 
   const modifyMutation: UseMutationResult<
     SaveMyDentistResponse,
@@ -151,9 +182,29 @@ const MedicalWrite = () => {
     }
   }, [data]);
 
+  const validateForm = () => {
+    const isDentistValid = validateDentistId(dentistId);
+    const isDateValid = validateDate(visitDate);
+    const selectedToothCount = treatmentCostList.filter(
+      (treatment) => treatment.name !== "스케일링"
+    ).length;
+    const isToothValid = validateSelectTooth(saveTooth, selectedToothCount);
+    const isToothCostValid = validateToothCost(treatmentList);
+
+    setNoClinic(!isDentistValid);
+    setNoDate(!isDateValid);
+    setNoTooth(!isToothValid);
+    setNoCost(!isToothCostValid);
+
+    return isDentistValid && isDateValid && isToothValid && isToothCostValid;
+  };
+
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (isFill) {
+
+    const isValid = validateForm();
+
+    if (isValid) {
       if (modifyId > 0) {
         modifyMutation.mutate({ visitId: String(modifyId), params });
       } else {
@@ -170,21 +221,31 @@ const MedicalWrite = () => {
           isClinic={isClinic}
           setIsClinic={setIsClinic}
           isModify={modifyId > 0}
+          noClinic={noClinic}
+          setNoClinic={setNoClinic}
         />
         <DateInput
           isCalendar={isCalendar}
           setIsCalendar={setIsCalendar}
           isModify={modifyId > 0}
+          noDate={noDate}
+          setNoDate={setNoDate}
         />
         <TreatmentSelection isModify={modifyId > 0} />
         <AnimatePresence>
           {(clickTreatment || modifyId) && (
             <>
-              <CostInput isModify={modifyId > 0} />
+              <CostInput
+                isModify={modifyId > 0}
+                noCost={noCost}
+                setNoCost={setNoCost}
+              />
               <ToothSelection
                 isDisplay={isDisplay}
                 isModify={modifyId > 0}
                 setIsDisplay={setIsDisplay}
+                noTooth={noTooth}
+                setNoTooth={setNoTooth}
               />
               <ShareOption isShare={isShare} setIsShare={setIsShare} />
               <div onClick={handleClick}>
