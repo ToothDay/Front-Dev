@@ -132,25 +132,23 @@ const MyPostCard = ({ type, listData, refetch }: PropsPost) => {
             </p>
           </div>
           <div className={styles.postImage}>
-            {listData.imageUrl.map((url, index) => (
-              <Image
-                width={70}
-                height={70}
-                key={index}
-                src={
-                  process.env.IMAGE_PATH + "/" + url &&
-                  !isPostImageError[listData.postId]
-                    ? process.env.IMAGE_PATH + "/" + url
-                    : "/image-default.png"
-                }
-                alt="post-image"
-                className={styles.image}
-                blurDataURL="/image-default.png"
-                placeholder="blur"
-                loading="lazy"
-                onError={() => handlePostImageError(listData.postId)}
-              />
-            ))}
+            <Image
+              width={70}
+              height={70}
+              key={listData.postId}
+              src={
+                process.env.IMAGE_PATH + "/" + listData.imageUrl[0] &&
+                !isPostImageError[listData.postId]
+                  ? process.env.IMAGE_PATH + "/" + listData.imageUrl[0]
+                  : "/image-default.png"
+              }
+              alt="post-image"
+              className={styles.image}
+              blurDataURL="/image-default.png"
+              placeholder="blur"
+              loading="lazy"
+              onError={() => handlePostImageError(listData.postId)}
+            />
           </div>
         </div>
         {type !== "comment" && (
