@@ -25,6 +25,10 @@ export default function RootLayout({
           property="og:description"
           content={String(metadata.description)}
         />
+        <script
+          defer
+          src="https://cdn.swygbro.com/public/widget/swyg-widget.js"
+        ></script>
         <meta property="og:type" content="website" />
         <meta property="og:url" content="http://toothday.swygbro.com" />
         <meta property="og:image" content="" />
