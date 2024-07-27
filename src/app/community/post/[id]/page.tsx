@@ -255,10 +255,10 @@ const PostMain = (props: postMainProps) => {
                 <div className={styles.commentHeader}>
                   <img
                     src={
-                      data?.user?.profileImageUrl
-                        ? data?.user?.profileImageUrl.includes("http")
-                          ? `${data?.user?.profileImageUrl}`
-                          : `http://3.34.135.181:8000/upload${data?.user?.profileImageUrl}`
+                      commentInfo?.profileImageUrl
+                        ? commentInfo?.profileImageUrl.includes("http")
+                          ? `${commentInfo?.profileImageUrl}`
+                          : `http://3.34.135.181:8000/upload${commentInfo?.profileImageUrl}`
                         : `/profile.svg`
                     }
                     alt="user-profile"
