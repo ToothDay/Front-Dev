@@ -7,6 +7,8 @@ import { NoticeData, fetchNotice, fetchNoticeData } from "@/api/myPage";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
 import Error from "@/components/error/Error";
+import { set } from "lodash";
+import { useRouter } from "next/navigation";
 
 const Notice = () => {
   const [noticeData, setNoticeData] = useState<NoticeData[]>([]);
@@ -21,6 +23,8 @@ const Notice = () => {
     refetchOnMount: true,
     refetchOnReconnect: true
   });
+  const [isReadLoading, setIsReadLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setNoticeData(data || []);
@@ -37,12 +41,19 @@ const Notice = () => {
   });
 
   const handleClick = async (id: number) => {
+    setIsReadLoading(true);
     loadingMutation.mutate(id);
+    router.push(
+      `/community/post/${noticeData.find((notice) => notice.id === id)?.postId}`
+    );
+    setTimeout(() => {
+      setIsReadLoading(false);
+    }, 5000);
   };
 
   return (
     <>
-      {isLoading && <Loading />}
+      {(isLoading || isReadLoading) && <Loading />}
       <main className={styles.main}>
         <Header />
         {/* <button className={styles.allButton}>모두 읽음</button> */}
