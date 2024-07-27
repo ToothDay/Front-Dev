@@ -30,7 +30,7 @@ const ImageSwiper = ({ listType, imageList, type }: PropsImage) => {
             src={
               type === "write"
                 ? image.src
-                : `http://3.34.135.181:8000/upload/${image.src}`
+                : `${process.env.NEXT_PUBLIC_IMAGE_PATH}/${image.src}`
             }
             onError={(e) => {
               e.currentTarget.src = "/default-postin.png";
