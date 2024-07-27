@@ -13,6 +13,7 @@ import Loading from "../loading";
 import { useEffect, useRef, useState } from "react";
 import { UserProfile } from "@/api/authService";
 import { useRouter } from "next/navigation";
+import { NoticeData, fetchNoticeData } from "@/api/myPage";
 
 type PostDataType = {
   postId: number;
@@ -36,7 +37,6 @@ type PostDataType = {
 
 const Community = () => {
   const router = useRouter();
-  const hasNotice = false; //임시데이터값
   const [selectedKeyword, setSelectedKeyword] = useState(1);
   // const {UserProfile}
   const { data, fetchNextPage, hasNextPage, isLoading, error, refetch } =
@@ -79,6 +79,30 @@ const Community = () => {
   const handleAlarm = () => {
     router.push("/community/notice");
   };
+
+  const [hasNotice, setHasNotice] = useState(false);
+  const { data: noticeData, refetch: noticeRefetch } = useQuery<NoticeData[]>({
+    queryKey: ["notice"],
+    queryFn: () => {
+      return fetchNoticeData();
+    },
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchInterval: 1000 * 30
+  });
+
+  useEffect(() => {
+    if (noticeData) {
+      const unreadNotice = noticeData.filter((v) => !v.read);
+      if (unreadNotice.length > 0) {
+        setHasNotice(true);
+      } else {
+        setHasNotice(false);
+      }
+    }
+  }, [noticeData]);
 
   return (
     <main className={styles.main}>
