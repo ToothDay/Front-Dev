@@ -88,7 +88,7 @@ const CommunityWritePage = () => {
       );
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
       openModal(
         <DeleteModal
           deleteType={"writeFail"}
@@ -120,13 +120,11 @@ const CommunityWritePage = () => {
     e.preventDefault();
     if (title.length > 0 && mainText.length > 0) {
       const formData = new FormData();
-      console.log(selected);
       const postForm = {
         title,
         content: mainText,
         keywords: selected
       };
-      console.log(JSON.stringify(postForm));
       formData.append(
         "postForm",
         new Blob([JSON.stringify(postForm)], { type: "application/json" })
@@ -141,7 +139,6 @@ const CommunityWritePage = () => {
         if (mode === "write") {
           mutation.mutate(formData);
         } else if (mode === "update") {
-          console.log(formData, searchParams.get("postId"));
           mutationUpdate.mutate({
             formData,
             postId: searchParams.get("postId")
