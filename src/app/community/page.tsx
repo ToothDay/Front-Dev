@@ -12,7 +12,7 @@ import {
 import Loading from "../loading";
 import { useEffect, useRef, useState } from "react";
 import { UserProfile } from "@/api/authService";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { NoticeData, fetchNoticeData } from "@/api/myPage";
 import NoSearchData from "@/components/noData/NoSearchData";
 
@@ -39,7 +39,7 @@ type PostDataType = {
 const Community = () => {
   const router = useRouter();
   const [selectedKeyword, setSelectedKeyword] = useState(1);
-  // const {UserProfile}
+
   const { data, fetchNextPage, hasNextPage, isLoading, error, refetch } =
     useInfiniteQuery({
       queryKey: ["getCommunity", selectedKeyword],
@@ -49,8 +49,12 @@ const Community = () => {
       },
       getNextPageParam: (lastPage) => lastPage.nextOffset ?? false,
       initialPageParam: 0,
-      staleTime: 0
+      staleTime: 0,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      refetchOnReconnect: true
     });
+
   const loadMoreRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!loadMoreRef.current || !hasNextPage) return;
