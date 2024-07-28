@@ -31,7 +31,7 @@ export default function RootLayout({
         ></script>
         <meta property="og:type" content="website" />
         <meta property="og:url" content="http://toothday.swygbro.com" />
-        <meta property="og:image" content="" />
+        <meta property="og:image" content="/toothday.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="UTF-8" />
         <meta name="author" content="스위프 3팀" />
