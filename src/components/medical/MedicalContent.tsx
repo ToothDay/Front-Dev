@@ -13,6 +13,7 @@ import Loading from "@/app/loading";
 import { fetchOtherVisitData } from "@/api/medicalRecord";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import useInfiniteScroll from "@/hook/useInfiniteScroll";
+import AdBanner from "../adBanner/AdBanner";
 
 type MedicalContentProps = {
   myData: VisitData[];
@@ -90,6 +91,7 @@ const MedicalContent = ({ myData, hasMyData }: MedicalContentProps) => {
             </div>
           </section>
         )}
+        <AdBanner />
         <section className={styles.medicalOtherSection}>
           <div className={styles.titleWrapper}>
             <span className={styles.wrapperTitle}>

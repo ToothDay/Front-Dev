@@ -18,6 +18,12 @@ export default function RootLayout({
   return (
     <html lang="ko" className={styles.body}>
       <Head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1919598055512436"
+          crossOrigin="anonymous"
+        ></script>
+
         <title>{String(metadata.title)}</title>
         <meta name="description" content={String(metadata.description)} />
         <meta property="og:title" content={String(metadata.title)} />
