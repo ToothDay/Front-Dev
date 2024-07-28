@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import AccountActionModal from "../modal/AccountActionModal";
 import { useState } from "react";
 import Loading from "@/app/loading";
+import SimpleModal from "../modal/SimpleModal";
 
 const Service = () => {
   const router = useRouter();
@@ -13,6 +14,10 @@ const Service = () => {
 
   const cancelMembership = () => {
     openModal(<AccountActionModal accountType="userDelete" />);
+  };
+
+  const askOpen = () => {
+    openModal(<SimpleModal type="email" answer="확인" />);
   };
 
   const goTermsOfService = () => {
@@ -41,6 +46,9 @@ const Service = () => {
           </button>
           <button className={styles.serviceText} onClick={cancelMembership}>
             회원탈퇴
+          </button>
+          <button className={styles.serviceText} onClick={askOpen}>
+            문의하기
           </button>
         </div>
       </div>

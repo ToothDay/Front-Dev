@@ -2,6 +2,7 @@
 import styles from "@/components/modal/SimpleModal.module.scss";
 import { useModalStore } from "@/stores/modal";
 import { useRouter } from "next/navigation";
+import Community from "../../app/community/page";
 
 type PropsModal = {
   type: string;
@@ -47,6 +48,36 @@ const MODAL_TYPE: modalType = {
         프로필 수정이 <br /> 완료되었습니다.
       </>
     )
+  },
+  email: {
+    title: (
+      <>
+        <p className={styles.emailTitle}>
+          서비스에 대한 문의는 <br /> 아래 이메일에 남겨주세요.
+        </p>
+        <div className={styles.email}>
+          <div className={styles.emailBox}>
+            <p className={styles.emailName}>기획자</p>
+            <p className={styles.emailText}>ichaen0828@gmail.com </p>
+          </div>
+          <div className={styles.emailBox}>
+            <p className={styles.emailName}>디자이너 </p>
+            <p className={styles.emailText}>jooendj@khu.ac.kr</p>
+          </div>
+          <div className={styles.emailBox}>
+            <p className={styles.emailName}>FE개발자</p>
+            <p className={styles.emailText}>moonsun116@naver.com</p>
+            <p className={styles.emailText}>wjdtj9656@gmail.com</p>
+          </div>
+          <div className={styles.emailBox}>
+            <p className={styles.emailName}>BE개발자</p>
+            <p className={styles.emailText}>3759357won@gmail.com</p>
+            <p className={styles.emailText}>lin1041840@gmail.com</p>
+            <p className={styles.emailText}>sshinjaeeunn@gmail.com</p>
+          </div>
+        </div>
+      </>
+    )
   }
 };
 
@@ -66,7 +97,7 @@ const SimpleModal = ({ type, answer, to }: PropsModal) => {
 
   return (
     <div className={styles.main}>
-      <p className={styles.mainTitle}>{MODAL_TYPE[type].title}</p>
+      <div className={styles.mainTitle}>{MODAL_TYPE[type].title}</div>
       <button type="button" className={styles.mainBtn} onClick={handleClick}>
         {answer}
       </button>

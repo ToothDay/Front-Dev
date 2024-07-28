@@ -32,3 +32,38 @@
     @include button-select;
   }
 }
+
+.email {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.emailTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  @include font-style($subtitle2);
+  color: $black;
+  margin-bottom: 10px;
+}
+
+.emailBox {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.emailName {
+  @include font-style($semi-caption1);
+  color: $black;
+}
+
+.emailText {
+  @include font-style($caption1);
+  color: $black;
+}
