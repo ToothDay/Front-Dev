@@ -13,7 +13,6 @@ type PropsImage = {
 
 const ImageSwiper = ({ listType, imageList, type }: PropsImage) => {
   const [imageUrl, setImageUrl] = useState("");
-  console.log(imageList);
   return (
     <Swiper
       slidesPerView={"auto"}
