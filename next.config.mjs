@@ -4,7 +4,8 @@ const nextConfig = {
     domains: [
       "lh3.googleusercontent.com",
       "lh3.googlercontent.com",
-      "3.34.135.181"
+      "3.34.135.181",
+      "swyp53.store"
     ]
   },
   env: {

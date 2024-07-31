@@ -42,7 +42,7 @@ const PostHeader = ({ type, data }: PropsPost) => {
     data?.user?.profileImageUrl
       ? data?.user?.profileImageUrl.includes("http")
         ? `${data?.user?.profileImageUrl}`
-        : `http://3.34.135.181:8000/upload${data?.user?.profileImageUrl}`
+        : `${process.env.IMAGE_PATH}${data?.user?.profileImageUrl}`
       : `/profile.svg`
   );
   return (
@@ -78,7 +78,7 @@ const PostHeader = ({ type, data }: PropsPost) => {
 const PostContent = ({ type, data }: PropsPost) => {
   const [imageUrl, setImageUrl] = useState(
     data?.imageUrl[0]
-      ? `http://3.34.135.181:8000/upload/${data?.imageUrl[0]}`
+      ? `${process.env.IMAGE_PATH}/${data?.imageUrl[0]}`
       : `/default-post.png`
   );
   return (
