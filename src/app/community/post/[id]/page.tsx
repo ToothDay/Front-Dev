@@ -49,14 +49,14 @@ const PostMain = (props: postMainProps) => {
     data?.user?.profileImageUrl
       ? data?.user?.profileImageUrl.includes("http")
         ? `${data?.user?.profileImageUrl}`
-        : `http://3.34.135.181:8000/upload${data?.user?.profileImageUrl}`
+        : `${process.env.IMAGE_PATH}${data?.user?.profileImageUrl}`
       : `/profile.svg`
   );
   const [myImageUrl, setMyImageUrl] = useState(
     userProfile?.profileImageUrl
       ? userProfile?.profileImageUrl.includes("http")
         ? `${userProfile?.profileImageUrl}`
-        : `http://3.34.135.181:8000/upload${userProfile?.profileImageUrl}`
+        : `${process.env.IMAGE_PATH}${userProfile?.profileImageUrl}`
       : `/profile.svg`
   );
 
@@ -69,7 +69,7 @@ const PostMain = (props: postMainProps) => {
       data?.user?.profileImageUrl
         ? data?.user?.profileImageUrl.includes("http")
           ? `${data?.user?.profileImageUrl}`
-          : `http://3.34.135.181:8000/upload${data?.user?.profileImageUrl}`
+          : `${process.env.IMAGE_PATH}${data?.user?.profileImageUrl}`
         : `/profile.svg`
     );
   }, [data]);
@@ -263,7 +263,7 @@ const PostMain = (props: postMainProps) => {
                       commentInfo?.profileImageUrl
                         ? commentInfo?.profileImageUrl.includes("http")
                           ? `${commentInfo?.profileImageUrl}`
-                          : `http://3.34.135.181:8000/upload${commentInfo?.profileImageUrl}`
+                          : `${process.env.IMAGE_PATH}${commentInfo?.profileImageUrl}`
                         : `/profile.svg`
                     }
                     alt="user-profile"
