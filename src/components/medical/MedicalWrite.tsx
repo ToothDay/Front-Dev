@@ -186,7 +186,7 @@ const MedicalWrite = () => {
     const isDentistValid = validateDentistId(dentistId);
     const isDateValid = validateDate(visitDate);
     const selectedToothCount = treatmentCostList.filter(
-      (treatment) => treatment.name !== "스케일링"
+      (treatment) => treatment.name !== "스케일링" && treatment.name !== "잇몸"
     ).length;
     const isToothValid = validateSelectTooth(saveTooth, selectedToothCount);
     const isToothCostValid = validateToothCost(treatmentList);
@@ -195,7 +195,6 @@ const MedicalWrite = () => {
     setNoDate(!isDateValid);
     setNoTooth(!isToothValid);
     setNoCost(!isToothCostValid);
-
     return isDentistValid && isDateValid && isToothValid && isToothCostValid;
   };
 
@@ -203,7 +202,6 @@ const MedicalWrite = () => {
     e.preventDefault();
 
     const isValid = validateForm();
-
     if (isValid) {
       if (modifyId > 0) {
         modifyMutation.mutate({ visitId: String(modifyId), params });
