@@ -25,6 +25,21 @@ export const getLoginedKeywordCommunityList = async (
   return { posts: response.data, nextOffset: pageParam + limit };
 };
 
+export const getLoginedSearchCommunityList = async (
+  { pageParam = 0 },
+  search: string
+) => {
+  const limit = 10;
+  const response = await axiosClient.get(`/api/community/search`, {
+    params: {
+      offset: pageParam,
+      limit: limit,
+      search:search
+    }
+  });
+  return { posts: response.data, nextOffset: pageParam + limit };
+};
+
 export const getKeywordCommunityList = async (
   { pageParam = 0 },
   keyword: number
