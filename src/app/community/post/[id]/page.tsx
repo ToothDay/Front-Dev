@@ -121,6 +121,9 @@ const PostMain = (props: postMainProps) => {
   };
 
   const handleCommentChange = (e: { target: { value: string } }) => {
+    if (e.target.value.length > 249) {
+      e.target.value = e.target.value.slice(0, 249);
+    }
     setComment(e.target.value);
   };
 
@@ -166,8 +169,8 @@ const PostMain = (props: postMainProps) => {
           </div>
         </div>
 
-        {/*수정기능 보류
-          {data?.writtenByCurrentUser === true ? (
+        {/* 게시글 수정하기 
+        {data?.writtenByCurrentUser === true ? (
           <div className={styles.updateBtn}>
             <Link
               href={{

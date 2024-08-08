@@ -109,7 +109,7 @@ const CommunityWritePage = () => {
       console.error(error);
       openModal(
         <DeleteModal
-          deleteType={"update"}
+          deleteType={"updateFail"}
           commentY={"다시 시도하기"}
           commentN={"뒤로가기"}
         />
@@ -184,6 +184,7 @@ const CommunityWritePage = () => {
           <div className={styles.title}>본문 내용</div>
           <textarea
             className={styles.textMain}
+            maxLength={250}
             placeholder={
               "치아, 치과, 구강 건강 등 다양한 내용을 자유롭게 작성해주세요."
             }
