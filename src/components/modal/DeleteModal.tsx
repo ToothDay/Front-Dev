@@ -1,5 +1,6 @@
 import styles from "@/components/modal/DeleteModal.module.scss";
 import { useModalStore } from "@/stores/modal";
+import { update } from "lodash";
 
 type PropsDeleteModal = {
   deleteType: string;
@@ -18,6 +19,15 @@ type DeleteType = {
 const DELETE_TYPE: DeleteType = {
   post: {
     title: "게시글을 삭제하시겠습니까?",
+    content: (
+      <>
+        게시글을 삭제하면 <br />
+        다시 불러올 수 없습니다.
+      </>
+    )
+  },
+  update: {
+    title: "게시글11을 삭제하시겠습니까?",
     content: (
       <>
         게시글을 삭제하면 <br />
@@ -61,6 +71,21 @@ const DELETE_TYPE: DeleteType = {
         글을 수정할 수 있습니다.
       </>
     )
+  },
+  updateFail: {
+    title: (
+      <>
+        게시글을 <br /> 수정할 수 없습니다.
+      </>
+    ),
+    content: (
+      <>
+        게시글 수정을 다시 시도하거나 <br />
+        이전 페이지로 돌아가서
+        <br />
+        글을 수정할 수 있습니다.
+      </>
+    )
   }
 };
 
@@ -77,7 +102,6 @@ const DeleteModal = ({
       onConfirm();
     }
   };
-
   return (
     <div className={styles.delete}>
       <p className={styles.deleteTitle}>{DELETE_TYPE[deleteType].title}</p>
