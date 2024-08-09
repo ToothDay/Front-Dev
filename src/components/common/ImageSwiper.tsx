@@ -7,7 +7,7 @@ import { useState } from "react";
 
 type PropsImage = {
   listType?: "all";
-  imageList?: { id?: number; src: string }[];
+  imageList?: { id?: number; src: string; file?: File }[];
   type: "read" | "write" | "update";
 };
 
@@ -21,24 +21,28 @@ const ImageSwiper = ({ listType, imageList, type }: PropsImage) => {
       grabCursor={true}
       className={styles.imageSwiper}
     >
-      {imageList?.map((image) => (
-        <SwiperSlide key={image.src} className={[styles.imageItem].join(" ")}>
-          <img
-            className={
-              type === "write" ? styles["image-write"] : styles["image-read"]
-            }
-            src={
-              type === "write"
-                ? image.src
-                : `${process.env.IMAGE_PATH}/${image.src}`
-            }
-            onError={(e) => {
-              e.currentTarget.src = "/default-postin.png";
-              console.error("Image fetch error:", e);
-            }}
-          />
-        </SwiperSlide>
-      ))}
+      {imageList?.map((image) => {
+        return (
+          <SwiperSlide key={image.src} className={[styles.imageItem].join(" ")}>
+            <img
+              className={
+                type === "write" || type === "update"
+                  ? styles["image-write"]
+                  : styles["image-read"]
+              }
+              src={
+                image?.file
+                  ? image.src
+                  : `${process.env.IMAGE_PATH}/${image.src}`
+              }
+              onError={(e) => {
+                e.currentTarget.src = "/default-postin.png";
+                console.error("Image fetch error:", e);
+              }}
+            />
+          </SwiperSlide>
+        );
+      })}
     </Swiper>
   );
 };
